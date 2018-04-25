@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "helvetica";
+}
+
+body {
+    background: #8AD5F7;
+}
+
+.content {
+    background: #8AD5F7;
+    display: grid;
+    grid-gap: 3px;
+
+}
+
+.login {
+    background-color: #1E8BDC;
+}
+
+.login ul {
+    margin: 30px auto;
+    padding: 12px;
+    text-align: center;
+}
+
+.login ul li {
+    margin: 6px;
+    list-style: none;
+}
+
+.login ul li input {
+    border: none;
+    border-bottom: 2px solid black;
+    background: white;
+    padding: 12px;
+    margin: 6px;
+}
+
+button {
+    padding: 6px 12px;
+    border: 1px solid white;
+    background: #511695;
+    color: white;
+}
