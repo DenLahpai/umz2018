@@ -5,24 +5,38 @@
 }
 
 body {
-    background: #8AD5F7;
+    background: #1E8BDC;
 }
 
 .content {
     background: #8AD5F7;
     display: grid;
     grid-gap: 3px;
+    grid-template-columns: repeat(6, 1fr);
+    gird-template-areas:
+    " nav nav nav nav nav nav "
+    " header header header header header header "
+    " sub-menu sub-menu sub-menu sub-menu sub-menu sub-menu "
+    " section section section section section section "
+    " main main main main main main "
+    " aside aside aside aside aside aside "
+    ;
+}
 
+footer {
+    text-align: center;
+    color: white;
+    padding: 12px;
 }
 
 .login {
-    background-color: #1E8BDC;
+    background-color: #8AD5F7;
 }
 
 .login ul {
-    margin: 30px auto;
     padding: 12px;
     text-align: center;
+    border: 1px solid white;
 }
 
 .login ul li {
@@ -36,6 +50,11 @@ body {
     background: white;
     padding: 12px;
     margin: 6px;
+}
+
+.notice.error {
+    color: red;
+    font-weight: bold;
 }
 
 button {
