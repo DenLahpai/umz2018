@@ -13,6 +13,9 @@ require "../conn.php";
         <div class="login"><!-- login -->
             <form class="" action="login.php" method="post">
                 <ul>
+                    <li>
+                        <h3>Please Login!</h3>
+                    </li>
                     <li class="notice error">
                         <?php
                         if (isset($_REQUEST['error'])) {
@@ -32,7 +35,7 @@ require "../conn.php";
                         <input type="password" name="Password" id="Password" placeholder="Password" required>
                     </li>
                     <li>
-                        <button type="submit" name="buttonSubmit" id="loginButton">Login</button>
+                        <button type="submit" name="buttonSubmit" class="button big" id="loginButton">Login</button>
                     </li>
                 </ul>
             </form>

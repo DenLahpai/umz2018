@@ -13,7 +13,7 @@ body {
     display: grid;
     grid-gap: 3px;
     grid-template-columns: repeat(6, 1fr);
-    gird-template-areas:
+    grid-template-areas:
     " nav nav nav nav nav nav "
     " header header header header header header "
     " sub-menu sub-menu sub-menu sub-menu sub-menu sub-menu "
@@ -21,6 +21,32 @@ body {
     " main main main main main main "
     " aside aside aside aside aside aside "
     ;
+}
+
+nav {
+    grid-area: nav;
+    background: #FC8325;
+    text-align: center;
+    color: white;
+    border-radius: 6px;
+}
+
+nav ul {
+    padding: 12px;
+}
+
+nav ul li {
+    list-style: none;
+    padding: 6px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+header {
+    grid-area: header;
 }
 
 footer {
@@ -57,9 +83,44 @@ footer {
     font-weight: bold;
 }
 
-button {
+.button.big {
     padding: 6px 12px;
     border: 1px solid white;
     background: #511695;
     color: white;
+}
+
+/*styles for tablets*/
+@media screen and (min-width: 768px) {
+    .grid-div {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/*styles for computers*/
+@media screen and (min-width: 992px) {
+    .content {
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-areas:
+        " nav header header header header header "
+        " nav sub-menu sub-menu sub-menu sub-menu sub-menu "
+        " nav section section section section section "
+        " nav main main main main main "
+        " nav aside aside aside aside aside "
+        ;
+    }
+
+    #menu-items {
+        display: block;
+    }
+
+    #menu-switch {
+        display: none;
+    }
+
+    .grid-div {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
