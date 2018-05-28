@@ -6,7 +6,7 @@ if (!isset($_SESSION['usersId'])){
 }
 
 //function to get data from the table users
-function get_users($usersId, $orderby) {
+function get_users($usersId) {
     $database = new Database();
 
     if ($usersId == NULL) {

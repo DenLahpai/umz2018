@@ -47,6 +47,34 @@ nav ul li a {
 
 header {
     grid-area: header;
+    text-align: center;
+}
+
+header h1 {
+    color: #511695;
+}
+
+.sub-menu {
+    grid-area: sub-menu;
+    text-align: center;
+}
+
+.sub-menu ul li {
+    list-style: none;
+    display: inline;
+}
+
+section {
+    grid-area: section;
+}
+
+main {
+    grid-area: main;
+}
+
+main ul li {
+    list-style: none;
+    margin: 12px;
 }
 
 footer {
@@ -83,11 +111,22 @@ footer {
     font-weight: bold;
 }
 
-.button.big {
+.button.medium {
     padding: 6px 12px;
     border: 1px solid white;
     background: #511695;
     color: white;
+}
+
+.button.search {
+    padding: 6px 12px;
+    border: 1px solid white;
+    background: #FC8325;
+    color: white;
+}
+
+input {
+    padding: 6px;
 }
 
 /*styles for tablets*/
