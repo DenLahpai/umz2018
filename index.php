@@ -25,6 +25,9 @@ require "../conn.php";
                             elseif($_REQUEST['error'] == 2) {
                                 echo "Session Timed Out! Please login again!";
                             }
+                            elseif($_REQUEST['error'] == 3) {
+                                echo "Your Account Has Been Deactivated!";
+                            }
                         }
                         ?>
                     </li>
@@ -44,7 +47,5 @@ require "../conn.php";
     <?php
     include "includes/footer.html"
     ?>
-    <script type="text/javascript" src="./js/scripts.js">
-
-    </script>
+    <script type="text/javascript" src="./js/scripts.js"></script>
 </html>

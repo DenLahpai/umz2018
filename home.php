@@ -2,7 +2,19 @@
 require_once "functions.php";
 
 //getting data from the table
-$rows_posts = table_post('select', NULL);
+if (isset($_REQUEST['buttonSearch'])) {
+    $search = $_REQUEST['search'];
+}
+else {
+    $search = NULL;
+}
+
+if(empty($search) || $search == NULL || $search == "") {
+    $rows_posts = table_posts('select', NULL);
+}
+else {
+    $rows_posts = table_posts('search', $search);
+}
 
 ?>
 <!DOCTYPE html>
@@ -23,14 +35,14 @@ $rows_posts = table_post('select', NULL);
             ?>
             <div class="sub-menu">
             <!-- sub-menu -->
-                <form action="" method="post">
+                <form action="#" method="post">
                 <ul>
                     <li>
                         <a href="new_post.php">
                             <button type="button" class="button medium" name="button">New Post</button></a>
                     </li>
                     <li>
-                        <input type="text" name="search" placeholder="Search Posts">
+                        <input type="text" name="search" value="<?php echo $search; ?>" placeholder="Search Posts">
                         <button type="submit" class="button search" name="buttonSearch">Search</button>
                     </li>
                 </ul>
@@ -41,7 +53,6 @@ $rows_posts = table_post('select', NULL);
                 <!-- grid-div -->
                 <div class="grid-div">
                 <?php
-                $rows_posts = table_post('select', NULL);
                 foreach ($rows_posts as $row_posts) {
                     echo "<!-- grid-item -->";
                     echo "<div class=\"grid-item\">";

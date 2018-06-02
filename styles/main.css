@@ -81,6 +81,11 @@ input[class="wide"]{
     width: 60%;
 }
 
+textarea[class="wide"] {
+    width: 100%;
+    resize: none;
+}
+
 .grid-div {
     display: grid;
     grid-template-columns: 1fr;
@@ -96,7 +101,23 @@ input[class="wide"]{
     /* color: white; */
 }
 
+.links ul li a {
+    color: #511695;
+}
 
+.table.medium table {
+    border-collapse: collapse;
+}
+
+.table.medium table thead tr th {
+    border: 1px solid white;
+    padding: 6px;
+}
+
+.table.medium table tbody tr td {
+    border: 1px solid white;
+    padding: 6px;
+}
 
 footer {
     text-align: center;

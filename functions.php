@@ -5,24 +5,41 @@ if (!isset($_SESSION['usersId'])){
     header("location:index.php?error=2");
 }
 
-//function to get data from the table users
-function get_users($usersId) {
-    $database = new Database();
-
-    if ($usersId == NULL) {
-        $query = "SELECT * FROM users;";
-        $database->query($query);
-    }
-    else {
-        $query = "SELECT * FROM users WHERE Id = :usersId;";
-        $database->query($query);
-        $database->bind(':usersId', $usersId);
-    }
-    return $r = $database->resultset();
+// checking for deactivated users and getting users departmentId to check access
+$ROWS = table_users('select', $_SESSION['usersId']);
+foreach ($ROWS as $ROW) {
+    $s = $ROW->Status;
+    $d = $ROW->DepartmentId;
 }
 
+if ($s == 0) {
+    header("location:index.php?error=3");
+}
+
+//function to get data from the table users
+function table_users($job, $usersId) {
+    $database = new Database();
+
+    if ($job == 'insert') {
+        //TODO
+    }
+    elseif ($job == 'select') {
+        if ($usersId == NULL || empty($usersId) || $usersId == "") {
+            $query = "SELECT * FROM users;";
+            $database->query($query);
+        }
+        else {
+            $query = "SELECT * FROM users WHERE Id = :usersId;";
+            $database->query($query);
+            $database->bind(':usersId', $usersId);
+        }
+        return $r = $database->resultset();
+    }
+}
+
+
 //function to insert date to the table posts
-function table_post($job, $postsId) {
+function table_posts($job, $postsId) {
     $database = new Database();
 
     if($job == 'insert') {
@@ -48,7 +65,7 @@ function table_post($job, $postsId) {
         }
     }
     elseif ($job == 'select') {
-        if ($postsId == NULL || empty($postId) || $postsId == "") {
+        if ($postsId == NULL || empty($postsId) || $postsId == "") {
             $query = "SELECT
                 posts.Id AS postsId,
                 posts.Subject AS Subject,
@@ -72,7 +89,7 @@ function table_post($job, $postsId) {
                 posts.Post AS Post,
                 posts.Generator AS Generator,
                 posts.UserId AS UserId,
-                posts.Created AS Create,
+                posts.Created AS Created,
                 posts.Updated AS Updated,
                 users.Fullname AS Fullname
                 FROM posts
@@ -85,6 +102,38 @@ function table_post($job, $postsId) {
             return $r = $database->resultset();
         }
     }
+    elseif($job == 'search') {
+        $search = '%'.$postsId.'%';
+        $query = "SELECT
+            posts.Id AS postsId,
+            posts.Subject AS Subject,
+            posts.Post AS Post,
+            posts.Generator AS Generator,
+            posts.UserId AS UserId,
+            posts.Created AS Created,
+            posts.Updated AS Updated,
+            users.Fullname AS Fullname
+            FROM posts
+            LEFT OUTER JOIN users
+            ON posts.UserId = users.Id
+            WHERE CONCAT(
+                posts.Subject,
+                posts.Post,
+                users.Fullname
+            ) LIKE :search
+        ;";
+        $database->query($query);
+        $database->bind(':search', $search);
+        return $r = $database->resultset();
+    }
+}
+
+// function to get data from the table departments
+function get_departments() {
+    $database = new Database();
+    $query = "SELECT * FROM departments ORDER BY Id ;";
+    $database->query($query);
+    return $r = $database->resultset();
 }
 
 
