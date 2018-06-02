@@ -1,5 +1,9 @@
 <?php
 require_once "functions.php";
+
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    table_post('insert', NULL);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -18,16 +22,16 @@ require_once "functions.php";
             include "includes/header.html";
             ?>
             <main>
-                <form class="" action="#" method="post">
+                <form id="new_post" action="#" method="post">
                     <ul>
                         <li>
-                            Title: &nbsp; <input type="text" name="" value="">
+                            Subject: &nbsp; <input type="text" class="wide" name="Subject" id="Subject" placeholder="Subject of your post!">
                         </li>
                         <li>
-                            <textarea name="name" rows="8" cols="36" placeholder="Write your annoucement here!"></textarea>
+                            <textarea name="Post" class="wide" id="Post" rows="8" cols="36" placeholder="Write your annoucement here!"></textarea>
                         </li>
                         <li>
-                            <button type="submit" class="button medium" name="button">Submit</button>
+                            <button type="button" class="button medium" id="buttonSubmit" name="buttonSubmit" onclick="check2Fields('Subject','Post')">Submit</button>
                         </li>
                     </ul>
                 </form>
@@ -36,4 +40,5 @@ require_once "functions.php";
         <!-- end of content -->
         <?php include "includes/footer.html";?>
     </body>
+    <script type="text/javascript" src="js/scripts.js"></script>
 </html>

@@ -77,6 +77,27 @@ main ul li {
     margin: 12px;
 }
 
+input[class="wide"]{
+    width: 60%;
+}
+
+.grid-div {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 3px;
+}
+
+.grid-div div {
+    background: #EAFF00;
+    border: 1px white solid;
+}
+.grid-div div:nth-child(even) {
+    background: #FC8325;
+    /* color: white; */
+}
+
+
+
 footer {
     text-align: center;
     color: white;

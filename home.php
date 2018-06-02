@@ -1,12 +1,15 @@
 <?php
 require_once "functions.php";
 
+//getting data from the table
+$rows_posts = table_post('select', NULL);
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <head>
         <?php
-        $title = "Posts";
+        $page_title = "Posts";
         include "includes/head.html";
         ?>
     </head>
@@ -34,9 +37,27 @@ require_once "functions.php";
                 </form>
             </div>
             <!-- end of sub-menu -->
-            <section>
-                <!-- TODO get data from the table Posts -->
-            </section>
+            <main>
+                <!-- grid-div -->
+                <div class="grid-div">
+                <?php
+                $rows_posts = table_post('select', NULL);
+                foreach ($rows_posts as $row_posts) {
+                    echo "<!-- grid-item -->";
+                    echo "<div class=\"grid-item\">";
+                    echo "<ul>";
+                    echo "<li><h4>Subject:&nbsp;".$row_posts->Subject."</h4></li>";
+                    echo "<li>".$row_posts->Post."</li>";
+                    echo "<li>By:&nbsp;<span style=\"font-style:italic; color: blue;\">".$row_posts->Fullname."</span>";
+                    echo "&nbsp;on ".$row_posts->Created."</li>";
+                    echo "</ul>";
+                    echo "</div>";
+                    echo "<!-- end of grid-item -->";
+                }
+                ?>
+                </div>
+                <!-- end of grid-div -->
+            </main>
         </div>
         <!-- end of content -->
         <?php include "includes/footer.html"; ?>

@@ -1,9 +1,3 @@
-function checkEmptyField() {
-    var inputs = document.getElementsByTagName('input');
-    for (var i = 1; i < inputs.length; i++) {
-        a
-    }
-}
 
 //function to expend the menu
 function expand_menu() {
@@ -23,5 +17,28 @@ function toogle_booking_menu() {
     }
     else {
         document.getElementById('booking_menu_items').style.display = "none";
+    }
+}
+
+//functions to check 2 empty fields
+function check2Fields(field1, field2) {
+
+    var myForm = document.forms.new_post;
+    var field1 = document.getElementById(field1);
+    var field2 = document.getElementById(field2);
+
+    if(field1.value == "") {
+        field1.style.background = 'red';
+    }
+
+    if(field2.value == "") {
+        field2.style.background = 'red';
+    }
+
+    if(field1.value == "" || field2.value == "") {
+        alert('Please fill out the empty field(s) in red!');
+    }
+    else {
+        myForm.submit();
     }
 }

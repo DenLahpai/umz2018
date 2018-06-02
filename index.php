@@ -5,7 +5,7 @@ require "../conn.php";
 <html>
     <head>
     <?php
-    $title = "Welcome";
+    $page_title = "Welcome";
     include_once "./includes/head.html";
     ?>
     </head>
@@ -35,7 +35,7 @@ require "../conn.php";
                         <input type="password" name="Password" id="Password" placeholder="Password" required>
                     </li>
                     <li>
-                        <button type="submit" name="buttonSubmit" class="button big" id="loginButton">Login</button>
+                        <button type="submit" name="buttonSubmit" class="button medium" id="loginButton">Login</button>
                     </li>
                 </ul>
             </form>
