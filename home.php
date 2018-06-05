@@ -59,7 +59,7 @@ else {
                     echo "<ul>";
                     echo "<li><h4>Subject:&nbsp;".$row_posts->Subject."</h4></li>";
                     echo "<li>".$row_posts->Post."</li>";
-                    echo "<li>By:&nbsp;<span style=\"font-style:italic; color: blue;\">".$row_posts->Fullname."</span>";
+                    echo "<li style=\"font-style:italic; \"><span style=\"color: blue;\">".$row_posts->Fullname."</span>";
                     echo "&nbsp;on ".$row_posts->Created."</li>";
                     echo "</ul>";
                     echo "</div>";

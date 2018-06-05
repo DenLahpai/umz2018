@@ -5,8 +5,21 @@ if ($d > 2) {
     header("location: no_access.php");
 }
 
-// getting data from the table users
-$rows_users = table_users('select', NULL);
+//getting data from the table
+if (isset($_REQUEST['buttonSearch'])) {
+    $search = $_REQUEST['search'];
+}
+else {
+    $search = NULL;
+}
+
+if(empty($search) || $search == NULL || $search == "") {
+    $rows_users = table_users('select', NULL);
+}
+else {
+    $rows_users = table_users('search', $search);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -22,23 +35,65 @@ $rows_users = table_users('select', NULL);
             $header = "Users";
             include "./includes/header.html";
             ?>
+            <!-- sub-menu -->
+            <div class="sub-menu">
+                <form action="#" method="post">
+                <ul>
+                    <li>
+                        <a href="new_user.php">
+                            <button type="button" class="button medium" name="button">Create New User</button></a>
+                    </li>
+                    <li>
+                        <input type="text" name="search" value="<?php echo $search; ?>" placeholder="Search Users">
+                        <button type="submit" class="button search" name="buttonSearch">Search</button>
+                    </li>
+                </ul>
+                </form>
+            </div>
+            <!-- end of sub-menu -->
             <main>
-                <table>
-                    <form action="#" method="post">
+                <!-- table medium -->
+                <div class="table medium">
+                    <table>
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>#</th>
+                                <th>Username</th>
+                                <th>Password</th>
+                                <th>Title</th>
+                                <th>Fullname</th>
+                                <th>Position</th>
+                                <th>Department</th>
+                                <th>Access</th>
+                                <th>Status</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Ctl</th>
                             </tr>
                         </thead>
-                    </form>
                         <tbody>
                             <?php
-                            foreach ($rows_users as $rows_users) {
-
+                            foreach ($rows_users as $row_users) {
+                                echo "<tr>";
+                                echo "<td>".$row_users->Id."</td>";
+                                echo "<td>".$row_users->Username."</td>";
+                                echo "<td>".$row_users->Password."</td>";
+                                echo "<td>".$row_users->Title."</td>";
+                                echo "<td>".$row_users->Fullname."</td>";
+                                echo "<td>".$row_users->Position."</td>";
+                                echo "<td>".$row_users->DepartmentsName."</td>";
+                                echo "<td>".$row_users->Access."</td>";
+                                echo "<td>".$row_users->Status."</td>";
+                                echo "<td>".$row_users->Email."</td>";
+                                echo "<td>".$row_users->Mobile."</td>";
+                                echo "<td><a href=\"edit_user.php?usersId=$row_users->Id\">Edit</a></td>";
+                                echo "</tr>";
                             }
                             ?>
                         </tbody>
-                </table>
+                    </table>
+                </div>
+                <!-- end of table medium -->
             </main>
         </div>
         <!-- end of content -->

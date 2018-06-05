@@ -16,6 +16,33 @@ if ($s == 0) {
     header("location:index.php?error=3");
 }
 
+//function to select Titles for names
+function select_titles($Title) {
+    switch ($Title) {
+        case 'Mr':
+            echo "<option value=\"Mr\" selected>Mr</option>";
+            echo "<option value=\"Ms\">Ms</option>";
+            echo "<option value=\"Mrs\">Mrs</option>";
+            break;
+        case 'Ms':
+            echo "<option value=\"Mr\">Mr</option>";
+            echo "<option value=\"Ms\" selected>Ms</option>";
+            echo "<option value=\"Mrs\">Mrs</option>";
+            break;
+        case 'Mrs':
+            echo "<option value=\"Mr\">Mr</option>";
+            echo "<option value=\"Ms\">Ms</option>";
+            echo "<option value=\"Mrs\" selected>Mrs</option>";
+            break;
+        default:
+            echo "<option>Select</option>";
+            echo "<option value=\"Mr\">Mr</option>";
+            echo "<option value=\"Ms\">Ms</option>";
+            echo "<option value=\"Mrs\">Mrs</option>";
+            break;
+    }
+}
+
 //function to get data from the table users
 function table_users($job, $usersId) {
     $database = new Database();
@@ -25,14 +52,81 @@ function table_users($job, $usersId) {
     }
     elseif ($job == 'select') {
         if ($usersId == NULL || empty($usersId) || $usersId == "") {
-            $query = "SELECT * FROM users;";
+            $query = "SELECT
+                users.Id,
+                users.Username,
+                users.Password,
+                users.Title,
+                users.Fullname,
+                users.Position,
+                users.DepartmentId,
+                users.Access,
+                users.Status,
+                users.Email,
+                users.Mobile,
+                departments.Name AS DepartmentsName
+                FROM users
+                LEFT OUTER JOIN departments
+                ON users.DepartmentId = departments.Id
+            ;";
             $database->query($query);
         }
         else {
-            $query = "SELECT * FROM users WHERE Id = :usersId;";
+            $query = "SELECT
+                users.Id,
+                users.Username,
+                users.Password,
+                users.Title,
+                users.Fullname,
+                users.Position,
+                users.DepartmentId,
+                users.Access,
+                users.Status,
+                users.Email,
+                users.Mobile,
+                departments.Name AS DepartmentsName
+                FROM users
+                LEFT OUTER JOIN departments
+                ON users.DepartmentId = departments.Id
+                WHERE users.Id = :usersId
+            ;";
             $database->query($query);
             $database->bind(':usersId', $usersId);
         }
+        return $r = $database->resultset();
+    }
+    elseif ($job == 'search') {
+        $search = '%'.$usersId.'%';
+        $query = "SELECT
+            users.Id,
+            users.Username,
+            users.Password,
+            users.Title,
+            users.Fullname,
+            users.Position,
+            users.DepartmentId,
+            users.Access,
+            users.Status,
+            users.Email,
+            users.Mobile,
+            departments.Name AS DepartmentsName
+            FROM users LEFT JOIN departments
+            ON users.departmentId = departments.Id
+            WHERE CONCAT(
+            users.Username,
+            users.Password,
+            users.Title,
+            users.Fullname,
+            users.Position,
+            departments.Name,
+            users.Access,
+            users.Status,
+            users.Email,
+            users.Mobile
+        ) LIKE :search
+        ;";
+        $database->query($query);
+        $database->bind(':search', $search);
         return $r = $database->resultset();
     }
 }
@@ -78,7 +172,8 @@ function table_posts($job, $postsId) {
                 FROM posts
                 LEFT OUTER JOIN users
                 ON posts.UserId = users.Id
-                ORDER BY posts.Updated;";
+                ORDER BY posts.Updated
+            ;";
             $database->query($query);
             return $r = $database->resultset();
         }
@@ -96,6 +191,7 @@ function table_posts($job, $postsId) {
                 LEFT OUTER JOIN users
                 ON posts.UserId = users.Id
                 WHERE posts.Id = :postsId
+                ORDER BY posts.Updated
             ;";
             $database->query($query);
             $database->bind(':postsId', $postsId);
