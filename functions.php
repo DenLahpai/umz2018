@@ -225,11 +225,20 @@ function table_posts($job, $postsId) {
 }
 
 // function to get data from the table departments
-function get_departments() {
+function table_departments($job, $departmentId) {
     $database = new Database();
-    $query = "SELECT * FROM departments ORDER BY Id ;";
-    $database->query($query);
-    return $r = $database->resultset();
+    if ($job == 'select') {
+        if($departmentId == NULL || $departmentId == "" || empty($departmentId)) {
+            $query = "SELECT * FROM departments ORDER BY Id ;";
+            $database->query($query);
+        }
+        else {
+            $query = "SELECT * FROM departments WHERE Id = :departmentId ;";
+            $database->query($query);
+            $database->bind(':departmentId', $departmentId);
+        }
+        return $r = $database->resultset();
+    }
 }
 
 

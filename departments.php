@@ -34,7 +34,7 @@ if ($d > 2) {
                         <tbody>
                         <?php
                         //getting data from the table departments
-                        $rows_departments = get_departments();
+                        $rows_departments = table_departments('select', NULL);
                         foreach ($rows_departments as $row_departments) {
                             echo "<tr>";
                             echo "<td>".$row_departments->Id."</td>";
