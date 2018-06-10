@@ -22,7 +22,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             include "includes/header.html";
             ?>
             <main>
-                <form id="new_post" action="#" method="post">
+                <form id="theform" action="#" method="post">
                     <ul>
                         <li>
                             Subject: &nbsp; <input type="text" class="wide" name="Subject" id="Subject" placeholder="Subject of your post!">

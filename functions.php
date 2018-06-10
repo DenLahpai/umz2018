@@ -35,7 +35,7 @@ function select_titles($Title) {
             echo "<option value=\"Mrs\" selected>Mrs</option>";
             break;
         default:
-            echo "<option>Select</option>";
+            echo "<option value=\"\">Select</option>";
             echo "<option value=\"Mr\">Mr</option>";
             echo "<option value=\"Ms\">Ms</option>";
             echo "<option value=\"Mrs\">Mrs</option>";
@@ -48,7 +48,50 @@ function table_users($job, $usersId) {
     $database = new Database();
 
     if ($job == 'insert') {
-        //TODO
+        $Username = trim($_REQUEST['Username']);
+        $Password = trim($_REQUEST['Password']);
+        $Title = trim($_REQUEST['Title']);
+        $Fullname = trim($_REQUEST['Fullname']);
+        $Position = trim($_REQUEST['Position']);
+        $DepartmentId = trim($_REQUEST['DepartmentId']);
+        $Status = trim($_REQUEST['Status']);
+        $Email = trim($_REQUEST['Email']);
+        $Mobile = trim($_REQUEST['Mobile']);
+        $query = "INSERT INTO users (
+            Username,
+            Password,
+            Title,
+            Fullname,
+            Position,
+            DepartmentId,
+            Status,
+            Email,
+            Mobile
+            ) VALUES(
+            :Username,
+            :Password,
+            :Title,
+            :Fullname,
+            :Position,
+            :DepartmentId,
+            :Status,
+            :Email,
+            :Mobile
+            )
+        ;";
+        $database->query($query);
+        $database->bind(':Username', $Username);
+        $database->bind(':Password', $Password);
+        $database->bind(':Title', $Title);
+        $database->bind(':Fullname', $Fullname);
+        $database->bind(':Position', $Position);
+        $database->bind(':DepartmentId', $DepartmentId);
+        $database->bind(':Status', $Status);
+        $database->bind(':Email', $Email);
+        $database->bind(':Mobile', $Mobile);
+        if($database->execute()) {
+            header('location:users.php');
+        }
     }
     elseif ($job == 'select') {
         if ($usersId == NULL || empty($usersId) || $usersId == "") {
@@ -129,8 +172,44 @@ function table_users($job, $usersId) {
         $database->bind(':search', $search);
         return $r = $database->resultset();
     }
-}
+    elseif ($job == 'update') {
+        $Username = trim($_REQUEST['Username']);
+        $Password = trim($_REQUEST['Password']);
+        $Title = trim($_REQUEST['Title']);
+        $Fullname = trim($_REQUEST['Fullname']);
+        $Position = trim($_REQUEST['Position']);
+        $DepartmentId = trim($_REQUEST['DepartmentId']);
+        $Status = trim($_REQUEST['Status']);
+        $Email = trim($_REQUEST['Email']);
+        $Mobile = trim($_REQUEST['Mobile']);
+        $Id = $_REQUEST['Id'];
 
+        $query = "UPDATE users SET
+        Username = :Username,
+        Password = :Password,
+        Title = :Title,
+        Fullname = :Fullname,
+        Position = :Position,
+        DepartmentId = :DepartmentId,
+        Status = :Status,
+        Email = :Email,
+        Mobile = :Mobile
+        WHERE Id = :Id
+        ;";
+        $database->query($query);
+        $database->bind(':Username', $Username);
+        $database->bind(':Password', $Password);
+        $database->bind(':Title', $Title);
+        $database->bind(':Fullname', $Fullname);
+        $database->bind(':Position', $Position);
+        $database->bind(':DepartmentId', $DepartmentId);
+        $database->bind(':Status', $Status);
+        $database->bind(':Email', $Email);
+        $database->bind(':Mobile', $Mobile);
+        $database->bind(':Id', $Id);
+        $database->execute();
+    }
+}
 
 //function to insert date to the table posts
 function table_posts($job, $postsId) {
@@ -138,7 +217,7 @@ function table_posts($job, $postsId) {
 
     if($job == 'insert') {
         $UserId = $_SESSION['usersId'];
-        $Subject = $_REQUEST['Subject'];
+        $Subject = trim($_REQUEST['Subject']);
         $Post = $_REQUEST['Post'];
         $query = "INSERT INTO posts (
             Subject,
@@ -148,8 +227,8 @@ function table_posts($job, $postsId) {
             :Subject,
             :Post,
             :UserId
-            );
-        ";
+            )
+        ;";
         $database->query($query);
         $database->bind(':Subject', $Subject);
         $database->bind(':Post', $Post);

@@ -97,9 +97,9 @@ textarea[class="wide"] {
     border: 1px white solid;
 }
 .grid-div div:nth-child(even) {
-    background: #FC8325;
-    /* color: white; */
+    background: #1E8BDC;    
 }
+
 
 .links ul li a {
     color: #511695;

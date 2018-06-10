@@ -23,7 +23,7 @@ function toogle_booking_menu() {
 //functions to check 2 empty fields
 function check2Fields(field1, field2) {
 
-    var myForm = document.forms.new_post;
+    // var myForm = document.forms.theform;
     var field1 = document.getElementById(field1);
     var field2 = document.getElementById(field2);
 
@@ -39,6 +39,6 @@ function check2Fields(field1, field2) {
         alert('Please fill out the empty field(s) in red!');
     }
     else {
-        myForm.submit();
+        document.getElementById('buttonSubmit').type = 'Submit';
     }
 }

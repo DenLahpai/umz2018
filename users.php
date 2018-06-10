@@ -86,7 +86,7 @@ else {
                                 echo "<td>".$row_users->Status."</td>";
                                 echo "<td>".$row_users->Email."</td>";
                                 echo "<td>".$row_users->Mobile."</td>";
-                                echo "<td><a href=\"edit_user.php?usersId=$row_users->Id\">Edit</a></td>";
+                                echo "<td><a href=\"edit_user.php?Id=$row_users->Id\">Edit</a></td>";
                                 echo "</tr>";
                             }
                             ?>
