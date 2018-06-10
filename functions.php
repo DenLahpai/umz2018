@@ -321,4 +321,44 @@ function table_departments($job, $departmentId) {
 }
 
 
+//function to get data from the table agents
+function table_agents($job, $agentsId) {
+    $database = new Database();
+
+    if ($job == 'insert') {
+        // TODO
+    }
+    elseif ($job == 'select') {
+        if ($agentsId == NULL || $agentsId == "" || empty($agentsId)) {
+            $query = "SELECT * FROM agents ;";
+            $database->query($query);
+            return $r = $database->resultset();
+        }
+        else {
+            $query = "SELECT * FROM agents WHERE Id = :Id ;";
+            $database->query($query);
+            $database->bind(':Id', $agentsId);
+            return $r = $database->resultset();
+        }
+    }
+    elseif ($job == 'search') {
+        $search = '%'.$agentsId.'%';
+        $query = "SELECT * FROM agents
+            WHERE CONCAT(
+            Name,
+            Address,
+            Township,
+            City,
+            Country,
+            Phone,
+            Email,
+            Website
+            ) LIKE :search
+        ;";
+        $database->query($query);
+        $database->bind(':search', $search);
+        return $r = $database->resultset();
+    }
+}
+
 ?>

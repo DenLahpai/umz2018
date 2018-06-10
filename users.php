@@ -14,10 +14,10 @@ else {
 }
 
 if(empty($search) || $search == NULL || $search == "") {
-    $rows_users = table_users('select', NULL);
+    $rows_users = table_agents('select', NULL);
 }
 else {
-    $rows_users = table_users('search', $search);
+    $rows_users = table_agents('search', $search);
 }
 
 ?>
@@ -44,7 +44,7 @@ else {
                             <button type="button" class="button medium" name="button">Create New User</button></a>
                     </li>
                     <li>
-                        <input type="text" name="search" value="<?php echo $search; ?>" placeholder="Search Users">
+                        <input type="text" name="search" value="<?php echo $search; ?>" placeholder="Search Agents">
                         <button type="submit" class="button search" name="buttonSearch">Search</button>
                     </li>
                 </ul>
