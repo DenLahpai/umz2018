@@ -77,6 +77,12 @@ main ul li {
     margin: 12px;
 }
 
+main ul li input {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #FC8325;
+}
+
 input[class="wide"]{
     width: 60%;
 }
@@ -97,7 +103,7 @@ textarea[class="wide"] {
     border: 1px white solid;
 }
 .grid-div div:nth-child(even) {
-    background: #1E8BDC;    
+    background: #1E8BDC;
 }
 
 

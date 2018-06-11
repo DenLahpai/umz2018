@@ -326,7 +326,51 @@ function table_agents($job, $agentsId) {
     $database = new Database();
 
     if ($job == 'insert') {
-        // TODO
+        $Name = trim($_REQUEST['Name']);
+        $Address = trim($_REQUEST['Address']);
+        $Township = trim($_REQUEST['Township']);
+        $City = trim($_REQUEST['City']);
+        $Country = trim($_REQUEST['Country']);
+        $Phone = trim($_REQUEST['Phone']);
+        $Fax = trim($_REQUEST['Fax']);
+        $Email = trim($_REQUEST['Email']);
+        $Website = trim($_REQUEST['Website']);
+
+        $query = "INSERT INTO agents (
+            Name,
+            Address,
+            Township,
+            City,
+            Country,
+            Phone,
+            Fax,
+            Email,
+            Website
+            ) VALUES (
+            :Name,
+            :Address,
+            :Township,
+            :City,
+            :Country,
+            :Phone,
+            :Fax,
+            :Email,
+            :Website
+            )
+        ;";
+        $database->query($query);
+        $database->bind(':Name', $Name);
+        $database->bind(':Address', $Address);
+        $database->bind(':Township', $Township);
+        $database->bind(':City', $City);
+        $database->bind(':Country', $Country);
+        $database->bind(':Phone', $Phone);
+        $database->bind(':Fax', $Fax);
+        $database->bind(':Email', $Email);
+        $database->bind(':Website', $Website);
+        if ($database->execute()) {
+            header("location: agents.php");
+        }
     }
     elseif ($job == 'select') {
         if ($agentsId == NULL || $agentsId == "" || empty($agentsId)) {
@@ -351,6 +395,7 @@ function table_agents($job, $agentsId) {
             City,
             Country,
             Phone,
+            Fax,
             Email,
             Website
             ) LIKE :search
@@ -358,6 +403,42 @@ function table_agents($job, $agentsId) {
         $database->query($query);
         $database->bind(':search', $search);
         return $r = $database->resultset();
+    }
+    elseif ($job == 'update') {
+        $Name = trim($_REQUEST['Name']);
+        $Address = trim($_REQUEST['Address']);
+        $Township = trim($_REQUEST['Township']);
+        $City = trim($_REQUEST['City']);
+        $Country = trim($_REQUEST['Country']);
+        $Phone = trim($_REQUEST['Phone']);
+        $Fax = trim($_REQUEST['Fax']);
+        $Email = trim($_REQUEST['Email']);
+        $Website = trim($_REQUEST['Website']);
+
+        $query = "UPDATE agents SET
+            Name = :Name,
+            Address = :Address,
+            Township = :Township,
+            City = :City,
+            Country = :Country,
+            Phone = :Phone,
+            Fax = :Fax,
+            Email = :Email,
+            Website = :Website
+            WHERE Id = :agentsId
+        ;";
+        $database->query($query);
+        $database->bind(':Name', $Name);
+        $database->bind(':Address', $Address);
+        $database->bind(':Township', $Township);
+        $database->bind(':City', $City);
+        $database->bind(':Country', $Country);
+        $database->bind(':Phone', $Phone);
+        $database->bind(':Fax', $Fax);
+        $database->bind(':Email', $Email);
+        $database->bind(':Website', $Website);
+        $database->bind(':agentsId', $agentsId);
+        $database->execute();
     }
 }
 
