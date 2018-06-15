@@ -6,15 +6,28 @@ if ($d > 2) {
 //getting agants Id to be edited
 $agentsId = trim($_REQUEST['agentsId']);
 
-//updating the table agents when clicked update
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    table_agents('update', $agentsId);
-}
-
 //getting the agentsId and data from the table agents
 $rows_agents = table_agents('select', $agentsId);
 foreach ($rows_agents as $row_agents) {
     // code...
+}
+
+//updating the table agents when clicked update
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $Name = $_REQUEST['Name'];
+    if ($Name == $row_agents->Name) {
+        table_agents('update', $agentsId);
+    }
+
+    else {
+        $rowCount = table_agents('check', NULL);
+        if ($rowCount == 0) {
+            table_agents('insert', NULL);
+        }
+        else {
+            $error_message = "Duplicate Entry!";
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -34,6 +47,13 @@ foreach ($rows_agents as $row_agents) {
             <main>
                 <form action="#" method="post">
                     <ul>
+                        <li class="notice error">
+                            <?php
+                            if(!empty($error_message)) {
+                                echo $error_message;
+                            }
+                            ?>
+                        </li>
                         <li>
                             Name: &nbsp;
                             <input type="text" name="Name" id="Name" value="<?php echo $row_agents->Name; ?>" required>

@@ -7,7 +7,13 @@ if ($d > 2) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    table_agents('insert', NULL);
+    $rowCount = table_agents('check', NULL);
+    if ($rowCount == 0) {
+        table_agents('insert', NULL);
+    }
+    else {
+        $error_message = "Duplicate Entry!";
+    }
 }
 
 ?>
@@ -28,6 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <main>
                 <form id="theform" action="#" method="post">
                     <ul>
+                        <li class="notice error">
+                            <?php
+                            if(!empty($error_message)) {
+                                echo $error_message;
+                            }
+                            ?>
+                        </li>
                         <li>
                             Name: &nbsp;
                             <input type="text" name="Name" id="Name" placeholder="Agent Name" required>
@@ -65,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="text" name="Website" id="Website" placeholder="www.agent.com">
                         </li>
                         <li>
-                            <button type="Submit" class="button medium" name="button">Submit</button>
+                            <button type="Submit" class="button medium" name="buttonSubmit" id="buttonSubmit">Submit</button>
                         </li>
                     </ul>
                 </form>

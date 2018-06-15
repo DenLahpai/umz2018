@@ -438,7 +438,172 @@ function table_agents($job, $agentsId) {
         $database->bind(':Email', $Email);
         $database->bind(':Website', $Website);
         $database->bind(':agentsId', $agentsId);
+        if ($database->execute()) {
+            header("location:edit_agent.php?agentsId=$agentsId");
+        }
+    }
+    elseif ($job == 'check') {
+        $Name = trim($_REQUEST['Name']);
+        $Address = trim($_REQUEST['Address']);
+        $Township = trim($_REQUEST['Township']);
+        $City = trim($_REQUEST['City']);
+        $Country = trim($_REQUEST['Country']);
+        $Phone = trim($_REQUEST['Phone']);
+        $Fax = trim($_REQUEST['Fax']);
+        $Email = trim($_REQUEST['Email']);
+        $Website = trim($_REQUEST['Website']);
+
+        $query = "SELECT Id FROM agents WHERE
+            Name = :Name
+        ;";
+        $database->query($query);
+        $database->bind(':Name', $Name);
         $database->execute();
+        return $r = $database->rowCount();
+    }
+}
+
+//function to insert and select data from the table agent_contacts
+function table_agent_contacts($job, $agent_contactsId) {
+    $database = new Database();
+
+    switch ($job) {
+        case 'insert':
+            $Title = $_REQUEST['Title'];
+            $Name = trim($_REQUEST['Name']);
+            $Position = trim($_REQUEST['Position']);
+            $Department = trim($_REQUEST['Department']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $Email = trim($_REQUEST['Email']);
+            $AgentId = trim($_REQUEST['AgentId']);
+
+            $query = "INSERT INTO agent_contacts(
+                Title,
+                Name,
+                Position,
+                Department,
+                Mobile,
+                Email,
+                AgentId
+                ) VALUES(
+                :Title,
+                :Name,
+                :Position,
+                :Department,
+                :Mobile,
+                :Email,
+                :AgentId
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Title', $Title);
+            $database->bind(':Name', $Name);
+            $database->bind(':Position', $Position);
+            $database->bind(':Department', $Department);
+            $database->bind(':Mobile',$Mobile);
+            $database->bind(':Email', $Email);
+            $database->bind(':AgentId', $AgentId);
+            if ($database->execute()) {
+                header("location: agent_contacts.php");
+            }
+            break;
+
+        case 'select':
+            if ($agent_contactsId == NULL || $agent_contactsId == "" || empty($agent_contactsId)) {
+                $query = "SELECT
+                    agent_contacts.Id,
+                    agent_contacts.Title,
+                    agent_contacts.Name,
+                    agent_contacts.Position,
+                    agent_contacts.Department,
+                    agent_contacts.Mobile,
+                    agent_contacts.Email,
+                    agents.Name AS AgentName
+                    FROM agent_contacts
+                    LEFT OUTER JOIN agents
+                    ON agent_contacts.AgentId = agents.Id
+                ;";
+                $database->query($query);
+            }
+            else {
+                $query = "SELECT
+                    agent_contacts.Id,
+                    agent_contacts.Title,
+                    agent_contacts.Name,
+                    agent_contacts.Position,
+                    agent_contacts.Department,
+                    agent_contacts.Mobile,
+                    agent_contacts.Email,
+                    agents.Name AS AgentName
+                    FROM agent_contacts
+                    LEFT OUTER JOIN agents
+                    ON agent_contacts.Id = agents.Id
+                    WHERE Id = :agent_contactsId
+                ;";
+                $database->query($query);
+                $database->bind(':agent_contactsId', $agent_contactsId);
+            }
+            return $r = $database->resultset();
+            break;
+
+        case 'search':
+            $search = '%'.$agent_contactsId.'%';
+            $query = "SELECT
+                agent_contacts.Id,
+                agent_contacts.Title,
+                agent_contacts.Name,
+                agent_contacts.Position,
+                agent_contacts.Department,
+                agent_contacts.Mobile,
+                agent_contacts.Email,
+                agents.Name AS AgentName
+                FROM agent_contacts
+                LEFT OUTER JOIN agents
+                ON agent_contacts.Id = agents.Id
+                WHERE CONCAT (
+                agent_contacts.Title,
+                agent_contacts.Name,
+                agent_contacts.Position,
+                agent_contacts.Department,
+                agent_contacts.Mobile,
+                agent_contacts.Email,
+                agents.Name
+                ) LIKE :search
+            ;";
+            $database->query($query);
+            $database->bind(':search', $search);
+            return $r = $database->resultset();
+            break;
+
+        case 'update':
+            // code...
+            break;
+
+        case 'check':
+            $Title = $_REQUEST['Title'];
+            $Name = trim($_REQUEST['Name']);
+            $Position = trim($_REQUEST['Position']);
+            $Department = trim($_REQUEST['Department']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $Email = trim($_REQUEST['Email']);
+            $AgentId = trim($_REQUEST['AgentId']);
+
+            $query = "SELECT * FROM agent_contacts WHERE
+                Name = :Name,
+                Email = :Email,
+                AgentId = :AgentId
+            ;"
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':Email', $Email);
+            $database->bind(':AgentId', $AgentId);
+            $database->execute();
+            return $r = $database->rowCount();
+            break;
+
+        default:
+            // code...
+            break;
     }
 }
 
