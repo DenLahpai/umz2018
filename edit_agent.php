@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($Name == $row_agents->Name) {
         table_agents('update', $agentsId);
     }
-
     else {
         $rowCount = table_agents('check', NULL);
         if ($rowCount == 0) {

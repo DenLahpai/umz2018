@@ -538,7 +538,7 @@ function table_agent_contacts($job, $agent_contactsId) {
                     FROM agent_contacts
                     LEFT OUTER JOIN agents
                     ON agent_contacts.Id = agents.Id
-                    WHERE Id = :agent_contactsId
+                    WHERE agent_contacts.Id = :agent_contactsId
                 ;";
                 $database->query($query);
                 $database->bind(':agent_contactsId', $agent_contactsId);
@@ -592,7 +592,7 @@ function table_agent_contacts($job, $agent_contactsId) {
                 Name = :Name,
                 Email = :Email,
                 AgentId = :AgentId
-            ;"
+            ;";
             $database->query($query);
             $database->bind(':Name', $Name);
             $database->bind(':Email', $Email);

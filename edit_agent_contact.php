@@ -1,32 +1,29 @@
 <?php
 require "functions.php";
 
-//Only departments id 1 and 2 has access to this page.
-if ($d > 2) {
-    header("location: no_access.php");
+//getting agent_contact Id to be edited
+$agent_contactsId = trim($_REQUEST['agent_contactsId']);
+
+//getting data from the table agent_contacts
+$rows_agent_contacts = table_agent_contacts('select', $agent_contactsId);
+foreach ($rows_agent_contacts as $row_agent_contacts) {
+    // code
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $rowCount = table_agent_contacts('check', NULL);
-    if ($rowCount == 0) {
-        table_agent_contacts('insert', NULL);
-    }
-    else {
-        $error_message = "Duplicate Entry!";
-    }
-}
+// TODO code to check for duplicate entry and update
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <?php
-    $page_title = "New Agent Contact";
+    $page_title = "Edit Agent Contact";
     include "includes/head.html";
     ?>
     <body>
         <!-- content -->
         <div class="content">
             <?php
-            $header = "New Agent Contact";
+            $header = "Edit Agent Contact";
             include "includes/header.html";
             include "includes/main_menu.html";
             ?>
@@ -43,50 +40,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <li>
                             Title: &nbsp;
                             <select id="Title" name="Title">
-                                <?php select_titles(NULL); ?>
+                                <?php select_titles($rows_agent_contacts->Title);?>
                             </select>
                         </li>
                         <li>
                             Name: &nbsp;
-                            <input type="text" name="Name" id="Name" placeholder="Full Name" required>
+                            <input type="text" name="Name" id="Name" value="<?php echo $row_agent_contacts->Name;?>" required>
                         </li>
                         <li>
                             Position: &nbsp;
-                            <input type="text" name="Position" id="Position" placeholder="Position or Rank" required>
+                            <input type="text" name="Position" id="Position" value="<?php echo $row_agent_contacts->Position;?>" required>
                         </li>
                         <li>
                             Department: &nbsp;
-                            <input type="text" name="Department" id="Department" placeholder="Department" required>
+                            <input type="text" name="Department" id="Department" value="<?php echo $row_agent_contacts->Department;?>">
                         </li>
                         <li>
                             Mobile: &nbsp;
-                            <input type="text" name="Mobile" id="Mobile" placeholder="Mobile Number" required>
+                            <input type="text" name="Mobile" id="Mobile" value="<?php echo $row_agent_contacts->Mobile;?>" required>
                         </li>
                         <li>
                             Email: &nbsp;
-                            <input type="text" name="Email" id="Email" placeholder="someone@company.com" required>
+                            <input type="email" name="Email" id="Email" value="<?php echo $row_agent_contacts->Email;?>" required>
                         </li>
                         <li>
                             Agent: &nbsp;
-                            <select name="AgentId" id="AgentId">
-                                <option value="">Select</option>
+                            <select id="AgentId" name="AgentId">
                                 <?php
-                                $rows_agents =  table_agents('select', NULL);
+                                $rows_agents = table_agents('select', $row_agent_contacts->AgentId);
                                 foreach ($rows_agents as $row_agents) {
-                                    echo "<option value=\"$row_agents->Id\">".$row_agents->Name."</option>";
+                                    if  ($row_agents->Id == $row_agent_contacts->AgentId) {
+                                        echo "<option value=\"$row_agents->Id\" selected>".$row_agents->Name."</option>";
+                                    }
+                                    else {
+                                        echo "<option value=\"$row_agents->Id\">".$row_agents->Name."</option>";
+                                    }
                                 }
                                 ?>
                             </select>
                         </li>
                         <li>
-                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit" onclick="check2Fields('Title', 'AgentId');">Submit</button>
+                            <button type="button" class="button medium" name="buttonSubmit">Update</button>
                         </li>
                     </ul>
                 </form>
             </main>
         </div>
         <!-- end of content -->
-        <?php include "includes/footer.html"; ?>
     </body>
-    <script type="text/javascript" src="js/scripts.js"></script>
 </html>
