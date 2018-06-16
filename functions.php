@@ -518,6 +518,7 @@ function table_agent_contacts($job, $agent_contactsId) {
                     agent_contacts.Department,
                     agent_contacts.Mobile,
                     agent_contacts.Email,
+                    agent_contacts.AgentId,
                     agents.Name AS AgentName
                     FROM agent_contacts
                     LEFT OUTER JOIN agents
@@ -534,10 +535,11 @@ function table_agent_contacts($job, $agent_contactsId) {
                     agent_contacts.Department,
                     agent_contacts.Mobile,
                     agent_contacts.Email,
+                    agent_contacts.AgentId,
                     agents.Name AS AgentName
                     FROM agent_contacts
                     LEFT OUTER JOIN agents
-                    ON agent_contacts.Id = agents.Id
+                    ON agent_contacts.AgentId = agents.Id
                     WHERE agent_contacts.Id = :agent_contactsId
                 ;";
                 $database->query($query);
@@ -556,10 +558,11 @@ function table_agent_contacts($job, $agent_contactsId) {
                 agent_contacts.Department,
                 agent_contacts.Mobile,
                 agent_contacts.Email,
+                agent_contacts.AgentId,
                 agents.Name AS AgentName
                 FROM agent_contacts
                 LEFT OUTER JOIN agents
-                ON agent_contacts.Id = agents.Id
+                ON agent_contacts.AgentId = agents.Id
                 WHERE CONCAT (
                 agent_contacts.Title,
                 agent_contacts.Name,
@@ -576,7 +579,36 @@ function table_agent_contacts($job, $agent_contactsId) {
             break;
 
         case 'update':
-            // code...
+            $Title = $_REQUEST['Title'];
+            $Name = trim($_REQUEST['Name']);
+            $Position = trim($_REQUEST['Position']);
+            $Department = trim($_REQUEST['Department']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $Email = trim($_REQUEST['Email']);
+            $AgentId = trim($_REQUEST['AgentId']);
+
+            $query = "UPDATE agent_contacts SET
+                Title = :Title,
+                Name = :Name,
+                Position = :Position,
+                Department = :Department,
+                Mobile = :Mobile,
+                Email = :Email,
+                AgentId = :AgentId
+                WHERE Id = :agent_contactsId
+            ;";
+            $database->query($query);
+            $database->bind(':Title', $Title);
+            $database->bind(':Name', $Name);
+            $database->bind(':Position', $Position);
+            $database->bind(':Department', $Department);
+            $database->bind(':Mobile', $Mobile);
+            $database->bind(':Email', $Email);
+            $database->bind(':AgentId', $AgentId);
+            $database->bind(':agent_contactsId', $agent_contactsId);
+            if ($database->execute()) {
+                header("location: edit_agent_contact.php?agent_contactsId=$agent_contactsId");
+            }
             break;
 
         case 'check':
@@ -589,9 +621,9 @@ function table_agent_contacts($job, $agent_contactsId) {
             $AgentId = trim($_REQUEST['AgentId']);
 
             $query = "SELECT * FROM agent_contacts WHERE
-                Name = :Name,
-                Email = :Email,
-                AgentId = :AgentId
+                Name = :Name
+                AND Email = :Email
+                AND AgentId = :AgentId
             ;";
             $database->query($query);
             $database->bind(':Name', $Name);

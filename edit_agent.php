@@ -14,7 +14,7 @@ foreach ($rows_agents as $row_agents) {
 
 //updating the table agents when clicked update
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Name = $_REQUEST['Name'];
+    $Name = trim($_REQUEST['Name']);
     if ($Name == $row_agents->Name) {
         table_agents('update', $agentsId);
     }
@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="text" name="Website" id="Website" value="<?php echo $row_agents->Website; ?>">
                         </li>
                         <li>
-                            <button type="submit" class="button medium" name="buttonSubmit" id="buttonSubmit">Update</button>
+                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit" onclick="check2Fields('Title', 'AgentId');">Update</button>
                         </li>
                     </ul>
                 </form>

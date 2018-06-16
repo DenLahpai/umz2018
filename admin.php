@@ -20,10 +20,10 @@ require_once "functions.php";
                 <div class="links">
                     <ul>
                         <li>
-                            <a href="agents.php">Agents</a>
+                            <a href="agents.php" title="Agents">Agents</a>
                         </li>
                         <li>
-                            <a href="agent_contacts.php">Agent Contacts</a>
+                            <a href="agent_contacts.php" title="Agent Contacts">Agent Contacts</a>
                         </li>
                         <li>
                             <a href="#">Tour Guides</a>

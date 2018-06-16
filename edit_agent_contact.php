@@ -10,7 +10,21 @@ foreach ($rows_agent_contacts as $row_agent_contacts) {
     // code
 }
 
-// TODO code to check for duplicate entry and update
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $Name = trim($_REQUEST['Name']);
+    if ($Name == $row_agent_contacts->Name) {
+        table_agent_contacts('update', $agent_contactsId);
+    }
+    else {
+        $rowCount = table_agent_contacts('check', NULL);
+        if ($rowCount == 0) {
+            table_agent_contacts('update', $agent_contactsId);
+        }
+        else {
+            $error_message = "Duplicate entry!";
+        }
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -40,7 +54,7 @@ foreach ($rows_agent_contacts as $row_agent_contacts) {
                         <li>
                             Title: &nbsp;
                             <select id="Title" name="Title">
-                                <?php select_titles($rows_agent_contacts->Title);?>
+                                <?php select_titles($row_agent_contacts->Title);?>
                             </select>
                         </li>
                         <li>
@@ -67,7 +81,7 @@ foreach ($rows_agent_contacts as $row_agent_contacts) {
                             Agent: &nbsp;
                             <select id="AgentId" name="AgentId">
                                 <?php
-                                $rows_agents = table_agents('select', $row_agent_contacts->AgentId);
+                                $rows_agents = table_agents('select', NULL);
                                 foreach ($rows_agents as $row_agents) {
                                     if  ($row_agents->Id == $row_agent_contacts->AgentId) {
                                         echo "<option value=\"$row_agents->Id\" selected>".$row_agents->Name."</option>";
@@ -80,12 +94,14 @@ foreach ($rows_agent_contacts as $row_agent_contacts) {
                             </select>
                         </li>
                         <li>
-                            <button type="button" class="button medium" name="buttonSubmit">Update</button>
+                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit" onclick="check2Fields('Title', 'AgentId');">Update</button>
                         </li>
                     </ul>
                 </form>
             </main>
         </div>
         <!-- end of content -->
+        <?php include "includes/footer.html"; ?>
     </body>
+    <script type="text/javascript" src="js/scripts.js"></script>
 </html>
