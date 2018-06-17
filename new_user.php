@@ -6,7 +6,13 @@ if ($d > 2) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    table_users('insert', NULL);
+    $rowCount = table_users('check', NULL);
+    if ($rowCount == 0) {
+        table_users('insert', NULL);
+    }
+    else {
+        $error_message = "Duplicate Username!";
+    }
 }
 
 ?>
@@ -28,6 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <main>
                 <form id="theform" action="#" method="post">
                     <ul>
+                        <li class="notice error">
+                            <?php
+                            if(!empty($error_message)) {
+                                echo $error_message;
+                            }
+                            ?>
+                        </li>
                         <li>
                             Username: &nbsp;
                             <input type="text" name="Username" id="Username" placeholder="Username" required>

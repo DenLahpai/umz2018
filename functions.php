@@ -177,6 +177,8 @@ function table_users($job, $usersId) {
 
         $query = "SELECT Id FROM users WHERE Username = :Username ;";
         $database->query($query);
+        $database->bind(':Username', $Username);
+        return $r = $database->rowCount();
     }
 
     elseif ($job == 'update') {
@@ -214,7 +216,9 @@ function table_users($job, $usersId) {
         $database->bind(':Email', $Email);
         $database->bind(':Mobile', $Mobile);
         $database->bind(':Id', $Id);
-        $database->execute();
+        if ($database->execute()) {
+            header("location:edit_user.php?Id=$Id");
+        }
     }
 }
 

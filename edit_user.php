@@ -7,17 +7,28 @@ if ($d > 2) {
 //getting users Id to be edited
 $Id = $_REQUEST['Id'];
 
-//update the users data when the form is submitted
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    table_users('update', $Id);
-}
-
 //getting data from the tables users
 $rows_users = table_users('select', $Id);
 foreach ($rows_users as $row_users) {
     // code...
 }
 
+//update the users data when the form is submitted
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $Username = trim($_REQUEST['Username']);
+    if ($Username == $row_users->Username) {
+        table_users('update', $Id);
+    }
+    else {
+        $rowCount = table_users('check', NULL);
+        if($rowCount == 0) {
+            table_users('update', $Id);
+        }
+        else {
+            $error_message = "Username already exists!";
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -36,6 +47,13 @@ foreach ($rows_users as $row_users) {
             <main>
                 <form id="theform" action="#" method="post">
                     <ul>
+                        <li class="notice error">
+                            <?php
+                            if (!empty($error_message)) {
+                                echo $error_message;
+                            }
+                            ?>
+                        </li>
                         <li>
                             Username: &nbsp;
                             <input type="text" name="Username" id="Username" value="<?php echo $row_users->Username; ?>" required>
