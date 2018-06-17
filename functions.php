@@ -172,6 +172,13 @@ function table_users($job, $usersId) {
         $database->bind(':search', $search);
         return $r = $database->resultset();
     }
+    elseif ($job == 'check') {
+        $Username = trim($_REQUEST['Username']);
+
+        $query = "SELECT Id FROM users WHERE Username = :Username ;";
+        $database->query($query);
+    }
+
     elseif ($job == 'update') {
         $Username = trim($_REQUEST['Username']);
         $Password = trim($_REQUEST['Password']);
