@@ -43,7 +43,7 @@ function select_titles($Title) {
     }
 }
 
-//function to get data from the table users
+//function to use the table users
 function table_users($job, $usersId) {
     $database = new Database();
 
@@ -222,7 +222,7 @@ function table_users($job, $usersId) {
     }
 }
 
-//function to insert date to the table posts
+//function to use the table posts
 function table_posts($job, $postsId) {
     $database = new Database();
 
@@ -314,7 +314,7 @@ function table_posts($job, $postsId) {
     }
 }
 
-// function to get data from the table departments
+// function to get the table departments
 function table_departments($job, $departmentId) {
     $database = new Database();
     if ($job == 'select') {
@@ -332,7 +332,7 @@ function table_departments($job, $departmentId) {
 }
 
 
-//function to get data from the table agents
+//function to use the table agents
 function table_agents($job, $agentsId) {
     $database = new Database();
 
@@ -474,7 +474,7 @@ function table_agents($job, $agentsId) {
     }
 }
 
-//function to insert and select data from the table agent_contacts
+//function to use the table agent_contacts
 function table_agent_contacts($job, $agent_contactsId) {
     $database = new Database();
 
@@ -644,6 +644,104 @@ function table_agent_contacts($job, $agent_contactsId) {
             return $r = $database->rowCount();
             break;
 
+        default:
+            // code...
+            break;
+    }
+}
+
+//function to use the table tour_guides
+function table_tour_guides($job, $tour_guidesId) {
+    $database = new Database();
+
+    switch ($job) {
+        case 'insert':
+            $Title = $_REQUEST['Title'];
+            $Name = trim($_REQUEST['Name']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $License = trim($_REQUEST['License']);
+            $Type = trim($_REQUEST['Type']);
+            $Language = trim($_REQUEST['Language']);
+            $Email = trim($_REQUEST['Email']);
+
+            $query = "INSERT INTO tour_guides (
+                Title,
+                Name,
+                Mobile,
+                License,
+                Type,
+                Language,
+                Email
+                ) VALUES (
+                :Title,
+                :Name,
+                :Mobile,
+                :License,
+                :Type,
+                :Language,
+                :Email
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Title', $Title);
+            $database->bind(':Name', $Name);
+            $database->bind(':Mobile', $Mobile);
+            $database->bind(':License', $License);
+            $database->bind(':Type', $Type);
+            $database->bind(':Language', $Language);
+            $database->bind(':Email', $Email);
+            if ($database->execute()) {
+                header("location: tourguides.php");
+            }
+            break;
+        case 'select':
+            if ($tour_guidesId == "" ||$tour_guidesId == NULL || empty($tour_guidesId)) {
+                $query = "SELECT * FROM tour_guides ;";
+                $database->query($query);
+            }
+            else {
+                $query = "SELECT * FROM tour_guides WHERE Id = :Id ;";
+                $database->query($query);
+                $database->bind(':Id', $tour_guidesId);
+            }
+            return $r = $database->resultset();
+            break;
+
+        case 'search':
+            $search = '%'.$tour_guidesId.'%';
+            $query = "SELECT * FROM tour_guides WHERE CONCAT (
+                Title,
+                Name,
+                Mobile,
+                License,
+                Type,
+                Language,
+                Email
+                ) LIKE :search
+            ;";
+            $database->query($query);
+            $database->bind(':search', $search);
+            return $r = $database->resultset();
+            break;
+        case 'update':
+            // code...
+            break;
+        case 'check':
+            $Name = trim($_REQUEST['Name']);
+            $License = trim($_REQUEST['License']);
+            $Mobile = trim($_REQUEST['Mobile']);
+
+            $query = "SELECT Id FROM tour_guides WHERE
+                Name = :Name AND
+                License = :License AND
+                Mobile = :Mobile
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':License', $License);
+            $database->bind(':Mobile', $Mobile);
+            return $r = $database->rowCount();
+            break;
         default:
             // code...
             break;

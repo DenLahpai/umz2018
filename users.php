@@ -44,7 +44,7 @@ else {
                             <button type="button" class="button medium" name="button">Create New User</button></a>
                     </li>
                     <li>
-                        <input type="text" name="search" value="<?php echo $search; ?>" placeholder="Search Agents">
+                        <input type="text" name="search" value="<?php echo $search; ?>" placeholder="Search Users">
                         <button type="submit" class="button search" name="buttonSearch">Search</button>
                     </li>
                 </ul>

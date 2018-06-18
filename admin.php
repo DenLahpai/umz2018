@@ -26,7 +26,7 @@ require_once "functions.php";
                             <a href="agent_contacts.php" title="Agent Contacts">Agent Contacts</a>
                         </li>
                         <li>
-                            <a href="#">Tour Guides</a>
+                            <a href="tourguides.php" title="Tour Guides">Tour Guides</a>
                         </li>
                         <li>
                             <a href="#">Vehicles</a>

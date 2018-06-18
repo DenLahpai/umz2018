@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     else {
         $rowCount = table_agents('check', NULL);
         if ($rowCount == 0) {
-            table_agents('insert', NULL);
+            table_agents('update', $agentsId);
         }
         else {
             $error_message = "Duplicate Entry!";
@@ -99,4 +99,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <!-- end of content -->
         <?php include "includes/footer.html"; ?>
     </body>
+    <script type="text/javascript" src="js/scripts.js"></script>
 </html>

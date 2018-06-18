@@ -14,9 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error_message = "Duplicate Username!";
     }
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <?php
@@ -93,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="text" name="Mobile" id="Mobile" placeholder="">
                         </li>
                         <li>
-                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit" onclick="check2Fields('Title', 'DepartmentId');">Create</button>
+                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit" onclick="check2Fields('Title', 'Title');">Create</button>
                         </li>
                     </ul>
                 </form>
