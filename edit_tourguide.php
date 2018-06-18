@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </li>
                         <li>
                             Title: &nbsp;
-                            <select name="Title">
+                            <select name="Title" id="Title">
                                 <?php select_titles($row_tour_guides->Title); ?>
                             </select>
                         </li>

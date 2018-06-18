@@ -724,22 +724,54 @@ function table_tour_guides($job, $tour_guidesId) {
             return $r = $database->resultset();
             break;
         case 'update':
-            // code...
+            $Title = $_REQUEST['Title'];
+            $Name = trim($_REQUEST['Name']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $License = trim($_REQUEST['License']);
+            $Type = trim($_REQUEST['Type']);
+            $Language = trim($_REQUEST['Language']);
+            $Email = trim($_REQUEST['Email']);
+
+            $query = "UPDATE tour_guides SET
+                Title = :Title,
+                Name = :Name,
+                Mobile = :Mobile,
+                License = :License,
+                Type = :Type,
+                Language = :Language,
+                Email = :Email
+                WHERE Id = :tour_guidesId
+            ;";
+            $database->query($query);
+            $database->bind(':Title', $Title);
+            $database->bind(':Name', $Name);
+            $database->bind(':Mobile', $Mobile);
+            $database->bind(':License', $License);
+            $database->bind(':Type',$Type);
+            $database->bind(':Language', $Language);
+            $database->bind(':Email', $Email);
+            $database->bind(':tour_guidesId', $tour_guidesId);
+            if ($database->execute()) {
+                header("location: edit_tourguide.php?tour_guidesId=$tour_guidesId");
+            }
             break;
         case 'check':
             $Name = trim($_REQUEST['Name']);
             $License = trim($_REQUEST['License']);
             $Mobile = trim($_REQUEST['Mobile']);
+            $Email = trim($_REQUEST['Email']);
 
             $query = "SELECT Id FROM tour_guides WHERE
                 Name = :Name AND
+                Mobile = :Mobile AND
                 License = :License AND
-                Mobile = :Mobile
+                Email = :Email
             ;";
             $database->query($query);
             $database->bind(':Name', $Name);
             $database->bind(':License', $License);
             $database->bind(':Mobile', $Mobile);
+            $database->bind(':Email', $Email);
             return $r = $database->rowCount();
             break;
         default:
@@ -747,5 +779,22 @@ function table_tour_guides($job, $tour_guidesId) {
             break;
     }
 }
+
+//function to use the table table_suppliers 
+function table_suppliers($job, $suppliersId) {
+    $database = new Database();
+
+    switch ($job) {
+        case 'insert':
+            $Name = trim($_REQUEST['Name']);
+            
+            break;
+        
+        default:
+            # code...
+            break;
+    }
+}
+
 
 ?>

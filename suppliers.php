@@ -1,0 +1,57 @@
+<?php
+require "functions.php";
+
+//Only departments id 1 and 2 has access to this page.
+if ($d > 2) {
+    header("location: no_access.php");
+}
+
+//getting data from the table
+if (isset($_REQUEST['buttonSearch'])) {
+    $search = $_REQUEST['search'];
+}
+else {
+    $search = NULL;
+}
+
+if(empty($search) || $search == NULL || $search == "") {
+    $rows_suppliers = table_suppliers('select', NULL);
+}
+else {
+    $rows_suppliers = table_suppliers('search', $search);
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<?php
+	$page_title = "Suppliers";
+	include "includes/head.html";
+	?>
+	<body>
+		<!-- content -->
+		<div class="content">
+			<?php
+			$header = "Suppliers";
+			include "includes/header.html";
+			include "includes/main_menu.html";
+			?>
+			<div class="sub-menu">
+				<form action="#" method="post">
+                <ul>
+                    <li>
+                        <a href="new_supplier.php">
+                            <button type="button" class="button medium" name="button">Create New Supplier</button></a>
+                    </li>
+                    <li>
+                        <input type="text" name="search" value="<?php echo $search; ?>" placeholder="Search Suppliers">
+                        <button type="submit" class="button search" name="buttonSearch">Search</button>
+                    </li>
+                </ul>
+                </form>
+			</div>
+		</div>
+		<!-- end of content -->
+		<?php include "includes/footer.html"; ?>
+	</body>
+</html>

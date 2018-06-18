@@ -7,9 +7,9 @@ if ($d > 2) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $rowCount = table_agents('check', NULL);
+    $rowCount = table_suppliers('check', NULL);
     if ($rowCount == 0) {
-        table_agents('insert', NULL);
+        table_suppliers('insert', NULL);
     }
     else {
         $error_message = "Duplicate Entry!";
@@ -19,14 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <?php
-    $page_title = 'New Agent';
+    $page_title = "New Supplier";
     include "includes/head.html";
     ?>
     <body>
         <!-- content -->
         <div class="content">
             <?php
-            $header = 'New Agent';
+            $header = "New Supplier";
             include "includes/header.html";
             include "includes/main_menu.html";
             ?>
@@ -35,49 +35,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <ul>
                         <li class="notice error">
                             <?php
-                            if(!empty($error_message)) {
+                            if (!empty($error_message)) {
                                 echo $error_message;
                             }
                             ?>
                         </li>
                         <li>
                             Name: &nbsp;
-                            <input type="text" name="Name" id="Name" placeholder="Agent Name" required>
+                            <input type="text" name="Name" id="Name" placeholder="Name" required>
                         </li>
                         <li>
                             Address: &nbsp;
-                            <input type="text" name="Address" id="Address" placeholder="Address" required>
-                        </li>
-                        <li>
-                            Township: &nbsp;
-                            <input type="text" name="Township" id="Township" placeholder="Township">
+                            <input type="text" name="Address" id="Address" placeholder="Address">
                         </li>
                         <li>
                             City: &nbsp;
-                            <input type="text" name="City" id="City" value="Yangon">
-                        </li>
-                        <li>
-                            Country: &nbsp;
-                            <input type="text" name="Country" id="Country" value="Myanmar">
+                            <input type="text" name="City" id="City" placeholder="City" required>
                         </li>
                         <li>
                             Phone: &nbsp;
-                            <input type="text" name="Phone" id="Phone" placeholder="Main Phone">
-                        </li>
-                        <li>
-                            Fax: &nbsp;
-                            <input type="text" name="Fax" id="Fax" placeholder="Fax">
+                            <input type="text" name="Phone" id="Phone" placeholder="Phone" required>
                         </li>
                         <li>
                             Email: &nbsp;
-                            <input type="email" name="Email" id="Email" placeholder="General Email">
+                            <input type="email" name="Email" id="Email" placeholder="someone@email.com">
                         </li>
                         <li>
-                            Website: &nbsp;
-                            <input type="text" name="Website" id="Website" placeholder="www.agent.com">
-                        </li>
-                        <li>
-                            <button type="Submit" class="button medium" name="buttonSubmit" id="buttonSubmit">Submit</button>
+                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit">Submit</button>
                         </li>
                     </ul>
                 </form>
