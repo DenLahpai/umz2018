@@ -876,5 +876,71 @@ function table_suppliers($job, $suppliersId) {
     }
 }
 
+//function to use data from the table supplier_contacts
+function table_supplier_contacts($job, $suppliersId) {
+    $database = new Database();
+
+    switch ($job) {
+        case 'insert':
+            $Title = $_REQUEST['Title'];
+            $Name = trim($_REQUEST['Name']);
+            $Position = trim($_REQUEST['Position']);
+            $Department = trim($_REQUEST['Department']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $Email = trim($_REQUEST['Email']);
+            $SupplierId = $_REQUEST['SupplierId'];
+
+            $query = "INSERT INTO supplier_contacts (
+                Title,
+                Name,
+                Position,
+                Department,
+                Mobile,
+                Email,
+                SupplierId
+                ) VALUES(
+                :Title,
+                :Name,
+                :Position,
+                :Department,
+                :Mobile,
+                :Email,
+                :SupplierId
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Title', $Title);
+            $database->bind(':Name', $Name);
+            $database->bind(':Position', $Position);
+            $database->bind(':Department', $Department);
+            $database->bind(':Mobile', $Mobile);
+            $database->bind(':Email', $Email);
+            $database->bind(':SupplierId', $SupplierId);
+            if ($database->execute()) {
+                header("location: supplier_contacts.php");
+            }
+            break;
+        case 'check':
+            $Title = $_REQUEST['Title'];
+            $Name = trim($_REQUEST['Name']);
+            $SupplierId = $_REQUEST['SupplierId'];
+
+            $query = "SELECT Id FROM supplier_contacts WHERE
+                Title = :Title AND
+                Name = :Name AND
+                SupplierId = :SupplierId
+            ;";
+            $database->query($query);
+            $database->bind(':Title', $Title);
+            $database->bind(':Name', $Name);
+            $database->bind(':SupplierId', $SupplierId);
+            return $r = $database->rowCount();
+            break;
+
+        default:
+            // code...
+            break;
+    }
+}
 
 ?>

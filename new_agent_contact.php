@@ -1,11 +1,6 @@
 <?php
 require "functions.php";
 
-//Only departments id 1 and 2 has access to this page.
-if ($d > 2) {
-    header("location: no_access.php");
-}
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $rowCount = table_agent_contacts('check', NULL);
     if ($rowCount == 0) {

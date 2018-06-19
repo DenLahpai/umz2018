@@ -38,7 +38,7 @@ require_once "functions.php";
                             <a href="suppliers.php" title="Suppliers">Suppliers</a>
                         </li>
                         <li>
-                            <a href="#">Supplier Contacts</a>
+                            <a href="supplier_contacts.php" title="Supplier Contacts">Supplier Contacts</a>
                         </li>
                         <li>
                             <a href="departments.php">Departments</a>
