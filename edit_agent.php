@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="text" name="Website" id="Website" value="<?php echo $row_agents->Website; ?>">
                         </li>
                         <li>
-                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit" onclick="check2Fields('Title', 'AgentId');">Update</button>
+                            <button type="submit" class="button medium" name="buttonSubmit" id="buttonSubmit">Update</button>
                         </li>
                     </ul>
                 </form>

@@ -36,6 +36,7 @@ else {
 			include "includes/header.html";
 			include "includes/main_menu.html";
 			?>
+            <!-- sub-menu -->
 			<div class="sub-menu">
 				<form action="#" method="post">
                 <ul>
@@ -50,6 +51,29 @@ else {
                 </ul>
                 </form>
 			</div>
+            <!-- end of sub-menu -->
+            <main>
+                <!-- grid-div -->
+                <div class="grid-div">
+                    <?php
+                    foreach ($rows_suppliers as $row_suppliers) {
+                        echo "<!-- grid-item -->";
+                        echo "<div class=\"grid-item\">";
+                        echo "<ul>";
+                        echo "<li>".$row_suppliers->Name."</li>";
+                        echo "<li>".$row_suppliers->Address."</li>";
+                        echo "<li>".$row_suppliers->City."</li>";
+                        echo "<li>".$row_suppliers->Phone."</li>";
+                        echo "<li>".$row_suppliers->Email."</li>";
+                        echo "<li style=\"text-align: center;\"><a href=\"edit_supplier.php?suppliersId=$row_suppliers->Id\">Edit</a></li>";
+                        echo "</ul>";
+                        echo "</div>";
+                        echo "<!-- end of grid-item -->";
+                    }
+                     ?>
+                </div>
+                <!-- end of grid-div -->
+            </main>
 		</div>
 		<!-- end of content -->
 		<?php include "includes/footer.html"; ?>

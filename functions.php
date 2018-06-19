@@ -455,14 +455,6 @@ function table_agents($job, $agentsId) {
     }
     elseif ($job == 'check') {
         $Name = trim($_REQUEST['Name']);
-        $Address = trim($_REQUEST['Address']);
-        $Township = trim($_REQUEST['Township']);
-        $City = trim($_REQUEST['City']);
-        $Country = trim($_REQUEST['Country']);
-        $Phone = trim($_REQUEST['Phone']);
-        $Fax = trim($_REQUEST['Fax']);
-        $Email = trim($_REQUEST['Email']);
-        $Website = trim($_REQUEST['Website']);
 
         $query = "SELECT Id FROM agents WHERE
             Name = :Name
@@ -780,16 +772,104 @@ function table_tour_guides($job, $tour_guidesId) {
     }
 }
 
-//function to use the table table_suppliers 
+//function to use the table table_suppliers
 function table_suppliers($job, $suppliersId) {
     $database = new Database();
 
     switch ($job) {
         case 'insert':
             $Name = trim($_REQUEST['Name']);
-            
+            $Address = trim($_REQUEST['Address']);
+            $City = trim($_REQUEST['City']);
+            $Phone = trim($_REQUEST['Phone']);
+            $Email = trim($_REQUEST['Email']);
+
+            $query = "INSERT INTO suppliers (
+                Name,
+                Address,
+                City,
+                Phone,
+                Email
+                ) VALUES(
+                :Name,
+                :Address,
+                :City,
+                :Phone,
+                :Email
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':Address', $Address);
+            $database->bind(':City', $City);
+            $database->bind(':Phone', $Phone);
+            $database->bind(':Email', $Email);
+            if ($database->execute()) {
+                header("location: suppliers.php");
+            }
             break;
-        
+        case 'select':
+            if ($suppliersId == NULL || $suppliersId == "" || empty($suppliersId)) {
+                $query = "SELECT * FROM suppliers ;";
+                $database->query($query);
+            }
+            else  {
+                $query = "SELECT * FROM suppliers WHERE Id = :suppliersId ;";
+                $database->query($query);
+                $database->bind(':suppliersId', $suppliersId);
+            }
+            return $r = $database->resultset();
+            break;
+        case 'search':
+            $search = '%'.$suppliersId.'%';
+            $query = "SELECT * FROM suppliers WHERE CONCAT(
+                Name,
+                Address,
+                City,
+                Phone,
+                Email
+                ) LIKE :search
+            ;";
+            $database->query($query);
+            $database->bind(':search', $search);
+            return $r = $database->resultset();
+            break;
+        case 'update':
+            $Name = trim($_REQUEST['Name']);
+            $Address = trim($_REQUEST['Address']);
+            $City = trim($_REQUEST['City']);
+            $Phone = trim($_REQUEST['Phone']);
+            $Email = trim($_REQUEST['Email']);
+
+            $query = "UPDATE suppliers SET
+                Name = :Name,
+                Address = :Address,
+                City = :City,
+                Phone = :Phone,
+                Email = :Email
+                WHERE Id = :suppliersId
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':Address', $Address);
+            $database->bind(':City', $City);
+            $database->bind(':Phone', $Phone);
+            $database->bind(':Email', $Email);
+            $database->bind(':suppliersId', $suppliersId);
+            if ($database->execute()) {
+                header("location: edit_supplier.php?suppliersId=$suppliersId");
+            }
+            break;
+        case 'check':
+            $Name = trim($_REQUEST['Name']);
+
+            $query = "SELECT Id FROM suppliers WHERE
+                Name = :Name
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            return $r = $database->rowCount();
+            break;
         default:
             # code...
             break;

@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="email" name="Email" id="Email" placeholder="someone@email.com">
                         </li>
                         <li>
-                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit">Submit</button>
+                            <button type="submit" class="button medium" name="buttonSubmit" id="buttonSubmit">Submit</button>
                         </li>
                     </ul>
                 </form>
