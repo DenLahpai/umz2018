@@ -20,7 +20,6 @@ if(empty($search) || $search == NULL || $search == "") {
 else {
     $rows_suppliers = table_suppliers('search', $search);
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">

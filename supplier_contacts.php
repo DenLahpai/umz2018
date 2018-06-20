@@ -8,13 +8,13 @@ if (isset($_REQUEST['buttonSearch'])) {
 else {
     $search = NULL;
 }
-//
-// if(empty($search) || $search == NULL || $search == "") {
-//     $rows_suppliers = table_suppliers('select', NULL);
-// }
-// else {
-//     $rows_suppliers = table_suppliers('search', $search);
-// }
+
+if(empty($search) || $search == NULL || $search == "") {
+    $rows_supplier_contacts = table_supplier_contacts('select', NULL);
+}
+else {
+    $rows_supplier_contacts = table_supplier_contacts('search', $search);
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,7 +46,31 @@ else {
                 </form>
 			</div>
             <!-- end of sub-menu -->
+            <main>
+                <!-- grid-div -->
+                <div class="grid-div">
+                    <?php
+                    foreach ($rows_supplier_contacts as $row_supplier_contacts) {
+                        echo "<!-- grid-item -->";
+                        echo "<div class=\"grid-item\">";
+                        echo "<ul>";
+                        echo "<li>".$row_supplier_contacts->Title.". ".$row_supplier_contacts->Name."</li>";
+                        echo "<li>".$row_supplier_contacts->Position."</li>";
+                        echo "<li>".$row_supplier_contacts->Department."</li>";
+                        echo "<li style=\"font-weight: bold;\">".$row_supplier_contacts->suppliersName."</li>";
+                        echo "<li>".$row_supplier_contacts->Mobile."</li>";
+                        echo "<li><a href=\"mailto:$row_supplier_contacts->Email\">".$row_supplier_contacts->Email."</a></li>";
+                        echo "<li style=\"text-align: center;\"><a href=\"edit_supplier_contact.php?supplier_contactsId=$row_supplier_contacts->supplier_contactsId\">Edit</a></li>";
+                        echo "</ul>";
+                        echo "</div>";
+                        echo "<!-- end of grid-item -->";
+                    }
+                    ?>
+                </div>
+                <!-- end of grid-div -->
+            </main>
 		</div>
 		<!-- end of content -->
+        <?php include "includes/footer.html"; ?>
 	</body>
 </html>

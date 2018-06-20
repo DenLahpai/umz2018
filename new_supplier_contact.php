@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error_message = "Duplicate Entry!";
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">

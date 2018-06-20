@@ -877,7 +877,7 @@ function table_suppliers($job, $suppliersId) {
 }
 
 //function to use data from the table supplier_contacts
-function table_supplier_contacts($job, $suppliersId) {
+function table_supplier_contacts($job, $supplier_contactsId) {
     $database = new Database();
 
     switch ($job) {
@@ -920,6 +920,49 @@ function table_supplier_contacts($job, $suppliersId) {
                 header("location: supplier_contacts.php");
             }
             break;
+        case 'select':
+            if ($supplier_contactsId == NULL || $supplier_contactsId == "" || empty($supplier_contactsId)) {
+                $query = "SELECT
+                    supplier_contacts.Id AS supplier_contactsId,
+                    supplier_contacts.Title AS Title,
+                    supplier_contacts.Name AS Name,
+                    supplier_contacts.Position AS Position,
+                    supplier_contacts.Department AS Department,
+                    supplier_contacts.Mobile AS Mobile,
+                    supplier_contacts.Email AS Email,
+                    supplier_contacts.SupplierId AS SupplierId,
+                    suppliers.Name AS suppliersName
+                    FROM supplier_contacts
+                    LEFT OUTER JOIN suppliers
+                    ON supplier_contacts.SupplierId = suppliers.Id
+                ;";
+                $database->query($query);
+            }
+            else {
+                $query = "SELECT
+                    supplier_contacts.Id AS supplier_contactsId,
+                    supplier_contacts.Title AS Title,
+                    supplier_contacts.Name AS Name,
+                    supplier_contacts.Position AS Position,
+                    supplier_contacts.Department AS Department,
+                    supplier_contacts.Mobile AS Mobile,
+                    supplier_contacts.Email AS Email,
+                    supplier_contacts.SupplierId AS SupplierId,
+                    suppliers.Name AS suppliersName
+                    FROM supplier_contacts
+                    LEFT OUTER JOIN suppliers
+                    ON supplier_contacts.SupplierId = suppliers.Id
+                    WHERE supplier_contacts.Id = :supplier_contactsId
+                ;";
+                $database->query($query);
+                $database->bind(':supplier_contactsId', $supplier_contactsId);
+            }
+            return $r = $database->resultset();
+            break;
+        case 'search':
+            // code... TODO
+            break;
+
         case 'check':
             $Title = $_REQUEST['Title'];
             $Name = trim($_REQUEST['Name']);
