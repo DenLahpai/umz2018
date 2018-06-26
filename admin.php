@@ -29,10 +29,10 @@ require_once "functions.php";
                             <a href="tourguides.php" title="Tour Guides">Tour Guides</a>
                         </li>
                         <li>
-                            <a href="#">Vehicles</a>
+                            <a href="vehicles.php" title="Vehicles">Vehicles</a>
                         </li>
                         <li>
-                            <a href="#">Drivers</a>
+                            <a href="drivers.php" title="Drivers">Drivers</a>
                         </li>
                         <li>
                             <a href="suppliers.php" title="Suppliers">Suppliers</a>

@@ -2,64 +2,50 @@
 require "functions.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $rowCount = table_supplier_contacts('check', NULL);
+    $rowCount = table_vehicles('check', NULL);
     if ($rowCount == 0) {
-        table_supplier_contacts('insert', NULL);
+        table_vehicles('insert', NULL);
     }
     else {
         $error_message = "Duplicate Entry!";
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <?php
-    $page_title = "New Supplier Contact";
+    $page_title = "New Vehicle";
     include "includes/head.html";
     ?>
     <body>
         <!-- content -->
         <div class="content">
             <?php
-            $header = "New Supplier Contact";
+            $header = "New Vehicle";
             include "includes/header.html";
             include "includes/main_menu.html";
             ?>
             <main>
-                <form id="" action="#" method="post">
+                <form id="theform" action="#" method="post">
                     <ul>
                         <li>
-                            <?php
-                            if (!empty($error_message)) {
+                            <?php if (!empty($error_message)) {
                                 echo $error_message;
                             }
                             ?>
                         </li>
                         <li>
-                            Title &nbsp;
-                            <select id="Title" name="Title">
-                                <?php select_titles(NULL); ?>
-                            </select>
+                            License: &nbsp;
+                            <input type="text" name="License" id="License" placeholder="License Plate #" required>
                         </li>
                         <li>
-                            Name: &nbsp;
-                            <input type="text" name="Name" id="Name" placeholder="Name" required>
+                            Type: &nbsp;
+                            <input type="text" name="Type" id="Type" placeholder="Vehicle Type" required>
                         </li>
                         <li>
-                            Position: &nbsp;
-                            <input type="text" name="Position" id="Position" placeholder="Position or Rank" required>
-                        </li>
-                        <li>
-                            Department: &nbsp;
-                            <input type="text" name="Department" id="Department" placeholder="Department">
-                        </li>
-                        <li>
-                            Mobile: &nbsp;
-                            <input type="text" name="Mobile" id="Mobile" placeholder="Mobile Number" required>
-                        </li>
-                        <li>
-                            Email: &nbsp;
-                            <input type="email" name="Email" id="Email" placeholder="someone@email.com">
+                            Number of Seats (excluding driver's): &nbsp;
+                            <input type="number" name="Seats" id="Seats" min="2" max="99">
                         </li>
                         <li>
                             Supplier: &nbsp;
@@ -74,14 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </select>
                         </li>
                         <li>
-                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit" onclick="check2Fields('Title', 'SupplierId');">Submit</button>
+                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit" onclick="check2Fields('Type', 'SupplierId')">Submit</button>
                         </li>
                     </ul>
                 </form>
             </main>
         </div>
-        <?php include "includes/footer.html"; ?>
         <!-- end of content -->
+        <?php include "includes/footer.html"; ?>
     </body>
     <script type="text/javascript" src="js/scripts.js"></script>
 </html>

@@ -960,7 +960,67 @@ function table_supplier_contacts($job, $supplier_contactsId) {
             return $r = $database->resultset();
             break;
         case 'search':
-            // code... TODO
+            $search = '%'.$supplier_contactsId.'%';
+
+            $query = "SELECT
+                supplier_contacts.Id AS supplier_contactsId,
+                supplier_contacts.Title AS Title,
+                supplier_contacts.Name AS Name,
+                supplier_contacts.Position AS Position,
+                supplier_contacts.Department AS Department,
+                supplier_contacts.Mobile AS Mobile,
+                supplier_contacts.Email AS Email,
+                supplier_contacts.SupplierId AS SupplierId,
+                suppliers.Name AS suppliersName
+                FROM supplier_contacts
+                LEFT OUTER JOIN suppliers
+                ON supplier_contacts.SupplierId = suppliers.Id
+                WHERE CONCAT (
+                supplier_contacts.Title,
+                supplier_contacts.Name,
+                supplier_contacts.Position,
+                supplier_contacts.Department,
+                supplier_contacts.Mobile,
+                supplier_contacts.Email,
+                suppliers.Name
+                ) LIKE :search
+            ;";
+            $database->query($query);
+            $database->bind(':search', $search);
+            return $r = $database->resultset();
+            break;
+
+        case 'update':
+            $Title = $_REQUEST['Title'];
+            $Name = trim($_REQUEST['Name']);
+            $Position = trim($_REQUEST['Position']);
+            $Department = trim($_REQUEST['Department']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $Email = trim($_REQUEST['Email']);
+            $SupplierId = $_REQUEST['SupplierId'];
+
+            $query = "UPDATE supplier_contacts SET
+                Title = :Title,
+                Name = :Name,
+                Position = :Position,
+                Department = :Department,
+                Mobile = :Mobile,
+                Email = :Email,
+                SupplierId = :SupplierId
+                WHERE Id = :supplier_contactsId
+            ;";
+            $database->query($query);
+            $database->bind(':Title', $Title);
+            $database->bind(':Name', $Name);
+            $database->bind(':Position', $Position);
+            $database->bind(':Department', $Department);
+            $database->bind(':Mobile', $Mobile);
+            $database->bind(':Email', $Email);
+            $database->bind(':SupplierId', $SupplierId);
+            $database->bind(':supplier_contactsId', $supplier_contactsId);
+            if ($database->execute()) {
+                header("location: edit_supplier_contact.php?supplier_contactsId=$supplier_contactsId");
+            }
             break;
 
         case 'check':
@@ -977,6 +1037,287 @@ function table_supplier_contacts($job, $supplier_contactsId) {
             $database->bind(':Title', $Title);
             $database->bind(':Name', $Name);
             $database->bind(':SupplierId', $SupplierId);
+            return $r = $database->rowCount();
+            break;
+
+        default:
+            // code...
+            break;
+    }
+}
+
+//function to use the table vehicle
+function table_vehicles($job, $vehiclesId) {
+    $database = new Database();
+
+    switch ($job) {
+        case 'insert':
+            $Type = trim($_REQUEST['Type']);
+            $Seats = $_REQUEST['Seats'];
+            $License = trim($_REQUEST['License']);
+            $SupplierId = $_REQUEST['SupplierId'];
+
+            $query = "INSERT INTO vehicles (
+                Type,
+                Seats,
+                License,
+                SupplierId
+                ) VALUES (
+                :Type,
+                :Seats,
+                :License,
+                :SupplierId
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Type', $Type);
+            $database->bind(':Seats', $Seats);
+            $database->bind(':License', $License);
+            $database->bind(':SupplierId', $SupplierId);
+            if ($database->execute()) {
+                header("location: vehicles.php");
+            }
+            break;
+
+        case 'select':
+            if ($vehiclesId == NULL || $vehiclesId == "" || empty($vehiclesId)) {
+                $query = "SELECT
+                    vehicles.Id,
+                    vehicles.Type,
+                    vehicles.Seats,
+                    vehicles.License,
+                    vehicles.SupplierId,
+                    suppliers.name AS suppliersName
+                    FROM vehicles
+                    LEFT OUTER JOIN suppliers
+                    ON suppliers.Id = vehicles.SupplierId
+                ;";
+                $database->query($query);
+            }
+            else {
+                $query = "SELECT
+                    vehicles.Id,
+                    vehicles.Type,
+                    vehicles.Seats,
+                    vehicles.License,
+                    vehicles.SupplierId,
+                    suppliers.name AS suppliersName
+                    FROM vehicles
+                    LEFT OUTER JOIN suppliers
+                    ON suppliers.Id = vehicles.SupplierId
+                    WHERE vehicles.Id = :vehiclesId
+                ;";
+                $database->query($query);
+                $database->bind(':vehiclesId', $vehiclesId);
+            }
+            return $r = $database->resultset();
+            break;
+
+        case 'search':
+            $search = '%'.$vehiclesId.'%';
+
+            $query = "SELECT
+                vehicles.Id,
+                vehicles.Type,
+                vehicles.Seats,
+                vehicles.License,
+                vehicles.SupplierId,
+                suppliers.name AS suppliersName
+                FROM vehicles
+                LEFT OUTER JOIN suppliers
+                ON suppliers.Id = vehicles.SupplierId
+                WHERE CONCAT(
+                vehicles.Type,
+                vehicles.Seats,
+                vehicles.License,
+                suppliers.Name
+                ) LIKE :search
+            ;";
+            $database->query($query);
+            $database->bind(':search', $search);
+            return $r = $database->resultset();
+            break;
+
+        case 'update':
+            $License = trim($_REQUEST['License']);
+            $Type = trim($_REQUEST['Type']);
+            $Seats = trim($_REQUEST['Seats']);
+            $SupplierId = trim($_REQUEST['Supplierid']);
+
+            $query = "UPDATE vehicles SET
+                License = :License,
+                Type = :Type,
+                Seats = :Seats,
+                SupplierId = :SupplierId
+                WHERE Id = :vehiclesId
+            ;";
+            $database->query($query);
+            $database->bind(':License', $License);
+            $database->bind(':Type', $Type);
+            $database->bind(':Seats', $Seats);
+            $database->bind(':SupplierId', $SupplierId);
+            $database->bind(':vehiclesId', $vehiclesId);
+            if ($database->execute()) {
+                header("location: edit_vehicle.php?vehiclesId=$vehiclesId");
+            }
+            break;
+
+        case 'check':
+            $License = trim($_REQUEST['License']);
+
+            $query = "SELECT Id FROM vehicles WHERE License = :License ;";
+            $database->query($query);
+            $database->bind(':License', $License);
+            return $r = $database->rowCount();
+            break;
+
+        default:
+            // code...
+            break;
+    }
+}
+
+//function to use data from the table drivers
+function table_drivers ($job, $driversId) {
+    $database = new Database();
+
+    switch ($job) {
+        case 'insert':
+            $Title = $_REQUEST['Title'];
+            $Name = trim($_REQUEST['Name']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $License = trim($_REQUEST['License']);
+            $SupplierId = $_REQUEST['SupplierId'];
+
+            $query = "INSERT INTO drivers (
+                Title,
+                Name,
+                Mobile,
+                License,
+                SupplierId
+                ) VALUES(
+                :Title,
+                :Name,
+                :Mobile,
+                :License,
+                :SupplierId
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Title', $Title);
+            $database->bind(':Name', $Name);
+            $database->bind(':Mobile', $Mobile);
+            $database->bind(':License', $License);
+            $database->bind('SupplierId', $SupplierId);
+            if ($database->execute()) {
+                header("location: drivers.php");
+            }
+            break;
+
+        case 'select':
+            if ($driversId == NULL || $driversId == "" ||empty($driversId)) {
+                $query = "SELECT
+                    drivers.Id,
+                    drivers.Title,
+                    drivers.Name,
+                    drivers.Mobile,
+                    drivers.License,
+                    drivers.Class,
+                    drivers.SupplierId,
+                    suppliers.Name AS suppliersName
+                    FROM drivers LEFT OUTER JOIN suppliers
+                    ON drivers.SupplierId = suppliers.Id
+                ;";
+                $database->query($query);
+            }
+            else {
+                $query = "SELECT
+                    drivers.Id,
+                    drivers.Title,
+                    drivers.Name,
+                    drivers.Mobile,
+                    drivers.License,
+                    drivers.Class,
+                    drivers.SupplierId,
+                    suppliers.Name AS suppliersName
+                    FROM drivers LEFT OUTER JOIN suppliers
+                    ON drivers.SupplierId = suppliers.Id
+                    WHERE drivers.Id = :driversId
+                ;";
+                $database->query($query);
+                $database->bind(':driversId', $driversId);
+            }
+            return $r = $database->resultset();
+            break;
+
+        case 'search':
+            $search = '%'.$driversId.'%';
+            $query = "SELECT
+                drivers.Id,
+                drivers.Title,
+                drivers.Name,
+                drivers.Mobile,
+                drivers.License,
+                drivers.Class,
+                drivers.SupplierId,
+                suppliers.Name AS suppliersName
+                FROM drivers LEFT OUTER JOIN suppliers
+                ON drivers.SupplierId = suppliers.Id
+                WHERE CONCAT(
+                drivers.Title,
+                drivers.Name,
+                drivers.Mobile,
+                drivers.License,
+                drivers.Class,
+                suppliers.Name
+                ) LIKE :search
+            ;";
+            $database->query($query);
+            $database->bind(':search', $search);
+            return $r = $database->resultset();
+            break;
+
+        case 'update':
+            $Title = $_REQUEST['Title'];
+            $Name = trim($_REQUEST['Name']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $License = trim($_REQUEST['License']);
+            $Class = trim($_REQUEST['Class']);
+            $SupplierId = $_REQUEST['SupplierId'];
+
+            $query = "UPDATE drivers SET
+                Title = :Title,
+                Name = :Name,
+                Mobile = :Mobile,
+                License = :License,
+                Class = :Class,
+                SupplierId = :SupplierId
+                WHERE Id = :driversId
+            ;";
+            $database->query($query);
+            $database->bind(':Title', $Title);
+            $database->bind(':Name', $Name);
+            $database->bind(':Mobile', $Mobile);
+            $database->bind(':License', $License);
+            $database->bind(':Class', $Class);
+            $database->bind(':SupplierId', $SupplierId);
+            $database->bind(':driversId', $driversId);
+            if ($database->execute()) {
+                header("location: edit_driver.php?driversId=$driversId");
+            }
+            break;
+
+        case 'check':
+            $Name = trim($_REQUEST['Name']);
+            $License = trim($_REQUEST['License']);
+
+            $query = "SELECT Id FROM drivers
+                WHERE Name = :Name
+                AND License = :License
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':License', $License);
             return $r = $database->rowCount();
             break;
 
