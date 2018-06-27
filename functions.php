@@ -1327,4 +1327,149 @@ function table_drivers ($job, $driversId) {
     }
 }
 
+//function to use the table service_types
+function table_service_types($job, $service_typesId) {
+    $database = new Database();
+
+    switch ($job) {
+
+        case 'insert':
+            $Code = strtoupper($_REQUEST['Code']);
+            $Name = trim($_REQUEST['Name']);
+            $query = "INSERT INTO service_types (
+                Code,
+                Name
+                ) VALUES(
+                :Code,
+                :Name
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Code', $Code);
+            $database->bind(':Name', $Name);
+            if ($database->execute()) {
+                header("location: service_types.php");
+            }
+
+            break;
+
+        case 'select':
+            if ($service_typesId == NULL || $service_typesId == "" ||empty($service_typesId)) {
+                $query = "SELECT * FROM service_types ;";
+                $database->query($query);
+            }
+            else {
+                $query = "SELECT * FROM service_types WHERE Id = :service_typesId ;";
+                $database->query($query);
+                $database->bind(':service_typesId', $service_typesId);
+            }
+            return $r = $database->resultset();
+            break;
+
+        case 'update':
+            $Code = strtoupper($_REQUEST['Code']);
+            $Name = trim($_REQUEST['Name']);
+
+            $query = "UPDATE service_types SET
+                Code = :Code,
+                Name = :Name
+                WHERE Id = :service_typesId
+            ;";
+            $database->query($query);
+            $database->bind(':Code', $Code);
+            $database->bind(':Name', $Name);
+            $database->bind(':service_typesId', $service_typesId);
+            if ($database->execute()) {
+                header("location: edit_service_type.php?service_typesId=$service_typesId");
+            }
+            break;
+
+        case 'check':
+            $Code = strtoupper($_REQUEST['Code']);
+            $Name = trim($_REQUEST['Name']);
+
+            $query = "SELECT Id FROM service_types WHERE Code = :Code ;";
+            $database->query($query);
+            $database->bind(':Code', $Code);
+            return $r = $database->rowCount();
+            break;
+
+        default:
+            // code...
+            break;
+    }
+}
+
+//function to use the table service_statuses
+function table_service_statuses($job, $service_statusesId) {
+    $database = new Database();
+
+    switch ($job) {
+
+        case 'insert':
+            $Code = strtoupper($_REQUEST['Code']);
+            $Description = trim($_REQUEST['Description']);
+
+            $query = "INSERT INTO service_statuses (
+                Code,
+                Description
+                ) VALUES(
+                :Code,
+                :Description
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Code', $Code);
+            $database->bind(':Description', $Description);
+            if ($database->execute()) {
+                header("location: service_statuses.php");
+            }
+
+            break;
+
+        case 'select':
+            if ($service_statusesId == NULL || $service_statusesId == "" || empty($service_statusesId)) {
+                $query = "SELECT * FROM service_statuses ;";
+                $database->query($query);
+            }
+            else {
+                $query = "SELECT * FROM service_statuses WHERE Id = :service_statusesId ;";
+                $database->query($query);
+                $database->bind(':service_statusesId' , $service_statusesId);
+            }
+            return $r = $database->resultset();
+
+            break;
+
+        case 'update':
+                $Code = strtoupper($_REQUEST['Code']);
+                $Description = trim($_REQUEST['Description']);
+
+                $query = "UPDATE service_statuses SET
+                    Code = :Code,
+                    Description = :Description
+                    WHERE Id = :service_statusesId
+                ;";
+                $database->query($query);
+                $database->bind(':Code', $Code);
+                $database->bind(':Description', $Description);
+                $database->bind(':service_statusesId', $service_typesId);
+            break;
+
+        case 'check':
+            $Code = strtoupper($_REQUEST['Code']);
+            $Description = trim($_REQUEST['Description']);
+
+            $query = "SELECT Id FROM service_statuses WHERE Code = :Code ;";
+            $database->query($query);
+            $database->bind(':Code', $Code);
+            return $r = $database->rowCount();
+            break;
+
+        default:
+            # code...
+            break;
+    }
+}
+
 ?>

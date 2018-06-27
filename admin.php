@@ -41,7 +41,13 @@ require_once "functions.php";
                             <a href="supplier_contacts.php" title="Supplier Contacts">Supplier Contacts</a>
                         </li>
                         <li>
-                            <a href="departments.php">Departments</a>
+                            <a href="service_types.php" title="Service Types">Service Types</a>
+                        </li>
+                        <li>
+                            <a href="service_statuses.php" title="Service Statuses">Service Statuses</a>
+                        </li>
+                        <li>
+                            <a href="departments.php" title="Departments">Departments</a>
                         </li>
                         <li>
                             <a href="users.php">Users</a>
