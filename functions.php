@@ -1472,4 +1472,81 @@ function table_service_statuses($job, $service_statusesId) {
     }
 }
 
+// function to use the table services
+function table_services($job, $servicesId) {
+    $database = new Database();
+
+    switch ($job) {
+        case 'insert':
+            $SupplierId = $_REQUEST['SupplierId'];
+            $Service_TypeId = $_REQUEST['Service_TypeId'];
+            $Service = trim($_REQUEST['Service']);
+            $Additional = trim($_REQUEST['Additional']);
+            $Valid_From = $_REQUEST['Valid_From'];
+            $Valid_Until = $_REQUEST['Valid_Until'];
+            $Remark = trim($_REQUEST['Remark']);
+
+            $query = "INSERT INTO services (
+                SupplierId,
+                Service_TypeId,
+                Service,
+                Additional,
+                Valid_From,
+                Valid_Until,
+                Remark
+                ) VALUES(
+                :SupplierId,
+                :Service_TypeId,
+                :Service,
+                :Additional,
+                :Valid_From,
+                :Valid_Until,
+                :Remark
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':SupplierId', $SupplierId);
+            $database->bind(':Service_TypeId', $Service_TypeId);
+            $database->bind(':Service', $Service);
+            $database->bind(':Additional', $Additional);
+            $database->bind(':Valid_From', $Valid_From);
+            $database->bind(':Valid_Until', $Valid_Until);
+            $database->bind(':Remark', $Remark);
+            if ($database->execute()) {
+                header("location: services.php");
+            }
+            break;
+
+        case 'check':
+            $SupplierId = $_REQUEST['SupplierId'];
+            $Service_TypeId = $_REQUEST['Service_TypeId'];
+            $Service = trim($_REQUEST['Service']);
+            $Additional = trim($_REQUEST['Additional']);
+            $Valid_From = $_REQUEST['Valid_From'];
+            $Valid_Until = $_REQUEST['Valid_Until'];
+
+            $query = "SELECT Id FROM services WHERE
+                SupplierId = :SupplierId AND
+                Service_TypeId = :Service_TypeId AND
+                Service = :Service AND
+                Additional = :Additional AND
+                Valid_From = :Valid_From AND
+                Valid_Until = :Valid_Until
+            ;";
+            $database->query($query);
+            $database->bind(':SupplierId', $SupplierId);
+            $database->bind(':Service_TypeId', $Service_TypeId);
+            $database->bind(':Service', $Service);
+            $database->bind(':Additional', $Additional);
+            $database->bind(':Valid_From', $Valid_From);
+            $database->bind(':Valid_Until', $Valid_Until);
+            return $r = $database->rowCount();
+            break;
+
+        default:
+            // code...
+            break;
+    }
+}
+
 ?>
