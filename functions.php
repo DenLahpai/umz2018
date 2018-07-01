@@ -1517,6 +1517,81 @@ function table_services($job, $servicesId) {
             }
             break;
 
+        case 'select':
+            if ($servicesId == NULL || $servicesId == "" || empty($servicesId)) {
+                $query = "SELECT
+                services.Id,
+                services.SupplierId,
+                suppliers.Name,
+                services.Service_TypeId,
+                service_types.Code,
+                services.Service,
+                services.Additional,
+                services.Valid_From,
+                services.Valid_Until,
+                services.Remark
+                FROM services LEFT JOIN suppliers
+                ON services.SupplierId = suppliers.Id
+                LEFT JOIN service_types
+                ON services.Service_TypeId = service_types.Id
+                ;";
+                $database->query($query);
+            }
+            else {
+                $query = "SELECT
+                    services.Id,
+                    services.SupplierId,
+                    suppliers.Name,
+                    services.Service_TypeId,
+                    service_types.Code,
+                    services.service,
+                    services.Additional,
+                    services.Valid_From,
+                    services.Valid_Until,
+                    services.Remark
+                    FROM services LEFT JOIN suppliers
+                    ON services.SupplierId = suppliers.Id
+                    LEFT JOIN service_types
+                    ON services.Service_TypeId = service_types.Id
+                    WHERE services.Id = :servicesId
+                ;";
+                $database->query($query);
+                $database->bind(':servicesId', $servicesId);
+            }
+            return $r = $database->resultset();
+            break;
+
+        case 'search':
+            $search = '%'.$servicesId.'%';
+            $query = "SELECT
+                services.Id,
+                services.SupplierId,
+                suppliers.Name,
+                services.Service_TypeId,
+                service_types.Code,
+                services.service,
+                services.Additional,
+                services.Valid_From,
+                services.Valid_Until,
+                services.Remark
+                FROM services LEFT JOIN suppliers
+                ON services.SupplierId = suppliers.Id
+                LEFT JOIN service_types
+                ON services.Service_TypeId = service_types.Id
+                CONCAT (
+                suppliers.Name,
+                service_types.Code,
+                services.service,
+                services.Additional,
+                services.Remark
+                ) LIKE :search
+            ;";
+            $database->query($query);
+            $database->bind(':search', $search);
+            return $r = $database->resultset();
+            break;
+
+
         case 'check':
             $SupplierId = $_REQUEST['SupplierId'];
             $Service_TypeId = $_REQUEST['Service_TypeId'];

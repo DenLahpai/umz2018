@@ -67,7 +67,7 @@ else {
                         echo "<li>".$row_agents->Fax."</li>";
                         echo "<li>".$row_agents->Email."</li>";
                         echo "<li>".$row_agents->Website."</li>";
-                        echo "<li style=\"text-align: center;\"><a href=\"edit_agent.php?agentsId=$row_agents->Id\">Edit</a>";
+                        echo "<li style=\"text-align: center;\"><a href=\"edit_agent.php?agentsId=$row_agents->Id\"><button>Edit</button></a>";
                         echo "</ul>";
                         echo "</div>";
                         echo "<!-- end of grid-item -->";

@@ -14,12 +14,12 @@ else {
     $search = NULL;
 }
 
-// if(empty($search) || $search == NULL || $search == "") {
-//     $rows_services = table_services('select', NULL);
-// }
-// else {
-//     $rows_services = table_services('search', $search);
-// }
+if(empty($search) || $search == NULL || $search == "") {
+    $rows_services = table_services('select', NULL);
+}
+else {
+    $rows_services = table_services('search', $search);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -51,6 +51,29 @@ else {
                 </form>
             </div>
             <!-- end of sub-menu -->
+            <main>
+                <!-- grid-div -->
+                <div class="grid-div">
+                    <?php
+                    foreach($rows_services as $row_services) {
+                        echo "<!-- grid-item -->";
+                        echo "<div class=\"grid-item\">";
+                        echo "<ul>";
+                        echo "<li style=\"font-weight: bold;\">".$row_services->Name."</li>";
+                        echo "<li>".$row_services->Service." (".$row_services->Code.")</li>";
+                        echo "<li>".$row_services->Additional."</li>";
+                        echo "<li>Valid From: ".date("d-M-y", strtotime($row_services->Valid_From))."</li>";
+                        echo "<li>Valid Until: ".date("d-M-y", strtotime($row_services->Valid_Until))."</li>";
+                        echo "<li>Remark: ".$row_services->Remark."</li>";
+                        echo "<li style=\"text-align: center;\"><a href=\"edit_service.php?$row_services->Id\"><button>Edit</button></a></li>";
+                        echo "</ul>";
+                        echo "</div>";
+                        echo "<!-- end of grid-item -->";
+                    }
+                    ?>
+                </div>
+                <!-- end of grid div -->
+            </main>
         </div>
         <!-- end of content -->
         <?php include "includes/footer.html"; ?>

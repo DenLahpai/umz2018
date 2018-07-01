@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     echo "<tr>";
                                     echo "<td>".$row_service_statuses->Code."</td>";
                                     echo "<td>".$row_service_statuses->Description."</td>";
-                                    echo "<td><a href=\"edit_service_statuses.php?service_statusesId=$row_service_statuses->Id\">Edit</a></td>";
+                                    echo "<td><a href=\"edit_service_statuses.php?service_statusesId=$row_service_statuses->Id\"><button>Edit</button></a></td>";
                                     echo "</tr>";
                                 }
                                 ?>

@@ -59,7 +59,7 @@ else {
                         echo "<li>".$row_tour_guides->License.", ".$row_tour_guides->Type."</li>";
                         echo "<li>".$row_tour_guides->Language."</li>";
                         echo "<li><a href=\"mailto: $row_tour_guides->Email\">".$row_tour_guides->Email."</a></li>";
-                        echo "<li style=\"text-align: center;\"><a href=\"edit_tourguide.php?tour_guidesId=$row_tour_guides->Id\">Edit</a></li>";
+                        echo "<li style=\"text-align: center;\"><a href=\"edit_tourguide.php?tour_guidesId=$row_tour_guides->Id\"><button>Edit</button></a></li>";
                         echo "</ul>";
                         echo "</div>";
                         echo "<!-- end of grid-item -->";
