@@ -1,18 +1,31 @@
 <?php
 require "functions.php";
 
-//Only departments id 1 and 2 has access to this page.
-if ($d > 2) {
-    header("location: no_access.php");
+//getting services Id
+$servicesId = trim($_REQUEST['servicesId']);
+
+// getting data from the table services
+$rows_services = table_services('select', $servicesId);
+foreach ($rows_services as $row_services) {
+    // code...
 }
 
+// updating the table services
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $rowCount = table_services('check', NULL);
-    if ($rowCount == 0) {
-        table_services('insert', NULL);
+    $SupplierId = $_REQUEST['SupplierId'];
+    $Service = trim($_REQUEST['Service']);
+    $Additional = trim($_REQUEST['Additional']);
+    if ($SupplierId == $row_services->SupplierId && $Service == $row_services->Service && $Additional == $row_services->Additional) {
+        table_services('update', $servicesId);
     }
     else {
-        $error_message = "Duplicate Entry!";
+        $rowCount = table_services('check', NULL);
+        if ($rowCount == 0) {
+            table_services('update', $servicesId);
+        }
+        else {
+            $error_message = "Duplicate Entry!";
+        }
     }
 }
 
@@ -20,19 +33,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <?php
-    $page_title = "New Service";
+    $page_title = "Edit Service";
     include "includes/head.html";
     ?>
     <body>
         <!-- content -->
         <div class="content">
             <?php
-            $header = "New Service";
+            $header = "Edit Service";
             include "includes/header.html";
             include "includes/main_menu.html";
             ?>
             <main>
-                <form class="theform" action="#" method="post">
+                <form id="theform" action="#" method="post">
                     <ul>
                         <li class="notice error">
                             <?php
@@ -44,38 +57,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <li>
                             Supplier: &nbsp;
                             <select id="SupplierId" name="SupplierId">
-                                <option value="">Select</option>
                                 <?php
                                 $rows_suppliers = table_suppliers('select', NULL);
                                 foreach ($rows_suppliers as $row_suppliers) {
-                                    echo "<option value=\"$row_suppliers->Id\">".$row_suppliers->Name."</option>";
+                                    if ($row_services->SupplierId == $row_suppliers->Id) {
+                                        echo "<option value=\"$row_suppliers->Id\" selected>".$row_suppliers->Name."</option>";
+                                    }
+                                    else {
+                                        echo "<option value=\"$row_suppliers->Id\">".$row_suppliers->Name."</option>";
+                                    }
                                 }
                                 ?>
                             </select>
                         </li>
                         <li>
                             Service Type: &nbsp;
-                            <select id="Service_TypeId" name="Service_TypeId" onchange="setRequired('Additional', 'Additional');">
-                                <option value="">Select</option>
+                            <select id="Service_TypeId" name="Service_TypeId">
                                 <?php
-                                $rows_service_types = table_service_types('select', NULL);
+                                $rows_service_types = table_service_types('select', $row_services->Service_TypeId);
                                 foreach ($rows_service_types as $row_service_types) {
-                                    echo "<option value=\"$row_service_types->Id\">".$row_service_types->Code." - ".$row_service_types->Name."</option>";
+                                    if ($row_services->Service_TypeId == $row_service_types->Id) {
+                                        echo "<option value=\"$row_service_types->Id\" selected>".$row_service_types->Code."</option>";
+                                    }
+                                    else {
+                                        echo "<option value=\"$row_service_types->Id\">".$row_service_types->Code."</option>";
+                                    }
                                 }
                                 ?>
                             </select>
                         </li>
                         <li>
                             Service: &nbsp;
-                            <input type="text" name="Service" id="Service" placeholder="Service Name" required>
+                            <input type="text" name="Service" id="Service" value="<?php echo $row_services->Service; ?>" required>
                         </li>
                         <li>
                             Additional: &nbsp;
-                            <input type="text" name="Additional" id="Additional">
+                            <input type="text" name="Additional" id="Additional" value="<?php echo $row_services->Additional; ?>"
+                            onchange="setRequired('Additional', 'Additional');">
                         </li>
                         <li>
                             Remark: &nbsp;
-                            <input type="text" name="Remark" id="Remark">
+                            <input type="text" name="Remark" id="Remark" value="<?php echo $row_services->Remark; ?>">
                         </li>
                         <li>
                             Status: &nbsp;
@@ -86,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </li>
                         <li>
                             <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit"
-                            onclick="check2Fields('SupplierId','Service_TypeId');">Submit</button>
+                            onclick="check2Fields('SupplierId','Service_TypeId');">Update</button>
                         </li>
                     </ul>
                 </form>

@@ -1482,26 +1482,23 @@ function table_services($job, $servicesId) {
             $Service_TypeId = $_REQUEST['Service_TypeId'];
             $Service = trim($_REQUEST['Service']);
             $Additional = trim($_REQUEST['Additional']);
-            $Valid_From = $_REQUEST['Valid_From'];
-            $Valid_Until = $_REQUEST['Valid_Until'];
             $Remark = trim($_REQUEST['Remark']);
+            $Status = $_REQUEST['Status'];
 
             $query = "INSERT INTO services (
                 SupplierId,
                 Service_TypeId,
                 Service,
                 Additional,
-                Valid_From,
-                Valid_Until,
-                Remark
+                Remark,
+                Status
                 ) VALUES(
                 :SupplierId,
                 :Service_TypeId,
                 :Service,
                 :Additional,
-                :Valid_From,
-                :Valid_Until,
-                :Remark
+                :Remark,
+                :Status
                 )
             ;";
             $database->query($query);
@@ -1509,9 +1506,8 @@ function table_services($job, $servicesId) {
             $database->bind(':Service_TypeId', $Service_TypeId);
             $database->bind(':Service', $Service);
             $database->bind(':Additional', $Additional);
-            $database->bind(':Valid_From', $Valid_From);
-            $database->bind(':Valid_Until', $Valid_Until);
             $database->bind(':Remark', $Remark);
+            $database->bind(':Status', $Status);
             if ($database->execute()) {
                 header("location: services.php");
             }
@@ -1525,11 +1521,11 @@ function table_services($job, $servicesId) {
                 suppliers.Name,
                 services.Service_TypeId,
                 service_types.Code,
+                service_types.Name AS service_typesName,
                 services.Service,
                 services.Additional,
-                services.Valid_From,
-                services.Valid_Until,
-                services.Remark
+                services.Remark,
+                services.Status
                 FROM services LEFT JOIN suppliers
                 ON services.SupplierId = suppliers.Id
                 LEFT JOIN service_types
@@ -1544,11 +1540,11 @@ function table_services($job, $servicesId) {
                     suppliers.Name,
                     services.Service_TypeId,
                     service_types.Code,
-                    services.service,
+                    service_types.Name AS service_typesName,
+                    services.Service,
                     services.Additional,
-                    services.Valid_From,
-                    services.Valid_Until,
-                    services.Remark
+                    services.Remark,
+                    services.Status
                     FROM services LEFT JOIN suppliers
                     ON services.SupplierId = suppliers.Id
                     LEFT JOIN service_types
@@ -1569,21 +1565,21 @@ function table_services($job, $servicesId) {
                 suppliers.Name,
                 services.Service_TypeId,
                 service_types.Code,
-                services.service,
+                services.Service,
                 services.Additional,
-                services.Valid_From,
-                services.Valid_Until,
-                services.Remark
+                services.Remark,
+                services.Status
                 FROM services LEFT JOIN suppliers
                 ON services.SupplierId = suppliers.Id
                 LEFT JOIN service_types
-                ON services.Service_TypeId = service_types.Id
+                ON services.Service_TypeId = service_types.Id WHERE
                 CONCAT (
                 suppliers.Name,
                 service_types.Code,
                 services.service,
                 services.Additional,
-                services.Remark
+                services.Remark,
+                services.Status
                 ) LIKE :search
             ;";
             $database->query($query);
@@ -1591,30 +1587,51 @@ function table_services($job, $servicesId) {
             return $r = $database->resultset();
             break;
 
+        case 'update':
+            $SupplierId = $_REQUEST['SupplierId'];
+            $Service = trim($_REQUEST['Service']);
+            $Additional = trim($_REQUEST['Additional']);
+            $Remark = trim($_REQUEST['Remark']);
+            $Status = trim($_REQUEST['Status']);
+
+            $query = "UPDATE services SET
+                SupplierId = :SupplierId,
+                Service = :Service,
+                Additional = :Additional,
+                Remark = :Remark,
+                Status = :Status
+                WHERE Id = :servicesId
+            ;";
+            $database->query($query);
+            $database->bind(':SupplierId', $SupplierId);
+            $database->bind(':Service', $Service);
+            $database->bind(':Additional', $Additional);
+            $database->bind(':Remark', $Remark);
+            $database->bind(':Status', $Status);
+            $database->bind(':servicesId', $servicesId);
+            if ($database->execute()) {
+                header("location: edit_service.php?servicesId=$servicesId");
+            }
+            break;
 
         case 'check':
             $SupplierId = $_REQUEST['SupplierId'];
             $Service_TypeId = $_REQUEST['Service_TypeId'];
             $Service = trim($_REQUEST['Service']);
             $Additional = trim($_REQUEST['Additional']);
-            $Valid_From = $_REQUEST['Valid_From'];
-            $Valid_Until = $_REQUEST['Valid_Until'];
 
             $query = "SELECT Id FROM services WHERE
                 SupplierId = :SupplierId AND
                 Service_TypeId = :Service_TypeId AND
                 Service = :Service AND
-                Additional = :Additional AND
-                Valid_From = :Valid_From AND
-                Valid_Until = :Valid_Until
+                Additional = :Additional
+
             ;";
             $database->query($query);
             $database->bind(':SupplierId', $SupplierId);
             $database->bind(':Service_TypeId', $Service_TypeId);
             $database->bind(':Service', $Service);
             $database->bind(':Additional', $Additional);
-            $database->bind(':Valid_From', $Valid_From);
-            $database->bind(':Valid_Until', $Valid_Until);
             return $r = $database->rowCount();
             break;
 

@@ -62,10 +62,9 @@ else {
                         echo "<li style=\"font-weight: bold;\">".$row_services->Name."</li>";
                         echo "<li>".$row_services->Service." (".$row_services->Code.")</li>";
                         echo "<li>".$row_services->Additional."</li>";
-                        echo "<li>Valid From: ".date("d-M-y", strtotime($row_services->Valid_From))."</li>";
-                        echo "<li>Valid Until: ".date("d-M-y", strtotime($row_services->Valid_Until))."</li>";
                         echo "<li>Remark: ".$row_services->Remark."</li>";
-                        echo "<li style=\"text-align: center;\"><a href=\"edit_service.php?$row_services->Id\"><button>Edit</button></a></li>";
+                        echo "<li>".$row_services->Status."</li>";
+                        echo "<li style=\"text-align: center;\"><a href=\"edit_service.php?servicesId=$row_services->Id\"><button>Edit</button></a></li>";
                         echo "</ul>";
                         echo "</div>";
                         echo "<!-- end of grid-item -->";
