@@ -1641,4 +1641,67 @@ function table_services($job, $servicesId) {
     }
 }
 
+//function to use the table guide_requests
+function table_guide_requests($job, $guide_requestsId) {
+    $database = new Database();
+
+    switch ($job) {
+        case 'insert':
+            $Request = trim($_REQUEST['Request']);
+            $query = "INSERT INTO guide_requests (
+                Request
+                ) VALUES(
+                :Request
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Request', $Request);
+            if ($database->execute()) {
+                header("location: guide_requests.php");
+            }
+            break;
+
+        case 'select':
+            if ($guide_requestsId == NULL || $guide_requestsId == "" || empty($guide_requestsId)) {
+                $query = "SELECT * FROM guide_requests ;";
+                $database->query($query);
+                return $r = $database->resultset();
+            }
+            else {
+                $query = "SELECT * FROM guide_requests WHERE Id = :guide_requestsId ;";
+                $database->query($query);
+                $database->bind(':guide_requestsId', $guide_requestsId);
+                return $r = $database->resultset();
+            }
+            break;
+
+        case 'update':
+            $Request = trim($_REQUEST['Request']);
+            $query = "UPDATE guide_requests SET
+                Request = :Request
+                WHERE Id = :guide_requestsId
+            ;";
+            $database->query($query);
+            $database->bind(':Request', $Request);
+            $database->bind(':guide_requestsId', $guide_requestsId);
+             if ($database->execute()) {
+                header("location: edit_guide_request.php?guide_requestsId=$guide_requestsId");
+             }
+            break;
+
+        case 'check':
+            $Request = trim($_REQUEST['Request']);
+            $query = "SELECT Id FROM guide_requests WHERE Request = :Request ;";
+            $database->query($query);
+            $database->bind(':Request', $Request);
+            return $r = $database->rowCount();
+            break;
+
+        default:
+            // code...
+            break;
+    }
+
+}
+
 ?>
