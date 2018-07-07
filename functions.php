@@ -1869,7 +1869,7 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.StatusId = booking_statuses.Id
                             LEFT JOIN users
                             ON bookings.UserId = users.Id
-                            WHERE agents.Name = 'Tour Mandalay'
+                            WHERE agents.Name = 'Exo Travel'
                         ;";
                         $database->query($query);
                         break;
@@ -1928,9 +1928,158 @@ function table_bookings($job, $bookingsId) {
                 }
             }
             else {
-                // code
+                switch ($DepartmentId) {
+                    case '5':
+                        //Exo Travel Only!
+                        $query = "SELECT
+                            bookings.Id AS bookingsId,
+                            bookings.Name AS bookingsName,
+                            bookings.Pax AS bookingsPax,
+                            bookings.AgentId AS AgentId,
+                            agents.Name AS agentsName,
+                            bookings.Guide_RequestId AS Guide_RequestId,
+                            guide_requests.Request AS guide_requestsRequest,
+                            bookings.Arrival_Date AS Arrival_Date,
+                            bookings.Remark AS Remark,
+                            bookings.StatusId AS StatusId,
+                            booking_statuses.Status AS booking_statusesStatus,
+                            users.Fullname AS Fullname
+                            FROM bookings LEFT JOIN agents
+                            ON bookings.AgentId = agents.Id
+                            LEFT JOIN guide_requests
+                            ON bookings.Guide_RequestId = guide_requests.Id
+                            LEFT JOIN booking_statuses
+                            ON bookings.StatusId = booking_statuses.Id
+                            LEFT JOIN users
+                            ON bookings.UserId = users.Id
+                            WHERE agents.Name = 'Exo Travel'
+                            AND bookings.Id = :bookingsId
+                        ;";
+                        $database->query($query);
+                        break;
+                    case '6':
+                        // Tour Mandalay only
+                        $query = "SELECT
+                            bookings.Id AS bookingsId,
+                            bookings.Name AS bookingsName,
+                            bookings.Pax AS bookingsPax,
+                            bookings.AgentId AS AgentId,
+                            agents.Name AS agentsName,
+                            bookings.Guide_RequestId AS Guide_RequestId,
+                            guide_requests.Request AS guide_requestsRequest,
+                            bookings.Arrival_Date AS Arrival_Date,
+                            bookings.Remark AS Remark,
+                            bookings.StatusId AS StatusId,
+                            booking_statuses.Status AS booking_statusesStatus,
+                            users.Fullname AS Fullname
+                            FROM bookings LEFT JOIN agents
+                            ON bookings.AgentId = agents.Id
+                            LEFT JOIN guide_requests
+                            ON bookings.Guide_RequestId = guide_requests.Id
+                            LEFT JOIN booking_statuses
+                            ON bookings.StatusId = booking_statuses.Id
+                            LEFT JOIN users
+                            ON bookings.UserId = users.Id
+                            WHERE agents.Name = 'Tour Mandalay'
+                            AND bookings.Id = :bookingsId
+                        ;";
+                        $database->query($query);
+                        break;
+                    case '7':
+                        // All except Exo and Tour Mandalay
+                        $query = "SELECT
+                            bookings.Id AS bookingsId,
+                            bookings.Name AS bookingsName,
+                            bookings.Pax AS bookingsPax,
+                            bookings.AgentId AS AgentId,
+                            agents.Name AS agentsName,
+                            bookings.Guide_RequestId AS Guide_RequestId,
+                            guide_requests.Request AS guide_requestsRequest,
+                            bookings.Arrival_Date AS Arrival_Date,
+                            bookings.Remark AS Remark,
+                            bookings.StatusId AS StatusId,
+                            booking_statuses.Status AS booking_statusesStatus,
+                            users.Fullname AS Fullname
+                            FROM bookings LEFT JOIN agents
+                            ON bookings.AgentId = agents.Id
+                            LEFT JOIN guide_requests
+                            ON bookings.Guide_RequestId = guide_requests.Id
+                            LEFT JOIN booking_statuses
+                            ON bookings.StatusId = booking_statuses.Id
+                            LEFT JOIN users
+                            ON bookings.UserId = users.Id
+                            WHERE agents.Name NOT IN ('Exo Travel', 'Tour Mandalay')
+                            AND bookings.Id = :bookingsId
+                        ;";
+                        $database->query($query);
+                        break;
+
+                    default:
+                        //All
+                        $query = "SELECT
+                            bookings.Id AS bookingsId,
+                            bookings.Name AS bookingsName,
+                            bookings.Pax AS bookingsPax,
+                            bookings.AgentId AS AgentId,
+                            agents.Name AS agentsName,
+                            bookings.Guide_RequestId AS Guide_RequestId,
+                            guide_requests.Request AS guide_requestsRequest,
+                            bookings.Arrival_Date AS Arrival_Date,
+                            bookings.Remark AS Remark,
+                            bookings.StatusId AS StatusId,
+                            booking_statuses.Status AS booking_statusesStatus,
+                            users.Fullname AS Fullname
+                            FROM bookings LEFT JOIN agents
+                            ON bookings.AgentId = agents.Id
+                            LEFT JOIN guide_requests
+                            ON bookings.Guide_RequestId = guide_requests.Id
+                            LEFT JOIN booking_statuses
+                            ON bookings.StatusId = booking_statuses.Id
+                            LEFT JOIN users
+                            ON bookings.UserId = users.Id
+                            WHERE bookings.Id = :bookingsId
+                        ;";
+                        $database->query($query);
+                        break;
+                }
             }
+            $database->bind(':bookingsId', $bookingsId);
             return $r = $database->resultset();
+            break;
+
+        case 'update':
+            $Name = trim($_REQUEST['Name']);
+            $Pax = $_REQUEST['Pax'];
+            $AgentId = $_REQUEST['AgentId'];
+            $Guide_RequestId = $_REQUEST['Guide_RequestId'];
+            $Arrival_Date = $_REQUEST['Arrival_Date'];
+            $Remark = trim($_REQUEST['Remark']);
+            $StatusId = $_REQUEST['StatusId'];
+
+            $query = "UPDATE bookings SET
+                Name = :Name,
+                Pax = :Pax,
+                AgentId = :AgentId,
+                Guide_RequestId = :Guide_RequestId,
+                Arrival_Date = :Arrival_Date,
+                Remark = :Remark,
+                StatusId = :StatusId,
+                UserId = :UserId
+                WHERE Id = :bookingsId
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':Pax', $Pax);
+            $database->bind(':AgentId', $AgentId);
+            $database->bind(':Guide_RequestId', $Guide_RequestId);
+            $database->bind(':Arrival_Date', $Arrival_Date);
+            $database->bind(':Remark', $Remark);
+            $database->bind(':StatusId', $StatusId);
+            $database->bind(':UserId', $_SESSION['usersId']);
+            $database->bind(':bookingsId', $bookingsId);
+            if ($database->execute()) {
+                header("location: edit_booking.php?bookingsId=$bookingsId");
+            }
             break;
 
         case 'check':

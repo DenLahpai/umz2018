@@ -101,4 +101,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         <!-- end of content -->
         <?php include "includes/footer.html"; ?>
     </body>
+    <script type="text/javascript" src="js/scripts.js"></script>
 </html>
