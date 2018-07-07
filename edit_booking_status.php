@@ -6,29 +6,44 @@ if ($d > 2) {
     header("location: no_access.php");
 }
 
+//getting booking_statusesId
+$booking_statusesId = trim($_REQUEST['booking_statusesId']);
+
+//getting data  from the table booking_statuses
+$rows_booking_statuses = table_booking_statuses('select', $booking_statusesId);
+foreach ($rows_booking_statuses as $row_booking_statuses) {
+    // code...
+}
+
+//updating the table booking_statuses
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Request = trim($_REQUEST['Request']);
-    $rowCount = table_guide_requests('check', NULL);
-    if ($rowCount == 0) {
-        table_guide_requests('insert', NULL);
+    $Status = trim($_REQUEST['Status']);
+    if ($Status == $row_booking_statuses->Status) {
+        table_booking_statuses('update', $booking_statusesId);
     }
     else {
-        $error_message = "Duplicate Entry!";
+        $rowCount = table_booking_statuses('check', NULL);
+        if ($rowCount == 0) {
+            table_booking_statuses('update', $booking_statusesId);
+        }
+        else {
+            $error_message = "Duplicate Entry!";
+        }
     }
 }
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <?php
-    $page_title = "Guide Requests";
+    $page_title = "Edit Booking Status";
     include "includes/head.html";
     ?>
     <body>
         <!-- content -->
         <div class="content">
             <?php
-            $header = "Guide Requests";
-            include "includes/header.html";
+            $header = "Edit Booking Status";
+            include "includes/head.html";
             include "includes/main_menu.html";
             ?>
             <main>
@@ -40,11 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <tr>
                                     <th>#</th>
                                     <th>
-                                        Request: &nbsp;
-                                        <input type="text" name="Request" id="Request" placeholder="Request" required>
+                                        Status: &nbsp;
+                                        <input type="text" name="Status" id="Status" value="<?php echo $row_booking_statuses->Status; ?>" required>
                                     </th>
                                     <th>
-                                        <button type="button" class="button medium" id="buttonSubmit" name="buttonSubmit" onclick="check2Fields('Request', 'Request');">Create</button>
+                                        <button type="button" class="button medium" id="buttonSubmit" name="buttonSubmit" onclick="check2Fields('Status', 'Status');">Update</button>
                                     </th>
                                 </tr>
                             </thead>
@@ -53,14 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 if (!empty($error_message)) {
                                     echo "<tr>";
                                     echo "<th colspan=\"3\" class=\"notice error\">";
-                                    echo "</tr>";
-                                }
-                                $rows_guide_requests = table_guide_requests('select', NULL);
-                                foreach ($rows_guide_requests as $row_guide_requests) {
-                                    echo "<tr>";
-                                    echo "<td>".$row_guide_requests->Id."</td>";
-                                    echo "<td>".$row_guide_requests->Request."</td>";
-                                    echo "<td><a href=\"edit_guide_request.php?guide_requestsId=$row_guide_requests->Id\"><button>Edit</button></a></td>";
                                     echo "</tr>";
                                 }
                                 ?>
@@ -74,5 +81,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <!-- end of content -->
         <?php include "includes/footer.html"; ?>
     </body>
-    <script type="text/javascript" src="js/scripts.js"></script>
 </html>

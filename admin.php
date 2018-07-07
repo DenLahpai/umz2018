@@ -32,6 +32,9 @@ require_once "functions.php";
                             <a href="guide_requests.php" title="Guide Requests">Guide Requests</a>
                         </li>
                         <li>
+                            <a href="booking_statuses.php" title="Booking Status">Booking Statuses</a>
+                        </li>
+                        <li>
                             <a href="vehicles.php" title="Vehicles">Vehicles</a>
                         </li>
                         <li>

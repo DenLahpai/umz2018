@@ -10,12 +10,11 @@ else {
 }
 
 if(empty($search) || $search == NULL || $search == "") {
-    $rows_drivers = table_drivers('select', NULL);
+    $rows_bookings = table_bookings('select', NULL);
 }
 else {
-    $rows_drivers = table_drivers('search', $search);
+    $rows_bookings = table_bookings('search', $search);
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -47,6 +46,30 @@ else {
                 </form>
             </div>
             <!-- end of sub-menu -->
+            <main>
+                <!-- grid-div -->
+                <div class="grid-div">
+                    <?php
+                    foreach ($rows_bookings as $row_bookings) {
+                        echo "<!-- grid-item -->";
+                        echo "<div class=\"grid-item\">";
+                        echo "<ul>";
+                        echo "<li style=\"font-weight: bold; text-align: center; font-size: larger;\">"
+                        .$row_bookings->bookingsName." X ".$row_bookings->bookingsPax."</li>";
+                        echo "<li>Arrival: &nbsp;".date('d-M-y', strtotime($row_bookings->Arrival_Date))."</li>";
+                        echo "<li>".$row_bookings->agentsName."</li>";
+                        echo "<li>".$row_bookings->guide_requestsRequest."</li>";
+                        echo "<li>".$row_bookings->booking_statusesStatus."</li>";
+                        echo "<li>".$row_bookings->Remark."</li>";
+                        echo "<li>".$row_bookings->Fullname."</li>";
+                        echo "<li style=\"text-align:center;\"><a href=\"edit_booking.php?bookingsId=$row_bookings->bookingsId\"><button>Edit</button></li>";
+                        echo "</div>";
+                        echo "<!-- end of grid-item -->";
+                    }
+                    ?>
+                </div>
+                <!-- end of grid-div -->
+            </main>
         </div>
         <!-- end of content  -->
         <?php include "includes/footer.html"; ?>

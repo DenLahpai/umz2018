@@ -5,7 +5,7 @@ if (!isset($_SESSION['usersId'])){
     header("location:index.php?error=2");
 }
 
-// checking for deactivated users and getting users departmentId to check access
+// checking for deactivated users and getting users DepartmentId to check access
 $ROWS = table_users('select', $_SESSION['usersId']);
 foreach ($ROWS as $ROW) {
     $s = $ROW->Status;
@@ -154,7 +154,7 @@ function table_users($job, $usersId) {
             users.Mobile,
             departments.Name AS DepartmentsName
             FROM users LEFT JOIN departments
-            ON users.departmentId = departments.Id
+            ON users.DepartmentId = departments.Id
             WHERE CONCAT(
             users.Username,
             users.Password,
@@ -315,17 +315,17 @@ function table_posts($job, $postsId) {
 }
 
 // function to get the table departments
-function table_departments($job, $departmentId) {
+function table_departments($job, $departmentsId) {
     $database = new Database();
     if ($job == 'select') {
-        if($departmentId == NULL || $departmentId == "" || empty($departmentId)) {
+        if($departmentsId == NULL || $departmentsId == "" || empty($departmentsId)) {
             $query = "SELECT * FROM departments ORDER BY Id ;";
             $database->query($query);
         }
         else {
-            $query = "SELECT * FROM departments WHERE Id = :departmentId ;";
+            $query = "SELECT * FROM departments WHERE Id = :departmentsId ;";
             $database->query($query);
-            $database->bind(':departmentId', $departmentId);
+            $database->bind(':departmentsId', $departmentsId);
         }
         return $r = $database->resultset();
     }
@@ -1701,7 +1701,259 @@ function table_guide_requests($job, $guide_requestsId) {
             // code...
             break;
     }
+}
 
+// function to use the table booking_statuses
+function table_booking_statuses($job, $booking_statusesId) {
+    $database = new Database();
+
+    switch ($job) {
+        case 'insert':
+            $Status = trim($_REQUEST['Status']);
+
+            $query = "INSERT INTO booking_statuses (
+                Status
+                ) VALUES (
+                :Status
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Status', $Status);
+            $database->execute();
+            break;
+
+        case 'select':
+            if ($booking_statusesId == NULL || $booking_statusesId == "" || empty($booking_statusesId)) {
+                $query = "SELECT * FROM booking_statuses ;";
+                $database->query($query);
+            }
+            else {
+                $query = "SELECT * FROM booking_statuses
+                    WHERE Id = :booking_statusesId
+                ;";
+                $database->query($query);
+                $database->bind(':booking_statusesId', $booking_statusesId);
+            }
+            return $r = $database->resultset();
+            break;
+
+        case 'update':
+            $Status = trim($_REQUEST['Status']);
+            $query = "UPDATE booking_statuses SET
+                Status = :Status
+                WHERE Id = :booking_statusesId
+            ;";
+            $database->query($query);
+            $database->bind(':Status', $Status);
+            $database->bind(':booking_statusesId', $booking_statusesId);
+            if ($database->execute()) {
+                header("location: edit_booking_status.php?booking_statusesId=$booking_statusesId");
+            }
+            break;
+
+        case 'check':
+                $Status = trim($_REQUEST['Status']);
+                $query = "SELECT Id FROM booking_statuses WHERE Status = :Status ;";
+                $database->query($query);
+                $database->bind(':Status', $Status);
+                return $r = $database->rowCount();
+                break;
+        default:
+            # code...
+            break;
+    }
+}
+
+// function to use table bookings
+function table_bookings($job, $bookingsId) {
+    $database = new Database();
+    $rows_users = table_users('select', $_SESSION['usersId']);
+    foreach ($rows_users as $row_users) {
+        $DepartmentId = $row_users->DepartmentId;
+    }
+
+    switch ($job) {
+        case 'insert':
+            $Name = trim($_REQUEST['Name']);
+            $Pax = $_REQUEST['Pax'];
+            $AgentId = $_REQUEST['AgentId'];
+            $Guide_RequestId = $_REQUEST['Guide_RequestId'];
+            $Arrival_Date = $_REQUEST['Arrival_Date'];
+            $Remark = trim($_REQUEST['Remark']);
+            $StatusId = $_REQUEST['StatusId'];
+
+            $query = "INSERT INTO bookings (
+                Name,
+                Pax,
+                AgentId,
+                Guide_RequestId,
+                Arrival_Date,
+                Remark,
+                StatusId,
+                UserId
+                ) VALUES(
+                :Name,
+                :Pax,
+                :AgentId,
+                :Guide_RequestId,
+                :Arrival_Date,
+                :Remark,
+                :StatusId,
+                :UserId
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':Pax', $Pax);
+            $database->bind(':AgentId', $AgentId);
+            $database->bind(':Guide_RequestId', $Guide_RequestId);
+            $database->bind(':Arrival_Date', $Arrival_Date);
+            $database->bind(':Remark', $Remark);
+            $database->bind(':StatusId', $StatusId);
+            $database->bind(':UserId', $_SESSION['usersId']);
+            if ($database->execute()) {
+                header("location: bookings.php");
+            }
+            break;
+
+        case 'select':
+            if ($bookingsId == NULL || $bookingsId == "" || empty($bookingsId)) {
+                //switch to check users DepartmentId
+                switch ($DepartmentId) {
+                    case '5':
+                        //Exo Travel Only!
+                        $query = "SELECT
+                            bookings.Id AS bookingsId,
+                            bookings.Name AS bookingsName,
+                            bookings.Pax AS bookingsPax,
+                            bookings.AgentId AS AgentId,
+                            agents.Name AS agentsName,
+                            bookings.Guide_RequestId AS Guide_RequestId,
+                            guide_requests.Request AS guide_requestsRequest,
+                            bookings.Arrival_Date AS Arrival_Date,
+                            bookings.Remark AS Remark,
+                            bookings.StatusId AS StatusId,
+                            booking_statuses.Status AS booking_statusesStatus,
+                            users.Fullname AS Fullname
+                            FROM bookings LEFT JOIN agents
+                            ON bookings.AgentId = agents.Id
+                            LEFT JOIN guide_requests
+                            ON bookings.Guide_RequestId = guide_requests.Id
+                            LEFT JOIN booking_statuses
+                            ON bookings.StatusId = booking_statuses.Id
+                            LEFT JOIN users
+                            ON bookings.UserId = users.Id
+                            WHERE agents.Name = 'Link In Myanmar'
+                        ;";
+                        $database->query($query);
+                        break;
+                    case '6':
+                        $query = "SELECT
+                            bookings.Id AS bookingsId,
+                            bookings.Name AS bookingsName,
+                            bookings.Pax AS bookingsPax,
+                            bookings.AgentId AS AgentId,
+                            agents.Name AS agentsName,
+                            bookings.Guide_RequestId AS Guide_RequestId,
+                            guide_requests.Request AS guide_requestsRequest,
+                            bookings.Arrival_Date AS Arrival_Date,
+                            bookings.Remark AS Remark,
+                            bookings.StatusId AS StatusId,
+                            booking_statuses.Status AS booking_statusesStatus,
+                            users.Fullname AS Fullname
+                            FROM bookings LEFT JOIN agents
+                            ON bookings.AgentId = agents.Id
+                            LEFT JOIN guide_requests
+                            ON bookings.Guide_RequestId = guide_requests.Id
+                            LEFT JOIN booking_statuses
+                            ON bookings.StatusId = booking_statuses.Id
+                            LEFT JOIN users
+                            ON bookings.UserId = users.Id
+                            WHERE agents.Name = 'Tour Mandalay'
+                        ;";
+                        $database->query($query);
+                        break;
+                    case '7':
+                        $query = "SELECT
+                            bookings.Id AS bookingsId,
+                            bookings.Name AS bookingsName,
+                            bookings.Pax AS bookingsPax,
+                            bookings.AgentId AS AgentId,
+                            agents.Name AS agentsName,
+                            bookings.Guide_RequestId AS Guide_RequestId,
+                            guide_requests.Request AS guide_requestsRequest,
+                            bookings.Arrival_Date AS Arrival_Date,
+                            bookings.Remark AS Remark,
+                            bookings.StatusId AS StatusId,
+                            booking_statuses.Status AS booking_statusesStatus,
+                            users.Fullname AS Fullname
+                            FROM bookings LEFT JOIN agents
+                            ON bookings.AgentId = agents.Id
+                            LEFT JOIN guide_requests
+                            ON bookings.Guide_RequestId = guide_requests.Id
+                            LEFT JOIN booking_statuses
+                            ON bookings.StatusId = booking_statuses.Id
+                            LEFT JOIN users
+                            ON bookings.UserId = users.Id
+                            WHERE agents.Name NOT IN ('Exo Travel', 'Tour Mandalay')
+                        ;";
+                        $database->query($query);
+                        break;
+
+                    default:
+                        $query = "SELECT
+                            bookings.Id AS bookingsId,
+                            bookings.Name AS bookingsName,
+                            bookings.Pax AS bookingsPax,
+                            bookings.AgentId AS AgentId,
+                            agents.Name AS agentsName,
+                            bookings.Guide_RequestId AS Guide_RequestId,
+                            guide_requests.Request AS guide_requestsRequest,
+                            bookings.Arrival_Date AS Arrival_Date,
+                            bookings.Remark AS Remark,
+                            bookings.StatusId AS StatusId,
+                            booking_statuses.Status AS booking_statusesStatus,
+                            users.Fullname AS Fullname
+                            FROM bookings LEFT JOIN agents
+                            ON bookings.AgentId = agents.Id
+                            LEFT JOIN guide_requests
+                            ON bookings.Guide_RequestId = guide_requests.Id
+                            LEFT JOIN booking_statuses
+                            ON bookings.StatusId = booking_statuses.Id
+                            LEFT JOIN users
+                            ON bookings.UserId = users.Id
+                        ;";
+                        $database->query($query);
+                        break;
+                }
+            }
+            else {
+                // code
+            }
+            return $r = $database->resultset();
+            break;
+
+        case 'check':
+            $Name = trim($_REQUEST['Name']);
+            $AgentId = $_REQUEST['AgentId'];
+            $Arrival_Date = $_REQUEST['Arrival_Date'];
+
+            $query = "SELECT Id FROM bookings WHERE
+                Name = :Name AND
+                AgentId = :AgentId AND
+                Arrival_Date = :Arrival_Date
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':AgentId', $AgentId);
+            $database->bind(':Arrival_Date', $Arrival_Date);
+            return $r = $database->rowCount();
+            break;
+
+        default:
+            // code...
+            break;
+    }
 }
 
 ?>

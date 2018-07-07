@@ -7,27 +7,27 @@ if ($d > 2) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Request = trim($_REQUEST['Request']);
-    $rowCount = table_guide_requests('check', NULL);
+    $rowCount = table_booking_statuses('check', NULL);
     if ($rowCount == 0) {
-        table_guide_requests('insert', NULL);
+        table_booking_statuses('insert', NULL);
     }
     else {
         $error_message = "Duplicate Entry!";
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <?php
-    $page_title = "Guide Requests";
+    $page_title = "booking_statuses.php";
     include "includes/head.html";
     ?>
     <body>
         <!-- content -->
         <div class="content">
             <?php
-            $header = "Guide Requests";
+            $header = "Booking Statuses";
             include "includes/header.html";
             include "includes/main_menu.html";
             ?>
@@ -40,29 +40,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <tr>
                                     <th>#</th>
                                     <th>
-                                        Request: &nbsp;
-                                        <input type="text" name="Request" id="Request" placeholder="Request" required>
+                                        Status:
+                                        <input type="text" name="Status" id="Status" placeholder="Status" required>
                                     </th>
                                     <th>
-                                        <button type="button" class="button medium" id="buttonSubmit" name="buttonSubmit" onclick="check2Fields('Request', 'Request');">Create</button>
+                                        <button type="button" class="button medium" id="buttonSubmit" name="buttonSubmit" onclick="check2Fields('Status', 'Status');">Create</button>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                 if (!empty($error_message)) {
-                                    echo "<tr>";
-                                    echo "<th colspan=\"3\" class=\"notice error\">";
+                                    echo "<tr class=\"notice error\">";
+                                    echo "<th colspan=\"3\">".$error_message."</th>";
                                     echo "</tr>";
                                 }
-                                $rows_guide_requests = table_guide_requests('select', NULL);
-                                foreach ($rows_guide_requests as $row_guide_requests) {
-                                    echo "<tr>";
-                                    echo "<td>".$row_guide_requests->Id."</td>";
-                                    echo "<td>".$row_guide_requests->Request."</td>";
-                                    echo "<td><a href=\"edit_guide_request.php?guide_requestsId=$row_guide_requests->Id\"><button>Edit</button></a></td>";
-                                    echo "</tr>";
-                                }
+                                    $rows_booking_statuses = table_booking_statuses('select', NULL);
+                                    foreach ($rows_booking_statuses as $row_booking_statuses) {
+                                        echo "<tr>";
+                                        echo "<td>".$row_booking_statuses->Id."</td>";
+                                        echo "<td>".$row_booking_statuses->Status."</td>";
+                                        echo "<td><a href=\"edit_booking_status.php?booking_statusesId=$row_booking_statuses->Id\">";
+                                        echo "<button type=\"button\">Edit</button></a></td>";
+                                        echo "</tr>";
+                                    }
                                 ?>
                             </tbody>
                         </table>
@@ -74,5 +75,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <!-- end of content -->
         <?php include "includes/footer.html"; ?>
     </body>
-    <script type="text/javascript" src="js/scripts.js"></script>
 </html>
