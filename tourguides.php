@@ -54,7 +54,7 @@ else {
                         echo "<!-- grid-item -->";
                         echo "<div class=\"grid-item\">";
                         echo "<ul>";
-                        echo "<li>".$row_tour_guides->Title.". ".$row_tour_guides->Name."</li>";
+                        echo "<li style=\"font-weight: bold;\">".$row_tour_guides->Title.". ".$row_tour_guides->Name."</li>";
                         echo "<li>".$row_tour_guides->Mobile."</li>";
                         echo "<li>".$row_tour_guides->License.", ".$row_tour_guides->Type."</li>";
                         echo "<li>".$row_tour_guides->Language."</li>";

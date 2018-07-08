@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $error_message = "Duplicate entry";
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -39,6 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                                 echo $error_message;
                             }
                             ?>
+                        </li>
+                        <li>
+                            Reference: &nbsp;
+                            <input type="text" name="Reference" id="Reference" placeholder="Reference from the Agent" required>
                         </li>
                         <li>
                             Grp Name: &nbsp;

@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 	}
 }
-
 ?>
 <html>
 	<?php
@@ -44,11 +43,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			<main>
 				<form id="theform" action="#" method="post">
 					<ul>
-						<?php
-						if (!empty($error_message)) {
-							echo $error_message;
-						}
-						?>
+						<li class=\"notice error\">
+							<?php
+							if (!empty($error_message)) {
+								echo $error_message;
+							}
+							?>
+						</li>
+						<li>
+							Reference: &nbsp;
+							<input type="text" name="Reference" id="Reference" value="<?php echo $row_bookings->Reference; ?>" required>
+						</li>
 						<li>
 							Name: &nbsp;
 							<input type="text" name="Name" id="Name" value="<?php echo $row_bookings->bookingsName;?>" required>

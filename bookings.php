@@ -54,15 +54,17 @@ else {
                         echo "<!-- grid-item -->";
                         echo "<div class=\"grid-item\">";
                         echo "<ul>";
-                        echo "<li style=\"font-weight: bold; text-align: center; font-size: larger;\">"
+                        echo "<li style=\"font-weight: bold; font-size:large\">".$row_bookings->Reference."</li>";
+                        echo "<li style=\"font-weight: bold;\">"
                         .$row_bookings->bookingsName." X ".$row_bookings->bookingsPax."</li>";
                         echo "<li>Arrival: &nbsp;".date('d-M-y', strtotime($row_bookings->Arrival_Date))."</li>";
-                        echo "<li>".$row_bookings->agentsName."</li>";
-                        echo "<li>".$row_bookings->guide_requestsRequest."</li>";
-                        echo "<li>".$row_bookings->booking_statusesStatus."</li>";
-                        echo "<li>".$row_bookings->Remark."</li>";
-                        echo "<li>".$row_bookings->Fullname."</li>";
-                        echo "<li style=\"text-align:center;\"><a href=\"edit_booking.php?bookingsId=$row_bookings->bookingsId\"><button>Edit</button></li>";
+                        echo "<li>Agent: &nbsp;".$row_bookings->agentsName."</li>";
+                        echo "<li>Guide: &nbsp;".$row_bookings->guide_requestsRequest."</li>";
+                        echo "<li>Status: &nbsp;".$row_bookings->booking_statusesStatus."</li>";
+                        echo "<li>Remark: &nbsp;".$row_bookings->Remark."</li>";
+                        echo "<li>User: &nbsp;".$row_bookings->Fullname."</li>";
+                        echo "<li style=\"text-align:center;\"><a href=\"edit_booking.php?bookingsId=$row_bookings->bookingsId\"><button>Edit</button></a>";
+                        echo "&nbsp;<a href=\"booking_summary.php?bookingsId=$row_bookings->bookingsId\"><button>Details</button></a></li>";
                         echo "</div>";
                         echo "<!-- end of grid-item -->";
                     }

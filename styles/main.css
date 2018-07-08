@@ -68,6 +68,11 @@ section {
     grid-area: section;
 }
 
+section ul li {
+    list-style: none;
+    display: inline;
+}
+
 main {
     grid-area: main;
 }

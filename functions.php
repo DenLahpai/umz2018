@@ -1774,6 +1774,7 @@ function table_bookings($job, $bookingsId) {
 
     switch ($job) {
         case 'insert':
+            $Reference = trim($_REQUEST['Reference']);
             $Name = trim($_REQUEST['Name']);
             $Pax = $_REQUEST['Pax'];
             $AgentId = $_REQUEST['AgentId'];
@@ -1783,6 +1784,7 @@ function table_bookings($job, $bookingsId) {
             $StatusId = $_REQUEST['StatusId'];
 
             $query = "INSERT INTO bookings (
+                Reference,
                 Name,
                 Pax,
                 AgentId,
@@ -1792,6 +1794,7 @@ function table_bookings($job, $bookingsId) {
                 StatusId,
                 UserId
                 ) VALUES(
+                :Reference,
                 :Name,
                 :Pax,
                 :AgentId,
@@ -1803,6 +1806,7 @@ function table_bookings($job, $bookingsId) {
                 )
             ;";
             $database->query($query);
+            $database->bind(':Reference', $Reference);
             $database->bind(':Name', $Name);
             $database->bind(':Pax', $Pax);
             $database->bind(':AgentId', $AgentId);
@@ -1824,6 +1828,7 @@ function table_bookings($job, $bookingsId) {
                         //Exo Travel Only!
                         $query = "SELECT
                             bookings.Id AS bookingsId,
+                            bookings.Reference AS Reference,
                             bookings.Name AS bookingsName,
                             bookings.Pax AS bookingsPax,
                             bookings.AgentId AS AgentId,
@@ -1845,11 +1850,12 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.UserId = users.Id
                             WHERE agents.Name = 'Link In Myanmar'
                         ;";
-                        $database->query($query);
                         break;
+
                     case '6':
                         $query = "SELECT
                             bookings.Id AS bookingsId,
+                            bookings.Reference AS Reference,
                             bookings.Name AS bookingsName,
                             bookings.Pax AS bookingsPax,
                             bookings.AgentId AS AgentId,
@@ -1871,11 +1877,12 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.UserId = users.Id
                             WHERE agents.Name = 'Exo Travel'
                         ;";
-                        $database->query($query);
                         break;
+
                     case '7':
                         $query = "SELECT
                             bookings.Id AS bookingsId,
+                            bookings.Reference AS Reference,
                             bookings.Name AS bookingsName,
                             bookings.Pax AS bookingsPax,
                             bookings.AgentId AS AgentId,
@@ -1897,12 +1904,12 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.UserId = users.Id
                             WHERE agents.Name NOT IN ('Exo Travel', 'Tour Mandalay')
                         ;";
-                        $database->query($query);
                         break;
 
                     default:
                         $query = "SELECT
                             bookings.Id AS bookingsId,
+                            bookings.Reference AS Reference,
                             bookings.Name AS bookingsName,
                             bookings.Pax AS bookingsPax,
                             bookings.AgentId AS AgentId,
@@ -1923,7 +1930,6 @@ function table_bookings($job, $bookingsId) {
                             LEFT JOIN users
                             ON bookings.UserId = users.Id
                         ;";
-                        $database->query($query);
                         break;
                 }
             }
@@ -1933,6 +1939,7 @@ function table_bookings($job, $bookingsId) {
                         //Exo Travel Only!
                         $query = "SELECT
                             bookings.Id AS bookingsId,
+                            bookings.Reference AS Reference,
                             bookings.Name AS bookingsName,
                             bookings.Pax AS bookingsPax,
                             bookings.AgentId AS AgentId,
@@ -1955,12 +1962,12 @@ function table_bookings($job, $bookingsId) {
                             WHERE agents.Name = 'Exo Travel'
                             AND bookings.Id = :bookingsId
                         ;";
-                        $database->query($query);
                         break;
                     case '6':
                         // Tour Mandalay only
                         $query = "SELECT
                             bookings.Id AS bookingsId,
+                            bookings.Reference AS Reference,
                             bookings.Name AS bookingsName,
                             bookings.Pax AS bookingsPax,
                             bookings.AgentId AS AgentId,
@@ -1983,15 +1990,15 @@ function table_bookings($job, $bookingsId) {
                             WHERE agents.Name = 'Tour Mandalay'
                             AND bookings.Id = :bookingsId
                         ;";
-                        $database->query($query);
                         break;
                     case '7':
                         // All except Exo and Tour Mandalay
                         $query = "SELECT
                             bookings.Id AS bookingsId,
+                            bookings.Reference AS Reference,
                             bookings.Name AS bookingsName,
                             bookings.Pax AS bookingsPax,
-                            bookings.AgentId AS AgentId,
+                            bookings.AgentId AS A$database->query($query);gentId,
                             agents.Name AS agentsName,
                             bookings.Guide_RequestId AS Guide_RequestId,
                             guide_requests.Request AS guide_requestsRequest,
@@ -2011,13 +2018,13 @@ function table_bookings($job, $bookingsId) {
                             WHERE agents.Name NOT IN ('Exo Travel', 'Tour Mandalay')
                             AND bookings.Id = :bookingsId
                         ;";
-                        $database->query($query);
                         break;
 
                     default:
                         //All
                         $query = "SELECT
                             bookings.Id AS bookingsId,
+                            bookings.Reference AS Reference,
                             bookings.Name AS bookingsName,
                             bookings.Pax AS bookingsPax,
                             bookings.AgentId AS AgentId,
@@ -2039,15 +2046,172 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.UserId = users.Id
                             WHERE bookings.Id = :bookingsId
                         ;";
-                        $database->query($query);
                         break;
                 }
             }
+            $database->query($query);
             $database->bind(':bookingsId', $bookingsId);
             return $r = $database->resultset();
             break;
 
+        case 'search':
+            $search = '%'.$bookingsId.'%';
+
+            switch ($DepartmentId) {
+                case '5':
+                    //Exo Travel Only!
+                    $query = "SELECT
+                        bookings.Id AS bookingsId,
+                        bookings.Reference AS Reference,
+                        bookings.Name AS bookingsName,
+                        bookings.Pax AS bookingsPax,
+                        bookings.AgentId AS AgentId,
+                        agents.Name AS agentsName,
+                        bookings.Guide_RequestId AS Guide_RequestId,
+                        guide_requests.Request AS guide_requestsRequest,
+                        bookings.Arrival_Date AS Arrival_Date,
+                        bookings.Remark AS Remark,
+                        bookings.StatusId AS StatusId,
+                        booking_statuses.Status AS booking_statusesStatus,
+                        users.Fullname AS Fullname
+                        FROM bookings LEFT JOIN agents
+                        ON bookings.AgentId = agents.Id
+                        LEFT JOIN guide_requests
+                        ON bookings.Guide_RequestId = guide_requests.Id
+                        LEFT JOIN booking_statuses
+                        ON bookings.StatusId = booking_statuses.Id
+                        LEFT JOIN users
+                        ON bookings.UserId = users.Id
+                        WHERE agents.Name = 'Exo Travel'
+                        AND CONCAT (
+                        bookings.Reference,
+                        bookings.Name,
+                        agents.Name,
+                        guide_requests.Request,
+                        bookings.Remark,
+                        booking_statuses.Status,
+                        users.Fullname
+                        ) LIKE :search
+                    ;";
+                    break;
+
+                case '6':
+                    // Tour Mandalay only
+                    $query = "SELECT
+                        bookings.Id AS bookingsId,
+                        bookings.Reference AS Reference,
+                        bookings.Name AS bookingsName,
+                        bookings.Pax AS bookingsPax,
+                        bookings.AgentId AS AgentId,
+                        agents.Name AS agentsName,
+                        bookings.Guide_RequestId AS Guide_RequestId,
+                        guide_requests.Request AS guide_requestsRequest,
+                        bookings.Arrival_Date AS Arrival_Date,
+                        bookings.Remark AS Remark,
+                        bookings.StatusId AS StatusId,
+                        booking_statuses.Status AS booking_statusesStatus,
+                        users.Fullname AS Fullname
+                        FROM bookings LEFT JOIN agents
+                        ON bookings.AgentId = agents.Id
+                        LEFT JOIN guide_requests
+                        ON bookings.Guide_RequestId = guide_requests.Id
+                        LEFT JOIN booking_statuses
+                        ON bookings.StatusId = booking_statuses.Id
+                        LEFT JOIN users
+                        ON bookings.UserId = users.Id
+                        WHERE agents.Name = 'Tour Mandalay'
+                        AND CONCAT (
+                        bookings.Reference,
+                        bookings.Name,
+                        agents.Name,
+                        guide_requests.Request,
+                        bookings.Remark,
+                        booking_statuses.Status,
+                        users.Fullname
+                        ) LIKE :search
+                    ;";
+                    break;
+
+                case '7':
+                    // All except Exo and Tour Mandalay
+                    $query = "SELECT
+                        bookings.Id AS bookingsId,
+                        bookings.Reference AS Reference,
+                        bookings.Name AS bookingsName,
+                        bookings.Pax AS bookingsPax,
+                        bookings.AgentId AS AgentId,
+                        agents.Name AS agentsName,
+                        bookings.Guide_RequestId AS Guide_RequestId,
+                        guide_requests.Request AS guide_requestsRequest,
+                        bookings.Arrival_Date AS Arrival_Date,
+                        bookings.Remark AS Remark,
+                        bookings.StatusId AS StatusId,
+                        booking_statuses.Status AS booking_statusesStatus,
+                        users.Fullname AS Fullname
+                        FROM bookings LEFT JOIN agents
+                        ON bookings.AgentId = agents.Id
+                        LEFT JOIN guide_requests
+                        ON bookings.Guide_RequestId = guide_requests.Id
+                        LEFT JOIN booking_statuses
+                        ON bookings.StatusId = booking_statuses.Id
+                        LEFT JOIN users
+                        ON bookings.UserId = users.Id
+                        WHERE agents.Name NOT IN ('Exo Travel', 'Tour Mandalay')
+                        AND CONCAT (
+                        bookings.Reference,
+                        bookings.Name,
+                        agents.Name,
+                        guide_requests.Request,
+                        bookings.Remark,
+                        booking_statuses.Status,
+                        users.Fullname
+                        ) LIKE :search
+                    ;";
+                    break;
+
+                default:
+                //All
+                    $query = "SELECT
+                        bookings.Id AS bookingsId,
+                        bookings.Reference AS Reference,
+                        bookings.Name AS bookingsName,
+                        bookings.Pax AS bookingsPax,
+                        bookings.AgentId AS AgentId,
+                        agents.Name AS agentsName,
+                        bookings.Guide_RequestId AS Guide_RequestId,
+                        guide_requests.Request AS guide_requestsRequest,
+                        bookings.Arrival_Date AS Arrival_Date,
+                        bookings.Remark AS Remark,
+                        bookings.StatusId AS StatusId,
+                        booking_statuses.Status AS booking_statusesStatus,
+                        users.Fullname AS Fullname
+                        FROM bookings LEFT JOIN agents
+                        ON bookings.AgentId = agents.Id
+                        LEFT JOIN guide_requests
+                        ON bookings.Guide_RequestId = guide_requests.Id
+                        LEFT JOIN booking_statuses
+                        ON bookings.StatusId = booking_statuses.Id
+                        LEFT JOIN users
+                        ON bookings.UserId = users.Id
+                        WHERE CONCAT (
+                        bookings.Reference,
+                        bookings.Name,
+                        agents.Name,
+                        guide_requests.Request,
+                        bookings.Remark,
+                        booking_statuses.Status,
+                        users.Fullname
+                        ) LIKE :search
+                    ;";
+                    break;
+        }
+        $database->query($query);
+        $database->bind(':search', $search);
+        return $r = $database->resultset();
+        break;
+
         case 'update':
+            $Reference = trim($_REQUEST['Reference']);
             $Name = trim($_REQUEST['Name']);
             $Pax = $_REQUEST['Pax'];
             $AgentId = $_REQUEST['AgentId'];
@@ -2057,6 +2221,7 @@ function table_bookings($job, $bookingsId) {
             $StatusId = $_REQUEST['StatusId'];
 
             $query = "UPDATE bookings SET
+                Reference = :Reference,
                 Name = :Name,
                 Pax = :Pax,
                 AgentId = :AgentId,
@@ -2068,6 +2233,7 @@ function table_bookings($job, $bookingsId) {
                 WHERE Id = :bookingsId
             ;";
             $database->query($query);
+            $database->bind(':Reference', $Reference);
             $database->bind(':Name', $Name);
             $database->bind(':Pax', $Pax);
             $database->bind(':AgentId', $AgentId);
@@ -2083,16 +2249,19 @@ function table_bookings($job, $bookingsId) {
             break;
 
         case 'check':
+            $Reference = trim($_REQUEST['Reference']);
             $Name = trim($_REQUEST['Name']);
             $AgentId = $_REQUEST['AgentId'];
             $Arrival_Date = $_REQUEST['Arrival_Date'];
 
             $query = "SELECT Id FROM bookings WHERE
+                Reference = :Reference AND
                 Name = :Name AND
                 AgentId = :AgentId AND
                 Arrival_Date = :Arrival_Date
             ;";
             $database->query($query);
+            $database->bind(':Reference', $Reference);
             $database->bind(':Name', $Name);
             $database->bind(':AgentId', $AgentId);
             $database->bind(':Arrival_Date', $Arrival_Date);

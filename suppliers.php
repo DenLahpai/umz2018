@@ -59,7 +59,7 @@ else {
                         echo "<!-- grid-item -->";
                         echo "<div class=\"grid-item\">";
                         echo "<ul>";
-                        echo "<li>".$row_suppliers->Name."</li>";
+                        echo "<li style=\"font-weight: bold;\">".$row_suppliers->Name."</li>";
                         echo "<li>".$row_suppliers->Address."</li>";
                         echo "<li>".$row_suppliers->City."</li>";
                         echo "<li>".$row_suppliers->Phone."</li>";
