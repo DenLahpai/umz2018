@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         echo "<td>".$row_booking_statuses->Id."</td>";
                                         echo "<td>".$row_booking_statuses->Status."</td>";
                                         echo "<td><a href=\"edit_booking_status.php?booking_statusesId=$row_booking_statuses->Id\">";
-                                        echo "<button type=\"button\">Edit</button></a></td>";
+                                        echo "<button class=\"button link\" type=\"button\">Edit</button></a></td>";
                                         echo "</tr>";
                                     }
                                 ?>

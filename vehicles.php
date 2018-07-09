@@ -58,7 +58,7 @@ else {
                         echo "<li>Type: &nbsp;".$row_vehicles->Type."</li>";
                         echo "<li>Seats: &nbsp;".$row_vehicles->Seats."</li>";
                         echo "<li>Supplier: &nbsp;".$row_vehicles->suppliersName."</li>";
-                        echo "<li style=\"text-align: center;\"><a href=\"edit_vehicle.php?vehiclesId=$row_vehicles->Id\"><button>Edit</button></a></li>";
+                        echo "<li style=\"text-align: center;\"><a href=\"edit_vehicle.php?vehiclesId=$row_vehicles->Id\"><button class=\"button link\">Edit</button></a></li>";
                         echo "</ul>";
                         echo "</div>";
                         echo "<!-- end of grid-item -->";

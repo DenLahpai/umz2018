@@ -58,7 +58,7 @@ else {
                         echo "<li>".$row_drivers->Mobile."</li>";
                         echo "<li>".$row_drivers->License." Class: ".$row_drivers->Class."</li>";
                         echo "<li>".$row_drivers->suppliersName."</li>";
-                        echo "<li style=\"text-align: center;\"><a href=\"edit_driver.php?driversId=$row_drivers->Id\"><button>Edit</button></a></li>";
+                        echo "<li style=\"text-align: center;\"><a href=\"edit_driver.php?driversId=$row_drivers->Id\"><button class=\"button link\">Edit</button></a></li>";
                         echo "</ul>";
                         echo "</div>";
                         echo "<!-- end of grid-item -->";

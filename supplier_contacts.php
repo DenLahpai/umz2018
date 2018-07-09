@@ -60,7 +60,7 @@ else {
                         echo "<li style=\"font-weight: bold;\">".$row_supplier_contacts->suppliersName."</li>";
                         echo "<li>".$row_supplier_contacts->Mobile."</li>";
                         echo "<li><a href=\"mailto:$row_supplier_contacts->Email\">".$row_supplier_contacts->Email."</a></li>";
-                        echo "<li style=\"text-align: center;\"><a href=\"edit_supplier_contact.php?supplier_contactsId=$row_supplier_contacts->supplier_contactsId\"><button>Edit</button></a></li>";
+                        echo "<li style=\"text-align: center;\"><a href=\"edit_supplier_contact.php?supplier_contactsId=$row_supplier_contacts->supplier_contactsId\"><button class=\"button link\">Edit</button></a></li>";
                         echo "</ul>";
                         echo "</div>";
                         echo "<!-- end of grid-item -->";

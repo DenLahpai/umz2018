@@ -61,7 +61,7 @@ else {
                         echo "<li style=\"font-weight: bold;\">".$row_agent_contacts->AgentName."</li>";
                         echo "<li>Mobile: &nbsp;".$row_agent_contacts->Mobile."</li>";
                         echo "<li><a href=\"mailto:$row_agent_contacts->Email\">".$row_agent_contacts->Email."</a></li>";
-                        echo "<li style=\"text-align: center;\"><a href=\"edit_agent_contact.php?agent_contactsId=$row_agent_contacts->Id\"><button>Edit</button></a></li>";
+                        echo "<li style=\"text-align: center;\"><a href=\"edit_agent_contact.php?agent_contactsId=$row_agent_contacts->Id\"><button class=\"button link\">Edit</button></a></li>";
                         echo "</ul>";
                         echo "</div>";
                         echo "<!-- end of grid-item>";

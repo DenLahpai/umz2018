@@ -64,7 +64,7 @@ else {
                         echo "<li>".$row_suppliers->City."</li>";
                         echo "<li>".$row_suppliers->Phone."</li>";
                         echo "<li>".$row_suppliers->Email."</li>";
-                        echo "<li style=\"text-align: center;\"><a href=\"edit_supplier.php?suppliersId=$row_suppliers->Id\"><button>Edit</button></a></li>";
+                        echo "<li style=\"text-align: center;\"><a href=\"edit_supplier.php?suppliersId=$row_suppliers->Id\"><button class=\"button link\">Edit</button></a></li>";
                         echo "</ul>";
                         echo "</div>";
                         echo "<!-- end of grid-item -->";

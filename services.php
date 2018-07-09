@@ -64,7 +64,7 @@ else {
                         echo "<li>".$row_services->Additional."</li>";
                         echo "<li>Remark: ".$row_services->Remark."</li>";
                         echo "<li>".$row_services->Status."</li>";
-                        echo "<li style=\"text-align: center;\"><a href=\"edit_service.php?servicesId=$row_services->Id\"><button>Edit</button></a></li>";
+                        echo "<li style=\"text-align: center;\"><a href=\"edit_service.php?servicesId=$row_services->Id\"><button class=\"button link\">Edit</button></a></li>";
                         echo "</ul>";
                         echo "</div>";
                         echo "<!-- end of grid-item -->";

@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     echo "<tr>";
                                     echo "<td>".$row_guide_requests->Id."</td>";
                                     echo "<td>".$row_guide_requests->Request."</td>";
-                                    echo "<td><a href=\"edit_guide_request.php?guide_requestsId=$row_guide_requests->Id\"><button>Edit</button></a></td>";
+                                    echo "<td><a href=\"edit_guide_request.php?guide_requestsId=$row_guide_requests->Id\"><button class=\"button link\">Edit</button></a></td>";
                                     echo "</tr>";
                                 }
                                 ?>

@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     echo "<tr>";
                                     echo "<td>".$row_service_types->Code."</td>";
                                     echo "<td>".$row_service_types->Name."</td>";
-                                    echo "<td><a href=\"edit_service_type.php?service_typesId=$row_service_types->Id\"><button>Edit</button></a></td>";
+                                    echo "<td><a href=\"edit_service_type.php?service_typesId=$row_service_types->Id\"><button class=\"button link\">Edit</button></a></td>";
                                     echo "</tr>";
                                 }
                                 ?>

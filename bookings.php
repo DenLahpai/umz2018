@@ -63,8 +63,8 @@ else {
                         echo "<li>Status: &nbsp;".$row_bookings->booking_statusesStatus."</li>";
                         echo "<li>Remark: &nbsp;".$row_bookings->Remark."</li>";
                         echo "<li>User: &nbsp;".$row_bookings->Fullname."</li>";
-                        echo "<li style=\"text-align:center;\"><a href=\"edit_booking.php?bookingsId=$row_bookings->bookingsId\"><button>Edit</button></a>";
-                        echo "&nbsp;<a href=\"booking_summary.php?bookingsId=$row_bookings->bookingsId\"><button>Details</button></a></li>";
+                        echo "<li style=\"text-align:center;\"><a href=\"edit_booking.php?bookingsId=$row_bookings->bookingsId\"><button class=\"button link\">Edit</button></a>";
+                        echo "&nbsp;<a href=\"booking_summary.php?bookingsId=$row_bookings->bookingsId\"><button class=\"button link\">Details</button></a></li>";
                         echo "</div>";
                         echo "<!-- end of grid-item -->";
                     }

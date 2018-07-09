@@ -178,6 +178,10 @@ footer {
     color: white;
 }
 
+.button.link {
+    padding: 6px;
+}
+
 input {
     padding: 6px;
 }
