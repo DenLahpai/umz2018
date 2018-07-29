@@ -88,6 +88,10 @@ main ul li input {
     border-bottom: 1px solid #FC8325;
 }
 
+aside {
+    grid-area: aside;
+}
+
 input[class="wide"]{
     width: 60%;
 }
@@ -184,6 +188,21 @@ footer {
 
 input {
     padding: 6px;
+}
+
+.table_services table {
+    margin: 6px auto;
+    border-collapse: collapse;
+}
+
+.table_services table thead tr th {
+    border: 1px solid silver;
+    padding: 6px 12px;
+}
+
+.table_services table tbody tr td {
+    border: 1px solid silver;
+    padding: 6px 12px;
 }
 
 /*styles for tablets*/

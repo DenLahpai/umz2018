@@ -27,9 +27,17 @@ foreach ($rows_bookings as $row_bookings) {
             include "includes/main_menu.html";
             ?>
             <section>
-                <?php include "includes/booking_menu.html"; ?>    
+                <?php include "includes/booking_menu.html"; ?>
             </section>
+            <main>
+                <div class="grid-div" id="display1">
+                    <?php
+
+                    ?>
+                </div>
+            </main>
         </div>
         <!-- end of content -->
+        <?php include "includes/footer.html"; ?>
     </body>
 </html>

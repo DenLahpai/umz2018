@@ -2274,4 +2274,29 @@ function table_bookings($job, $bookingsId) {
     }
 }
 
+//function to filter search services to be added in services_booking
+function search_services($Service_TypeId) {
+    $database = new Database();
+    $query = "SELECT
+        services.Id,
+        services.SupplierId,
+        suppliers.Name AS suppliersName,
+        services.Service_TypeId,
+        service_types.Code,
+        service_types.Name AS service_typesName,
+        services.Service,
+        services.Additional,
+        services.Remark,
+        services.Status
+        FROM services LEFT JOIN suppliers
+        ON services.SupplierId = suppliers.Id
+        LEFT JOIN service_types
+        ON services.Service_TypeId = service_types.Id
+        WHERE services.Service_TypeId = :Service_TypeId
+    ;";
+    $database->query($query);
+    $database->bind(':Service_TypeId', $Service_TypeId);
+    return $r = $database->resultset();
+}
+
 ?>
