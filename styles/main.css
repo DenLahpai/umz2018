@@ -5,11 +5,11 @@
 }
 
 body {
-    background: #1E8BDC;
+    background:#8AD5F7;
 }
 
 .content {
-    background: #8AD5F7;
+    background: silver;
     display: grid;
     grid-gap: 3px;
     grid-template-columns: repeat(6, 1fr);
@@ -108,7 +108,7 @@ textarea[class="wide"] {
 }
 
 .grid-div div {
-    background: #EAFF00;
+    background: #8AD5F7;
     border: 1px white solid;
 }
 .grid-div div:nth-child(even) {
@@ -136,6 +136,7 @@ textarea[class="wide"] {
 
 footer {
     text-align: center;
+    background: #511695;
     color: white;
     padding: 12px;
 }

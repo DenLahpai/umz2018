@@ -60,8 +60,7 @@ if (isset($_REQUEST['buttonSubmit'])) {
                         </li>
                     </ul>
                 </form>
-            </main>
-            <aside>
+                <!-- table_services -->
                 <div class="table_services">
                     <table>
                         <thead>
@@ -97,6 +96,10 @@ if (isset($_REQUEST['buttonSubmit'])) {
                         </tbody>
                     </table>
                 </div>
+                <!-- end of table_services -->
+            </main>
+            <aside>
+                
             </aside>
         </div>
         <!-- end of content -->
