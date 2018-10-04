@@ -10,6 +10,8 @@ foreach ($rows_bookings as $row_bookings) {
     // code...
 }
 
+// TODO add ban for other sales
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -30,7 +32,7 @@ foreach ($rows_bookings as $row_bookings) {
                 <?php include "includes/booking_menu.html"; ?>
             </section>
             <main>
-                <div class="grid-div" id="display1">
+                <div class="grid-div">
                     <?php
 
                     ?>

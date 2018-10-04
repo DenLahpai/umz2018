@@ -2299,4 +2299,45 @@ function search_services($Service_TypeId) {
     return $r = $database->resultset();
 }
 
+//function to insert data to the table services_booking
+function services_booking($job, $bookingsId) {
+    $database = new Database();
+    $UserId = $_SESSION['usersId'];
+
+    switch ($job) {
+        case 'insert':
+            $servicesId = $_REQUEST['servicesId'];
+            $Service_Date = $_REQUEST['Service_Date'];
+            $query = "INSERT INTO services_booking (
+                BookingsId,
+                ServiceId,
+                Service_Date,
+                UserId
+                ) VALUES(
+                :BookingsId,
+                :ServiceId,
+                :Service_Date,
+                :UserId
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':BookingsId', $bookingsId);
+            $database->bind(':ServiceId', $servicesId);
+            $database->bind(':Service_Date', $Service_Date);
+            $database->bind(':UserId', $UserId);
+            if ($database->execute()) {
+                header("location:booking_summary.php?bookingsId=$bookingsId");
+            }
+            break;
+        case 'select':
+
+
+
+
+        default:
+            // code...
+            break;
+    }
+}
+
 ?>

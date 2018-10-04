@@ -12,7 +12,12 @@ foreach ($rows_bookings as $row_bookings) {
 
 if (isset($_REQUEST['buttonSubmit'])) {
     $Service_TypeId = $_REQUEST['Service_TypeId'];
+    $Service_Date = $_REQUEST['Service_Date'];
     $rows_services = search_services($Service_TypeId);
+}
+
+if (isset($_REQUEST['buttonAdd'])) {
+    services_booking('insert', $bookingsId);
 }
 
 ?>
@@ -56,6 +61,10 @@ if (isset($_REQUEST['buttonSubmit'])) {
                             </select>
                         </li>
                         <li>
+                            Service Date:
+                            <input type="date" name="Service_Date" id="Service_Date" value="<?php echo $Service_Date; ?>">
+                        </li>
+                        <li>
                             <button type="submit" class="button medium" name="buttonSubmit" id="buttonSubmit">Search</button>
                         </li>
                     </ul>
@@ -83,11 +92,13 @@ if (isset($_REQUEST['buttonSubmit'])) {
                                     echo "<form action=\"#\" method=\"post\">";
                                     echo "<tr>";
                                     echo "<td><input type=\"number\" name=\"servicesId\" value=\"$row_services->Id\" min=\"1\" max=\"9999\" readonly></td>";
+                                    echo "<td class=\"invisible\"><input type=\"text\" name=\"bookingsId\" value=\"$bookingsId\">";
+                                    echo "<input type=\"date\" name=\"Service_Date\" value=\"$Service_Date\"></td>";
                                     echo "<td>".$row_services->suppliersName."</td>";
                                     echo "<td>".$row_services->Service."</td>";
                                     echo "<td>".$row_services->Additional."</td>";
                                     echo "<td>".$row_services->Remark."</td>";
-                                    echo "<td><button type=\"submit\" class=\"button link\">Add</button></td>";
+                                    echo "<td><button type=\"submit\" name=\"buttonAdd\" class=\"button link\">Add</button></td>";
                                     echo "</tr>";
                                     echo "</form>";
                                 }
@@ -99,7 +110,7 @@ if (isset($_REQUEST['buttonSubmit'])) {
                 <!-- end of table_services -->
             </main>
             <aside>
-                
+
             </aside>
         </div>
         <!-- end of content -->

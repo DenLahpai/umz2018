@@ -206,6 +206,10 @@ input {
     padding: 6px 12px;
 }
 
+.invisible {
+    display: none;
+}
+
 /*styles for tablets*/
 @media screen and (min-width: 768px) {
     .grid-div {
