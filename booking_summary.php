@@ -10,7 +10,32 @@ foreach ($rows_bookings as $row_bookings) {
     // code...
 }
 
-// TODO add ban for other sales
+//checking if the user has the right to view this page
+$rows_users = table_users('select', $_SESSION['usersId']);
+foreach ($rows_users as $row_users) {
+    $DepartmentId = $row_users->DepartmentId;
+}
+switch ($DepartmentId) {
+    case '5':
+        if ($row_bookings->agentsName != 'Exo Travel') {
+            header("location: logout.php");
+        }
+        break;
+    case '6':
+        if ($row_bookings->agentsName != 'Tour Mandalay') {
+            header("location: logout.php");
+        }
+        break;
+    case '7':
+        if ($row_bookings->agentsName == 'Exo Travel' || $row_bookings->agentsName == 'Tour Mandalay') {
+            header("location: logout.php");
+        }
+        break;
+
+    default:
+        // code...
+        break;
+}
 
 ?>
 <!DOCTYPE html>

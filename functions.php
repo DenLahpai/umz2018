@@ -1848,11 +1848,12 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.StatusId = booking_statuses.Id
                             LEFT JOIN users
                             ON bookings.UserId = users.Id
-                            WHERE agents.Name = 'Link In Myanmar'
+                            WHERE agents.Name = 'Exo Travel'
                         ;";
                         break;
 
                     case '6':
+                    // Tour Mandalay Only!
                         $query = "SELECT
                             bookings.Id AS bookingsId,
                             bookings.Reference AS Reference,
@@ -1875,11 +1876,12 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.StatusId = booking_statuses.Id
                             LEFT JOIN users
                             ON bookings.UserId = users.Id
-                            WHERE agents.Name = 'Exo Travel'
+                            WHERE agents.Name = 'Tour Mandalay'
                         ;";
                         break;
 
                     case '7':
+                    // All except Exo Travel and Tour Mandalay
                         $query = "SELECT
                             bookings.Id AS bookingsId,
                             bookings.Reference AS Reference,
@@ -2330,10 +2332,41 @@ function services_booking($job, $bookingsId) {
             }
             break;
         case 'select':
+            $query = "SELECT
+                services_booking.ServiceId,
+                services.Service_TypeId,
+                services_booking.Service_Date,
+                services_booking.Pickup,
+                services_booking.Pickup_Time,
+                services_booking.Dropoff,
+                services_booking.Dropoff_Time,
+                services_booking.VehicleId,
+                services_booking.DriverId,
+                services_booking.Tour_GuideId,
+                services_booking.Special_RQ,
+                services_booking.Remark as services_bookingRemark,
+                services_booking.StatusId,
+                services_booking.UserId,
+                service_types.Code AS ServiceType_Code,
+                services.Service,
+                services.Additional,
+                services.Remark,
+                suppliers.Name AS suppliersName,
+                suppliers.Address,
+                suppliers.City,
+                suppliers.Phone,
+                suppliers.Email,
+                vehicles.License AS vehiclesLicense,
+                vehicles.Type AS vehiclesType,
+                vehicles.Seats AS vehicleSeat,
+                drivers.Tile AS driversTitle,
+                drivers.Name AS driversName,
+                drivers.Mobile AS driversMobile,
+                drivers.License AS driversLicense,
+                drivers.Class AS driversClass,
 
-
-
-
+            ;";
+            // TODO
         default:
             // code...
             break;
