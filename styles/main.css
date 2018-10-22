@@ -77,6 +77,10 @@ main {
     grid-area: main;
 }
 
+main h3 {
+    text-align: center;
+}
+
 main ul li {
     list-style: none;
     margin: 12px;

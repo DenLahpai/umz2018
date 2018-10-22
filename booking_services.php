@@ -44,7 +44,7 @@ if (isset($_REQUEST['buttonSubmit'])) {
 }
 
 if (isset($_REQUEST['buttonAdd'])) {
-    services_booking('insert', $bookingsId);
+    table_services_booking('insert', $bookingsId);
 }
 
 ?>
