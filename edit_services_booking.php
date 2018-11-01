@@ -23,7 +23,6 @@ foreach ($rows_users as $row_users) {
     $DepartmentId = $row_users->DepartmentId;
 }
 
-
 switch ($DepartmentId) {
     case '5':
         if ($row_bookings->agentsName != 'Exo Travel') {
@@ -45,6 +44,10 @@ switch ($DepartmentId) {
         // code...
         break;
 }
+
+//getting data from the table tour_guides
+$rows_tour_guides = table_tour_guides('select', NULL);
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -65,39 +68,32 @@ switch ($DepartmentId) {
                 <?php include "includes/booking_menu.html"; ?>
             </section>
             <main>
-                <form id="theform" action="#" method="post">
-                    <ul>
-                        <li class="notice error">
-                            <?php
-                            if (!empty($error_message)) {
-                                echo $error_message;
-                            }
-                            ?>
-                        </li>
-                        <li style="font-weight: bold">
-                            Service:
-                            <?php
-                            echo $row_services_booking->service_typesCode." - ".$row_services_booking->Service;
-                            ?>
-                        </li>
-                        <li>
-                            Date:
-                            <input type="date" name="Service_Date" value="<?php echo $row_services_booking->Service_Date; ?>">
-                        </li>
-                        <li>
-                            Pickup:
-                            <input type="text" name="Pickup" value="<?php echo $row_services_booking->Pickup; ?>">
-                            @
-                            <input type="time" name="Pickup_Time" value="<?php echo $row_services_booking->Pickup_Time;?>">
-                        </li>
-                        <li>
-                            Dropoff:
-                            <input type="text" name="Dropoff" value="<?php echo $row_services_booking->Dropoff; ?>">
-                            @
-                            <input type="time" name="Dropoff_Time" value="<?php echo $row_services_booking->Dropoff_Time; ?>">
-                        </li>
-                    </ul>
-                </form>
+                <?php
+                switch ($row_services_booking->Service_TypeId) {
+                    case '1':
+                        // TODO
+                        break;
+
+                    case '2':
+                        // TODO
+                        break;
+
+                    case '3':
+                        // TODO
+                        break;
+
+                    case '4':
+                        include "edit_services_booking_forms/guide.html";
+                        break;
+
+                    case '5':
+                        // TODO
+                        break;
+                    default:
+                        // code...
+                        break;
+                }
+                ?>
             </main>
         </div>
         <!-- end of content -->

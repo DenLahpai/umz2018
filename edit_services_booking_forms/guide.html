@@ -1,0 +1,48 @@
+<form id="theform" action="#" method="post">
+    <ul>
+        <li class="notice error">
+            <?php
+            if (!empty($error_message)) {
+                echo $error_message;
+            }
+            ?>
+        </li>
+        <li style="font-weight: bold">
+            Service: &nbsp;
+            <?php
+            echo $row_services_booking->service_typesCode." - ".$row_services_booking->Service;
+            ?>
+        </li>
+        <li>
+            Date: &nbsp;
+            <input type="date" name="Service_Date" value="<?php echo $row_services_booking->Service_Date; ?>">
+        </li>
+        <li>
+            Pickup: &nbsp;
+            <input type="text" name="Pickup" id="Pickup" value="<?php echo $row_services_booking->Pickup; ?>">
+            @
+            <input type="time" name="Pickup_Time" value="<?php echo $row_services_booking->Pickup_Time;?>">
+        </li>
+        <li>
+            Dropoff: &nbsp;
+            <input type="text" name="Dropoff" value="<?php echo $row_services_booking->Dropoff; ?>">
+            @
+            <input type="time" name="Dropoff_Time" value="<?php echo $row_services_booking->Dropoff_Time; ?>">
+        </li>
+        <li>
+            Assign Guide: &nbsp;
+            <select id="Tour_GuideId" name="Tour_GuideId">
+                <option value="0">Select One</option>
+                <?php
+                foreach ($rows_tour_guides as $row_tour_guides) {
+                    echo "<option value=\"$row_tour_guides->Id\">".$row_tour_guides->Title.".".$row_tour_guides->Name."</option>";
+                }
+                ?>
+            </select>
+        </li>
+        <li>
+            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit"
+            onclick="check2Fields('Pickup','Service_TypeId');">Update</button>
+        </li>
+    </ul>
+</form>
