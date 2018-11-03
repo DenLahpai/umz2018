@@ -74,63 +74,6 @@ $rows_tour_guides = table_tour_guides('select', NULL);
                 <?php include "includes/booking_menu.html"; ?>
             </section>
             <main>
-                <form id="theform" action="#" method="post">
-                    <ul>
-                        <li class="notice error">
-                            <?php
-                            if (!empty($error_message)) {
-                                echo $error_message;
-                            }
-                            ?>
-                        </li>
-                        <li style="font-weight: bold;">
-                            Service: &nbsp;
-                            <?php echo $row_services_booking->service_typesCode." - ".$row_services_booking->Service; ?>
-                        </li>
-                        <li>
-                            Date: &nbsp;
-                            <input type="date" name="Service_Date" value="<?php echo $row_services_booking->Service_Date; ?>">
-                        </li>
-                        <li>
-                            Pickup: &nbsp;
-                            <input type="text" name="Pickup" id="Pickup" value="<?php echo $row_services_booking->Pickup; ?>">
-                            @
-                            <input type="time" name="Pickup_Time" value="<?php echo $row_services_booking->Pickup_Time;?>">
-                        </li>
-                        <li>
-                            Dropoff: &nbsp;
-                            <input type="text" name="Dropoff" id="Dropoff" value="<?php echo $row_services_booking->Dropoff; ?>">
-                            @
-                            <input type="time" name="Dropoff_Time" value="<?php echo $row_services_booking->Dropoff_Time; ?>">
-                        </li>
-                        <li>
-                            Assign Vehicle: &nbsp;
-                            <select name="VehicleId" id="Vehicleid">
-                                <option value="0">Select One</option>
-                                <?php
-                                foreach ($rows_vehicles as $row_vehicles) {
-                                    echo "<option value=\"$row_vehicles->Id\">".$row_vehicles->Type." - ".$row_vehicles->License."</option>";
-                                }
-                                ?>
-                            </select>
-                        </li>
-                        <li>
-                            Assign Driver: &nbsp;
-                            <select name="DriverId" id="DriverId">
-                                <option value="0">Select One</option>
-                                <?php
-                                foreach ($rows_drivers as $row_drivers) {
-                                    echo "<option value=\"$row_drivers->Id\">".$row_drivers->Name."</option>";
-                                }
-                                ?>
-                            </select>
-                        </li>
-                        <li>
-                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit"
-                            onclick="check2Fields('Pickup','Dropoff');">Update</button>
-                        </li>
-                    </ul>
-                </form>
                 <?php
                 // switch ($row_services_booking->Service_TypeId) {
                 //     case '1':
@@ -152,6 +95,10 @@ $rows_tour_guides = table_tour_guides('select', NULL);
                 //     case '5':
                 //         // TODO
                 //         break;
+                //
+                //     case '6':
+                // code...
+                //        break;
                 //     default:
                 //         // code...
                 //         break;

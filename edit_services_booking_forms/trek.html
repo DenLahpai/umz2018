@@ -7,9 +7,11 @@
             }
             ?>
         </li>
-        <li style="font-weight: bold;">
+        <li style="font-weight: bold">
             Service: &nbsp;
-            <?php echo $row_services_booking->service_typesCode." - ".$row_services_booking->Service; ?>
+            <?php
+            echo $row_services_booking->service_typesCode." - ".$row_services_booking->Service;
+            ?>
         </li>
         <li>
             Date: &nbsp;
@@ -28,23 +30,12 @@
             <input type="time" name="Dropoff_Time" value="<?php echo $row_services_booking->Dropoff_Time; ?>">
         </li>
         <li>
-            Assign Vehicle: &nbsp;
-            <select name="VehicleId" id="Vehicleid">
+            Assign Guide: &nbsp;
+            <select id="Tour_GuideId" name="Tour_GuideId">
                 <option value="0">Select One</option>
                 <?php
-                foreach ($rows_vehicles as $row_vehicles) {
-                    echo "<option value=\"$row_vehicles->Id\">".$row_vehicles->Type." - ".$row_vehicles->License."</option>";
-                }
-                ?>
-            </select>
-        </li>
-        <li>
-            Assign Driver: &nbsp;
-            <select name="DriverId" id="DriverId">
-                <option value="0">Select One</option>
-                <?php
-                foreach ($rows_drivers as $row_drivers) {
-                    echo "<option value=\"$row_drivers->Id\">".$row_drivers->Name."</option>";
+                foreach ($rows_tour_guides as $row_tour_guides) {
+                    echo "<option value=\"$row_tour_guides->Id\">".$row_tour_guides->Title.".".$row_tour_guides->Name."</option>";
                 }
                 ?>
             </select>

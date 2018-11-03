@@ -1,0 +1,25 @@
+<form id="theform" action="#" method="post">
+    <ul>
+        <li class="notice error">
+            <?php
+            if (!empty($error_message)) {
+                echo $error_message;
+            }
+            ?>
+        </li>
+        <li style="font-weight: bold">
+            Service: &nbsp;
+            <?php
+            echo $row_services_booking->service_typesCode." - ".$row_services_booking->Service;
+            ?>
+        </li>
+        <li>
+            Date: &nbsp;
+            <input type="date" name="Service_Date" id="Service_Date" value="<?php echo $row_services_booking->Service_Date; ?>">
+        </li>
+        <li>
+            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit"
+            onclick="check2Fields('Service_Date','Service_Date');">Update</button>
+        </li>
+    </ul>
+</form>
