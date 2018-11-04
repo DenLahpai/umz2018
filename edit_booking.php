@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </select>
                         </li>
                         <li>
-                        	Guide: &nbsp;
+                        	Guide Request: &nbsp;
                         	<select id="Guide_RequestId" name="Guide_RequestId">
                         		<?php
                         		$rows_guide_requests = table_guide_requests('select', NULL);
@@ -96,6 +96,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         		?>
                         	</select>
                         </li>
+						<li>
+							Guide: &nbsp;
+							<select id="Tour_GuideId" name="Tour_GuideId">
+								<?php
+								$rows_tour_guides = table_tour_guides('select', NULL);
+								foreach ($rows_tour_guides as $row_tour_guides) {
+									if ($row_tour_guides->Id == $row_bookings->Tour_GuideId) {
+										echo "<option value=\"$row_tour_guides->Id\" id=\"guideOption$row_tour_guides->Id\" selected>".$row_tour_guides->Name."</option>";
+									}
+									else {
+										echo "<option value=\"$row_tour_guides->Id\" id=\"guideOption$row_tour_guides->Id\">".$row_tour_guides->Name."</option>";
+									}
+								}
+								?>
+							</select>
+							<button type="button" class="button search" id="modalOpen" name="button">Search Guide</button>
+						</li>
                         <li>
                         	Arrival Date: &nbsp;
                         	<input type="date" name="Arrival_Date" id="Arrival_Date" value="<?php echo $row_bookings->Arrival_Date; ?>">
@@ -128,7 +145,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			</main>
 		</div>
 		<!--end of content-->
-		<?php include "includes/footer.html"; ?>
+		<?php
+		include "includes/modal-guide_select.php";
+		include "includes/footer.html";
+		?>
 	</body>
 	<script type="text/javascript" src="js/scripts.js"></script>
+	<script type="text/javascript" src="js/modal.js"></script>
 </html>

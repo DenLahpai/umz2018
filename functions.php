@@ -688,7 +688,7 @@ function table_tour_guides($job, $tour_guidesId) {
             break;
         case 'select':
             if ($tour_guidesId == "" ||$tour_guidesId == NULL || empty($tour_guidesId)) {
-                $query = "SELECT * FROM tour_guides ;";
+                $query = "SELECT * FROM tour_guides ORDER BY Name ;";
                 $database->query($query);
             }
             else {
@@ -1779,6 +1779,7 @@ function table_bookings($job, $bookingsId) {
             $Pax = $_REQUEST['Pax'];
             $AgentId = $_REQUEST['AgentId'];
             $Guide_RequestId = $_REQUEST['Guide_RequestId'];
+            $Tour_GuideId = $_REQUEST['Tour_GuideId'];
             $Arrival_Date = $_REQUEST['Arrival_Date'];
             $Remark = trim($_REQUEST['Remark']);
             $StatusId = $_REQUEST['StatusId'];
@@ -1789,6 +1790,7 @@ function table_bookings($job, $bookingsId) {
                 Pax,
                 AgentId,
                 Guide_RequestId,
+                Tour_GuideId,
                 Arrival_Date,
                 Remark,
                 StatusId,
@@ -1799,6 +1801,7 @@ function table_bookings($job, $bookingsId) {
                 :Pax,
                 :AgentId,
                 :Guide_RequestId,
+                :Tour_GuideId,
                 :Arrival_Date,
                 :Remark,
                 :StatusId,
@@ -1811,6 +1814,7 @@ function table_bookings($job, $bookingsId) {
             $database->bind(':Pax', $Pax);
             $database->bind(':AgentId', $AgentId);
             $database->bind(':Guide_RequestId', $Guide_RequestId);
+            $database->bind(':Tour_GuideId', $Tour_GuideId);
             $database->bind(':Arrival_Date', $Arrival_Date);
             $database->bind(':Remark', $Remark);
             $database->bind(':StatusId', $StatusId);
@@ -1835,6 +1839,9 @@ function table_bookings($job, $bookingsId) {
                             agents.Name AS agentsName,
                             bookings.Guide_RequestId AS Guide_RequestId,
                             guide_requests.Request AS guide_requestsRequest,
+                            bookings.Tour_GuideId AS Tour_GuideId,
+                            tour_guides.Title AS tour_guidesTitle,
+                            tour_guides.Name AS tour_guidesName,
                             bookings.Arrival_Date AS Arrival_Date,
                             bookings.Remark AS Remark,
                             bookings.StatusId AS StatusId,
@@ -1848,6 +1855,8 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.StatusId = booking_statuses.Id
                             LEFT JOIN users
                             ON bookings.UserId = users.Id
+                            LEFT JOIN tour_guides
+                            ON bookings.Tour_GuideId = tour_guides.Id
                             WHERE agents.Name = 'Exo Travel'
                         ;";
                         break;
@@ -1863,6 +1872,9 @@ function table_bookings($job, $bookingsId) {
                             agents.Name AS agentsName,
                             bookings.Guide_RequestId AS Guide_RequestId,
                             guide_requests.Request AS guide_requestsRequest,
+                            bookings.Tour_GuideId AS Tour_GuideId,
+                            tour_guides.Title AS tour_guidesTitle,
+                            tour_guides.Name AS tour_guidesName,
                             bookings.Arrival_Date AS Arrival_Date,
                             bookings.Remark AS Remark,
                             bookings.StatusId AS StatusId,
@@ -1876,6 +1888,8 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.StatusId = booking_statuses.Id
                             LEFT JOIN users
                             ON bookings.UserId = users.Id
+                            LEFT JOIN tour_guides
+                            ON bookings.Tour_GuideId = tour_guides.Id
                             WHERE agents.Name = 'Tour Mandalay'
                         ;";
                         break;
@@ -1891,6 +1905,9 @@ function table_bookings($job, $bookingsId) {
                             agents.Name AS agentsName,
                             bookings.Guide_RequestId AS Guide_RequestId,
                             guide_requests.Request AS guide_requestsRequest,
+                            bookings.Tour_GuideId AS Tour_GuideId,
+                            tour_guides.Title AS tour_guidesTitle,
+                            tour_guides.Name AS tour_guidesName,
                             bookings.Arrival_Date AS Arrival_Date,
                             bookings.Remark AS Remark,
                             bookings.StatusId AS StatusId,
@@ -1904,6 +1921,8 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.StatusId = booking_statuses.Id
                             LEFT JOIN users
                             ON bookings.UserId = users.Id
+                            LEFT JOIN tour_guides
+                            ON bookings.Tour_GuideId = tour_guides.Id
                             WHERE agents.Name NOT IN ('Exo Travel', 'Tour Mandalay')
                         ;";
                         break;
@@ -1918,6 +1937,9 @@ function table_bookings($job, $bookingsId) {
                             agents.Name AS agentsName,
                             bookings.Guide_RequestId AS Guide_RequestId,
                             guide_requests.Request AS guide_requestsRequest,
+                            bookings.Tour_GuideId AS Tour_GuideId,
+                            tour_guides.Title AS tour_guidesTitle,
+                            tour_guides.Name AS tour_guidesName,
                             bookings.Arrival_Date AS Arrival_Date,
                             bookings.Remark AS Remark,
                             bookings.StatusId AS StatusId,
@@ -1931,6 +1953,8 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.StatusId = booking_statuses.Id
                             LEFT JOIN users
                             ON bookings.UserId = users.Id
+                            LEFT JOIN tour_guides
+                            ON bookings.Tour_GuideId = tour_guides.Id
                         ;";
                         break;
                 }
@@ -1948,6 +1972,9 @@ function table_bookings($job, $bookingsId) {
                             agents.Name AS agentsName,
                             bookings.Guide_RequestId AS Guide_RequestId,
                             guide_requests.Request AS guide_requestsRequest,
+                            bookings.Tour_GuideId AS Tour_GuideId,
+                            tour_guides.Title AS tour_guidesTitle,
+                            tour_guides.Name AS tour_guidesName,
                             bookings.Arrival_Date AS Arrival_Date,
                             bookings.Remark AS Remark,
                             bookings.StatusId AS StatusId,
@@ -1961,6 +1988,8 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.StatusId = booking_statuses.Id
                             LEFT JOIN users
                             ON bookings.UserId = users.Id
+                            LEFT JOIN tour_guides
+                            ON bookings.Tour_GuideId = tour_guides.Id
                             WHERE agents.Name = 'Exo Travel'
                             AND bookings.Id = :bookingsId
                         ;";
@@ -1976,6 +2005,9 @@ function table_bookings($job, $bookingsId) {
                             agents.Name AS agentsName,
                             bookings.Guide_RequestId AS Guide_RequestId,
                             guide_requests.Request AS guide_requestsRequest,
+                            bookings.Tour_GuideId AS Tour_GuideId,
+                            tour_guides.Title AS tour_guidesTitle,
+                            tour_guides.Name AS tour_guidesName,
                             bookings.Arrival_Date AS Arrival_Date,
                             bookings.Remark AS Remark,
                             bookings.StatusId AS StatusId,
@@ -1989,6 +2021,8 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.StatusId = booking_statuses.Id
                             LEFT JOIN users
                             ON bookings.UserId = users.Id
+                            LEFT JOIN tour_guides
+                            ON bookings.Tour_GuideId = tour_guides.Id
                             WHERE agents.Name = 'Tour Mandalay'
                             AND bookings.Id = :bookingsId
                         ;";
@@ -2004,6 +2038,9 @@ function table_bookings($job, $bookingsId) {
                             agents.Name AS agentsName,
                             bookings.Guide_RequestId AS Guide_RequestId,
                             guide_requests.Request AS guide_requestsRequest,
+                            bookings.Tour_GuideId AS Tour_GuideId,
+                            tour_guides.Title AS tour_guidesTitle,
+                            tour_guides.Name AS tour_guidesName,
                             bookings.Arrival_Date AS Arrival_Date,
                             bookings.Remark AS Remark,
                             bookings.StatusId AS StatusId,
@@ -2017,6 +2054,8 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.StatusId = booking_statuses.Id
                             LEFT JOIN users
                             ON bookings.UserId = users.Id
+                            LEFT JOIN tour_guides
+                            ON bookings.Tour_GuideId = tour_guides.Id
                             WHERE agents.Name NOT IN ('Exo Travel', 'Tour Mandalay')
                             AND bookings.Id = :bookingsId
                         ;";
@@ -2033,6 +2072,9 @@ function table_bookings($job, $bookingsId) {
                             agents.Name AS agentsName,
                             bookings.Guide_RequestId AS Guide_RequestId,
                             guide_requests.Request AS guide_requestsRequest,
+                            bookings.Tour_GuideId AS Tour_GuideId,
+                            tour_guides.Title AS tour_guidesTitle,
+                            tour_guides.Name AS tour_guidesName,
                             bookings.Arrival_Date AS Arrival_Date,
                             bookings.Remark AS Remark,
                             bookings.StatusId AS StatusId,
@@ -2046,6 +2088,8 @@ function table_bookings($job, $bookingsId) {
                             ON bookings.StatusId = booking_statuses.Id
                             LEFT JOIN users
                             ON bookings.UserId = users.Id
+                            LEFT JOIN tour_guides
+                            ON bookings.Tour_GuideId = tour_guides.Id
                             WHERE bookings.Id = :bookingsId
                         ;";
                         break;
@@ -2071,6 +2115,9 @@ function table_bookings($job, $bookingsId) {
                         agents.Name AS agentsName,
                         bookings.Guide_RequestId AS Guide_RequestId,
                         guide_requests.Request AS guide_requestsRequest,
+                        bookings.Tour_GuideId AS Tour_GuideId,
+                        tour_guides.Title AS tour_guidesTitle,
+                        tour_guides.Name AS tour_guidesName,
                         bookings.Arrival_Date AS Arrival_Date,
                         bookings.Remark AS Remark,
                         bookings.StatusId AS StatusId,
@@ -2084,12 +2131,15 @@ function table_bookings($job, $bookingsId) {
                         ON bookings.StatusId = booking_statuses.Id
                         LEFT JOIN users
                         ON bookings.UserId = users.Id
+                        LEFT JOIN tour_guides
+                        ON bookings.Tour_GuideId = tour_guides.Id
                         WHERE agents.Name = 'Exo Travel'
                         AND CONCAT (
                         bookings.Reference,
                         bookings.Name,
                         agents.Name,
                         guide_requests.Request,
+                        tour_guides.Name,
                         bookings.Remark,
                         booking_statuses.Status,
                         users.Fullname
@@ -2108,6 +2158,9 @@ function table_bookings($job, $bookingsId) {
                         agents.Name AS agentsName,
                         bookings.Guide_RequestId AS Guide_RequestId,
                         guide_requests.Request AS guide_requestsRequest,
+                        bookings.Tour_GuideId AS Tour_GuideId,
+                        tour_guides.Title AS tour_guidesTitle,
+                        tour_guides.Name AS tour_guidesName,
                         bookings.Arrival_Date AS Arrival_Date,
                         bookings.Remark AS Remark,
                         bookings.StatusId AS StatusId,
@@ -2121,12 +2174,15 @@ function table_bookings($job, $bookingsId) {
                         ON bookings.StatusId = booking_statuses.Id
                         LEFT JOIN users
                         ON bookings.UserId = users.Id
+                        LEFT JOIN tour_guides
+                        ON bookings.Tour_GuideId = tour_guides.Id
                         WHERE agents.Name = 'Tour Mandalay'
                         AND CONCAT (
                         bookings.Reference,
                         bookings.Name,
                         agents.Name,
                         guide_requests.Request,
+                        tour_guides.Name,
                         bookings.Remark,
                         booking_statuses.Status,
                         users.Fullname
@@ -2145,6 +2201,9 @@ function table_bookings($job, $bookingsId) {
                         agents.Name AS agentsName,
                         bookings.Guide_RequestId AS Guide_RequestId,
                         guide_requests.Request AS guide_requestsRequest,
+                        bookings.Tour_GuideId AS Tour_GuideId,
+                        tour_guides.Title AS tour_guidesTitle,
+                        tour_guides.Name AS tour_guidesName,
                         bookings.Arrival_Date AS Arrival_Date,
                         bookings.Remark AS Remark,
                         bookings.StatusId AS StatusId,
@@ -2158,12 +2217,15 @@ function table_bookings($job, $bookingsId) {
                         ON bookings.StatusId = booking_statuses.Id
                         LEFT JOIN users
                         ON bookings.UserId = users.Id
+                        LEFT JOIN tour_guides
+                        ON bookings.Tour_GuideId = tour_guides.Id
                         WHERE agents.Name NOT IN ('Exo Travel', 'Tour Mandalay')
                         AND CONCAT (
                         bookings.Reference,
                         bookings.Name,
                         agents.Name,
                         guide_requests.Request,
+                        tour_guides.Name,
                         bookings.Remark,
                         booking_statuses.Status,
                         users.Fullname
@@ -2182,6 +2244,9 @@ function table_bookings($job, $bookingsId) {
                         agents.Name AS agentsName,
                         bookings.Guide_RequestId AS Guide_RequestId,
                         guide_requests.Request AS guide_requestsRequest,
+                        bookings.Tour_GuideId AS Tour_GuideId,
+                        tour_guides.Title AS tour_guidesTitle,
+                        tour_guides.Name AS tour_guidesName,
                         bookings.Arrival_Date AS Arrival_Date,
                         bookings.Remark AS Remark,
                         bookings.StatusId AS StatusId,
@@ -2195,11 +2260,14 @@ function table_bookings($job, $bookingsId) {
                         ON bookings.StatusId = booking_statuses.Id
                         LEFT JOIN users
                         ON bookings.UserId = users.Id
+                        LEFT JOIN tour_guides
+                        ON bookings.Tour_GuideId = tour_guides.Id
                         WHERE CONCAT (
                         bookings.Reference,
                         bookings.Name,
                         agents.Name,
                         guide_requests.Request,
+                        tour_guides.Name,
                         bookings.Remark,
                         booking_statuses.Status,
                         users.Fullname
@@ -2218,6 +2286,7 @@ function table_bookings($job, $bookingsId) {
             $Pax = $_REQUEST['Pax'];
             $AgentId = $_REQUEST['AgentId'];
             $Guide_RequestId = $_REQUEST['Guide_RequestId'];
+            $Tour_GuideId = $_REQUEST['Tour_GuideId'];
             $Arrival_Date = $_REQUEST['Arrival_Date'];
             $Remark = trim($_REQUEST['Remark']);
             $StatusId = $_REQUEST['StatusId'];
@@ -2228,6 +2297,7 @@ function table_bookings($job, $bookingsId) {
                 Pax = :Pax,
                 AgentId = :AgentId,
                 Guide_RequestId = :Guide_RequestId,
+                Tour_GuideId = :Tour_GuideId,
                 Arrival_Date = :Arrival_Date,
                 Remark = :Remark,
                 StatusId = :StatusId,
@@ -2240,6 +2310,7 @@ function table_bookings($job, $bookingsId) {
             $database->bind(':Pax', $Pax);
             $database->bind(':AgentId', $AgentId);
             $database->bind(':Guide_RequestId', $Guide_RequestId);
+            $database->bind(':Tour_GuideId', $Tour_GuideId);
             $database->bind(':Arrival_Date', $Arrival_Date);
             $database->bind(':Remark', $Remark);
             $database->bind(':StatusId', $StatusId);

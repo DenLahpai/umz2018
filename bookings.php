@@ -59,7 +59,7 @@ else {
                         .$row_bookings->bookingsName." X ".$row_bookings->bookingsPax."</li>";
                         echo "<li>Arrival: &nbsp;".date('d-M-y', strtotime($row_bookings->Arrival_Date))."</li>";
                         echo "<li>Agent: &nbsp;".$row_bookings->agentsName."</li>";
-                        echo "<li>Guide: &nbsp;".$row_bookings->guide_requestsRequest."</li>";
+                        echo "<li>Guide: &nbsp;".$row_bookings->guide_requestsRequest." - ".$row_bookings->tour_guidesTitle.". ".$row_bookings->tour_guidesName."</li>";
                         echo "<li>Status: &nbsp;".$row_bookings->booking_statusesStatus."</li>";
                         echo "<li>Remark: &nbsp;".$row_bookings->Remark."</li>";
                         echo "<li>User: &nbsp;".$row_bookings->Fullname."</li>";

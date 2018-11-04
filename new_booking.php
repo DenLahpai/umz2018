@@ -77,19 +77,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                         </li>
                         <li>
                             Guide: &nbsp;
-                            <select name="Tour_GuideId">
-                                <option class="modal-content" value="">Select</option>
+                            <select name="Tour_GuideId" id="Tour_GuideId">
+                                <option value="">Select</option>
                                 <?php
                                 // getting data from the table tour_guides
                                 $rows_tour_guides = table_tour_guides('select', NULL);
                                 foreach ($rows_tour_guides as $row_tour_guides) {
-                                    echo "<option class=\"modal-content\" value=\"$row_tour_guides->Id\">".$row_tour_guides->Name."</option>";
+                                    echo "<option value=\"$row_tour_guides->Id\" id=\"guideOption$row_tour_guides->Id\">".$row_tour_guides->Name."</option>";
                                 }
                                 ?>
                             </select>
-                            <button type="button" class="button search" id="modal-button" name="button">
-                                Search Guide
-                            </button>
+                            <button type="button" class="button search" id="modalOpen" name="button">Search Guide</button>
+                        </li>
                         <li>
                             Arrival Date: &nbsp;
                             <input type="date" name="Arrival_Date" id="Arrival_Date" required>
@@ -117,35 +116,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             </main>
         </div>
         <!-- end of content -->
-        <!-- modal -->
         <?php
-        // TODO finish styles for modals and create a js files and contents
+        include "includes/modal-guide_select.php";
+        include "includes/footer.html";
         ?>
-        <div class="modal">
-            <!-- modal-content -->
-            <div class="modal-content">
-                <!-- modal-header -->
-                <div class="modal-header">
-                    <span id="modal-close">&times;</span>
-                    <h3>Select a Guide!</h3>
-                </div>
-                <!-- end of modal-header -->
-                <!-- modal-body -->
-                <div class="modal-body">
-                    <?php
-                    foreach ($rows_tour_guides as $row_tour_guides) {
-                        echo "<button value=\"$row_tour_guides->Id\" class=\"modal-button\">".$row_tour_guides->Name."</button>";
-
-                    }
-                    ?>
-
-                </div>
-                <!-- end of modal-body -->
-            </div>
-            <!-- end of modal-content -->
-        </div>
-        <!-- end of modal -->
-        <?php include "includes/footer.html"; ?>
     </body>
     <script type="text/javascript" src="js/scripts.js"></script>
+    <script type="text/javascript" src="js/modal.js"></script>
 </html>
