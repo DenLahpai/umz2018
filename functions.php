@@ -2612,6 +2612,42 @@ function table_services_booking($job, $bookingsId) {
             return $r = $database->resultset();
             break;
 
+        case 'update':
+            $Service_Date = $_REQUEST['Service_Date'];
+            $Pickup = trim($_REQUEST['Pickup']);
+            $Pickup_Time = $_REQUEST['Pickup_Time'];
+            $Dropoff = trim($_REQUEST['Dropoff']);
+            $Dropoff_Time = $_REQUEST['Dropoff_Time'];
+            $Tour_GuideId = $_REQUEST['Tour_GuideId'];
+            $VehicleId = $_REQUEST['VehicleId'];
+            $DriverId = $_REQUEST['DriverId'];
+
+            $query = "UPDATE services_booking SET
+                Service_Date = :Service_Date,
+                Pickup = :Pickup,
+                Pickup_Time = :Pickup_Time,
+                Dropoff = :Dropoff,
+                Dropoff_Time = :Dropoff_Time,
+                Tour_GuideId = :Tour_GuideId,
+                VehicleId = :VehicleId,
+                DriverId = :DriverId
+                WHERE Id = :bookingsId
+            ;";
+            $database->query($query);
+            $database->bind(':Service_Date', $Service_Date);
+            $database->bind(':Pickup', $Pickup);
+            $database->bind(':Pickup_Time', $Pickup_Time);
+            $database->bind(':Dropoff', $Dropoff);
+            $database->bind(':Dropoff_Time', $Dropoff_Time);
+            $database->bind(':Tour_GuideId', $Tour_GuideId);
+            $database->bind(':VehicleId', $VehicleId);
+            $database->bind(':DriverId', $DriverId);
+            $database->bind(':bookingsId', $bookingsId);
+            if ($database->execute()) {
+                header("location: edit_services_booking.php?services_bookingId=$bookingsId");
+            }
+            break;
+
         default:
             // code...
             break;

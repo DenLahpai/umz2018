@@ -25,7 +25,7 @@
         </li>
         <li>
             Dropoff: &nbsp;
-            <input type="text" name="Dropoff" value="<?php echo $row_services_booking->Dropoff; ?>">
+            <input type="text" name="Dropoff" id="Dropoff" value="<?php echo $row_services_booking->Dropoff; ?>">
             @
             <input type="time" name="Dropoff_Time" value="<?php echo $row_services_booking->Dropoff_Time; ?>">
         </li>
@@ -34,15 +34,23 @@
             <select id="Tour_GuideId" name="Tour_GuideId">
                 <option value="0">Select One</option>
                 <?php
+                // getting data from the table tour_guides
+                $rows_tour_guides = table_tour_guides('select', NULL);
                 foreach ($rows_tour_guides as $row_tour_guides) {
-                    echo "<option value=\"$row_tour_guides->Id\">".$row_tour_guides->Title.".".$row_tour_guides->Name."</option>";
+                    if ($row_services_booking->Tour_GuideId == $row_tour_guides->Id) {
+                        echo "<option value=\"$row_tour_guides->Id\" id=\"guideOption$row_tour_guides->Id\" selected>".$row_tour_guides->Name."</option>";
+                    }
+                    else {
+                        echo "<option value=\"$row_tour_guides->Id\" id=\"guideOption$row_tour_guides->Id\">".$row_tour_guides->Name."</option>";
+                    }
                 }
                 ?>
             </select>
+            <button type="button" class="button search" id="modalOpen" name="button">Search Guide</button>
         </li>
         <li>
             <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit"
-            onclick="check2Fields('Pickup','Service_TypeId');">Update</button>
+            onclick="check2Fields('Pickup','Dropoff');">Update</button>
         </li>
     </ul>
 </form>

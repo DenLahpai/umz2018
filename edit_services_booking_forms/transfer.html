@@ -33,6 +33,10 @@
                 <option value="0">Select One</option>
                 <?php
                 foreach ($rows_vehicles as $row_vehicles) {
+                    if ($row_services_booking->VehicleId == $row_vehicles->Id) {
+                        echo "<option value=\"$row_vehicles->Id\" selected>".$row_vehicles->Type." - ".$row_vehicles->License."</option>";
+                    }
+                    else {}
                     echo "<option value=\"$row_vehicles->Id\">".$row_vehicles->Type." - ".$row_vehicles->License."</option>";
                 }
                 ?>
@@ -44,7 +48,12 @@
                 <option value="0">Select One</option>
                 <?php
                 foreach ($rows_drivers as $row_drivers) {
-                    echo "<option value=\"$row_drivers->Id\">".$row_drivers->Name."</option>";
+                    if ($row_services_booking->DriverId == $row_drivers->Id) {
+                        echo "<option value=\"$row_drivers->Id\" selected>".$row_drivers->Name."</option>";
+                    }
+                    else {
+                        echo "<option value=\"$row_drivers->Id\">".$row_drivers->Name."</option>";
+                    }
                 }
                 ?>
             </select>

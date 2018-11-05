@@ -54,6 +54,10 @@ $rows_drivers = table_drivers('select', NULL);
 //getting data from the table tour_guides
 $rows_tour_guides = table_tour_guides('select', NULL);
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    table_services_booking('update', $services_bookingId);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -75,39 +79,43 @@ $rows_tour_guides = table_tour_guides('select', NULL);
             </section>
             <main>
                 <?php
-                // switch ($row_services_booking->Service_TypeId) {
-                //     case '1':
-                //         // TODO
-                //         break;
-                //
-                //     case '2':
-                //         // TODO
-                //         break;
-                //
-                //     case '3':
-                //         // TODO
-                //         break;
-                //
-                //     case '4':
-                //         include "edit_services_booking_forms/guide.html";
-                //         break;
-                //
-                //     case '5':
-                //         // TODO
-                //         break;
-                //
-                //     case '6':
-                // code...
-                //        break;
-                //     default:
-                //         // code...
-                //         break;
-                // }
+                switch ($row_services_booking->Service_TypeId) {
+                    case '1':
+                        include "edit_services_booking_forms/transfer.html";
+                        break;
+
+                    case '2':
+                        // include "edit_services_booking_forms/boat.html";
+                        break;
+
+                    case '3':
+                        // include "edit_services_booking_forms/restaurant.html";
+                        break;
+
+                    case '4':
+                        include "edit_services_booking_forms/guide.html";
+                        break;
+
+                    case '5':
+                        // include "edit_services_booking_forms/trek.html";
+                        break;
+
+                    default:
+                        // code...
+                        break;
+                }
                 ?>
             </main>
         </div>
         <!-- end of content -->
-        <?php include "includes/footer.html"; ?>
+        <?php
+        if ($row_services_booking->Service_TypeId == 4) {
+            include "includes/modal-guide_select.php";
+        }
+        include "includes/footer.html";
+        ?>
+
     </body>
     <script type="text/javascript" src="js/scripts.js"></script>
+    <script type="text/javascript" src="js/modal.js"></script>
 </html>
