@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "helvetica";
+}
+
+body {
+    background: #fff;
+}
+
+.content {
+
+}
+
+header {
+      align-items: center;
+    justify-content: center;
+}
+
+header h2 {
+    text-align: center;
+    text-decoration: underline;
+}
