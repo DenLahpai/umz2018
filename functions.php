@@ -2466,6 +2466,7 @@ function table_services_booking($job, $bookingsId) {
                     ON services_booking.Tour_GuideId = tour_guides.Id
                     LEFT OUTER JOIN service_statuses
                     ON services_booking.StatusId = service_statuses.Id
+                    WHERE services_booking.Visible = TRUE
                 ;";
                 $database->query($query);
             }
@@ -2534,6 +2535,7 @@ function table_services_booking($job, $bookingsId) {
                     LEFT OUTER JOIN service_statuses
                     ON services_booking.StatusId = service_statuses.Id
                     WHERE bookings.Id = :bookingsId
+                    AND services_booking.Visible = TRUE
                 ;";
                 $database->query($query);
                 $database->bind('bookingsId', $bookingsId);
@@ -2646,7 +2648,7 @@ function table_services_booking($job, $bookingsId) {
             if ($database->execute()) {
                 header("location: edit_services_booking.php?services_bookingId=$bookingsId");
             }
-            break;
+            break;        
 
         default:
             // code...

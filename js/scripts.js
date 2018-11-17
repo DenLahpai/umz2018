@@ -75,3 +75,8 @@ function compareDates(date1, date2) {
         date2.style.background = 'red';
     }
 }
+
+// function to go back
+function goBack() {
+    window.history.back();    
+}

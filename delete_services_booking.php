@@ -8,6 +8,7 @@ foreach ($rows_services_booking as $row_services_booking) {
     $bookingsId = $row_services_booking->BookingsId;
 }
 
+
 // //getting bookingsId
 // $bookingsId = trim($_REQUEST['bookingsId']);
 //
@@ -45,31 +46,32 @@ switch ($DepartmentId) {
         break;
 }
 
-//getting data from the table vehicles
-$rows_vehicles = table_vehicles('select', NULL);
-
-//getting data from the table drivers
-$rows_drivers = table_drivers('select', NULL);
-
-//getting data from the table tour_guides
-$rows_tour_guides = table_tour_guides('select', NULL);
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    table_services_booking('update', $services_bookingId);
+//deleting the service by setting the Visible Field no false
+if (isset($_REQUEST['buttonYes'])) {
+    $delete = new Database();
+    $query_delete = "UPDATE services_booking SET
+        Visible = FALSE
+        WHERE Id = :services_bookingId
+    ;";
+    $delete->query($query_delete);
+    $delete->bind(':services_bookingId', $services_bookingId);
+    if ($delete->execute()) {
+        header("location:booking_summary.php?bookingsId=$bookingsId");
+    }
 }
 
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <?php
-    $page_title = "Edit Services Booking";
+    $page_title = "Delete Service";
     include "includes/head.html";
     ?>
     <body>
         <!-- content -->
         <div class="content">
             <?php
-            $header = "Edit Service Booking: ";
+            $header = "Delete Service Booking: ";
             $header .= $row_bookings->Reference;
             include "includes/header.html";
             include "includes/main_menu.html";
@@ -78,44 +80,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?php include "includes/booking_menu.html"; ?>
             </section>
             <main>
-                <?php
-                switch ($row_services_booking->Service_TypeId) {
-                    case '1':
-                        include "edit_services_booking_forms/transfer.html";
-                        break;
-
-                    case '2':
-                        include "edit_services_booking_forms/boat.html";
-                        break;
-
-                    case '3':
-                        include "edit_services_booking_forms/restaurant.html";
-                        break;
-
-                    case '4':
-                        include "edit_services_booking_forms/guide.html";
-                        break;
-
-                    case '5':
-                        include "edit_services_booking_forms/trek.html";
-                        break;
-
-                    default:
-                        // code...
-                        break;
-                }
-                ?>
+                <h3>
+                    <form class="" action="#" method="post">
+                        Are you sure to delete the below service from this booking?
+                        <br>
+                        <button type="submit" class="button link" name="buttonYes">Yes</button>
+                        <button type="button" class="button link" name="button" onclick="goBack();">No</button>
+                    </form>
+                </h3>
             </main>
         </div>
         <!-- end of content -->
-        <?php
-        if ($row_services_booking->Service_TypeId == 4) {
-            include "includes/modal-guide_select.php";
-        }
-        include "includes/footer.html";
-        ?>
-
     </body>
     <script type="text/javascript" src="js/scripts.js"></script>
-    <script type="text/javascript" src="js/modal.js"></script>
 </html>
