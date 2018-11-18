@@ -8,10 +8,6 @@ foreach ($rows_services_booking as $row_services_booking) {
     $bookingsId = $row_services_booking->BookingsId;
 }
 
-
-// //getting bookingsId
-// $bookingsId = trim($_REQUEST['bookingsId']);
-//
 //getting data from the table bookings
 $rows_bookings = table_bookings('select', $bookingsId);
 foreach ($rows_bookings as $row_bookings) {
@@ -59,7 +55,6 @@ if (isset($_REQUEST['buttonYes'])) {
         header("location:booking_summary.php?bookingsId=$bookingsId");
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
