@@ -83,8 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <li>
                         	Guide Request: &nbsp;
                         	<select id="Guide_RequestId" name="Guide_RequestId">
-                        		<?php
-                        		$rows_guide_requests = table_guide_requests('select', NULL);
+								<?php
+								$rows_guide_requests = table_guide_requests('select', NULL);
                         		foreach ($rows_guide_requests as $row_guide_requests) {
                         			if ($row_guide_requests->Id == $row_bookings->Guide_RequestId) {
                         				echo "<option value=\"$row_guide_requests->Id\" selected>".$row_guide_requests->Request."</option>";
@@ -94,6 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         			}
                         		}
                         		?>
+
                         	</select>
                         </li>
 						<li>
@@ -110,6 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 									}
 								}
 								?>
+								<option value="0" class="highlight red">No Guide</option>
 							</select>
 							<button type="button" class="button search" id="modalOpen" name="button">Search Guide</button>
 						</li>

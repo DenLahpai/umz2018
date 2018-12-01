@@ -215,6 +215,11 @@ input {
     display: none;
 }
 
+.highlight.red {
+    background: red;
+    color: white;
+}
+
 /******************************** Styles for modals ************************************/
 
 .modal {

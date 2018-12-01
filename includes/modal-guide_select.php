@@ -19,6 +19,7 @@
                 echo "<button value=\"$row_tour_guides_modal->Id\" id=\"$row_tour_guides_modal->Id\" onclick=\"selectGuide($row_tour_guides_modal->Id)\">".$row_tour_guides_modal->Name." - ".$row_tour_guides_modal->Language."</button>";
             }
             ?>
+            <button value="0" id="0" name="button" onclick="selectGuide(0)" class="highlight red">No Guide</button>
         </div>
         <!-- end of modal-body -->
     </div>
