@@ -13,11 +13,25 @@ body {
 }
 
 header {
-      align-items: center;
+    align-items: center;
     justify-content: center;
 }
 
 header h2 {
     text-align: center;
     text-decoration: underline;
+}
+
+main {
+
+}
+
+main table {
+    margin: 12px auto;
+    border-collapse: collapse;
+}
+
+main table tr th, main table tr td {
+    border: 1px solid #000;
+    padding: 6px 12px;
 }

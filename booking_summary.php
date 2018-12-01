@@ -81,9 +81,9 @@ switch ($DepartmentId) {
                                 echo "<li>Station Guide: ".$row_services_booking->tour_guidesTitle.". ";
                                 echo $row_services_booking->tour_guidesName." - ";
                                 echo $row_services_booking->tour_guidesMobile."</li>";
-
                             }
-
+                            echo "<li>Status: ".$row_services_booking->service_statusesCode."</li>";
+                            
                             echo "<li style=\"text-align:center;\"><a href=\"edit_services_booking.php?services_bookingId=$row_services_booking->Id\">";
                             echo "<button class=\"button link\">Edit</button></a>&nbsp;";
 
@@ -98,7 +98,7 @@ switch ($DepartmentId) {
                     ?>
                 </div>
                 <!-- end of grid-div -->
-                
+
                 <h3>Transfers</h3>
                 <!-- grid-div -->
                 <div class="grid-div">
