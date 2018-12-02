@@ -102,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 							<select id="Tour_GuideId" name="Tour_GuideId">
 								<?php
 								$rows_tour_guides = table_tour_guides('select', NULL);
+
 								foreach ($rows_tour_guides as $row_tour_guides) {
 									if ($row_tour_guides->Id == $row_bookings->Tour_GuideId) {
 										echo "<option value=\"$row_tour_guides->Id\" id=\"guideOption$row_tour_guides->Id\" selected>".$row_tour_guides->Name."</option>";
@@ -110,8 +111,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 										echo "<option value=\"$row_tour_guides->Id\" id=\"guideOption$row_tour_guides->Id\">".$row_tour_guides->Name."</option>";
 									}
 								}
+								if ($row_bookings->Tour_GuideId == 0) {
+									echo "<option value=\"0\" id=\"guideOption0\" class=\"highlight red\" selected>No Guide</option>";
+								}
+								else {
+									echo "<option value=\"0\" id=\"guideOption0\" class=\"highlight red\">No Guide</option>";
+								}
 								?>
-								<option value="0" class="highlight red">No Guide</option>
 							</select>
 							<button type="button" class="button search" id="modalOpen" name="button">Search Guide</button>
 						</li>

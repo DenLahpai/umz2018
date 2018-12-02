@@ -38,6 +38,4 @@ function selectGuide(guideId) {
     var sel = document.getElementById('guideOption' + guideId);
     sel.selected = true;
     modal.style.display = 'none';
-
-
 }
