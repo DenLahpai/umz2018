@@ -1,0 +1,120 @@
+[18-Jun-2018 04:26:38 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/index.php on line 2
+[18-Jun-2018 04:26:38 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/index.php on line 2
+[18-Jun-2018 04:26:38 UTC] PHP Fatal error:  require(): Failed opening required '../conn.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/denlpmm/public_html/umz2018/index.php on line 2
+[18-Jun-2018 04:27:48 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/login.php on line 2
+[18-Jun-2018 04:27:48 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/login.php on line 2
+[18-Jun-2018 04:27:48 UTC] PHP Fatal error:  require(): Failed opening required '../conn.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/denlpmm/public_html/umz2018/login.php on line 2
+[26-Jun-2018 03:28:40 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/index.php on line 2
+[26-Jun-2018 03:28:40 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/index.php on line 2
+[26-Jun-2018 03:28:40 UTC] PHP Fatal error:  require(): Failed opening required '../conn.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/denlpmm/public_html/umz2018/index.php on line 2
+[26-Jun-2018 03:28:46 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/index.php on line 2
+[26-Jun-2018 03:28:46 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/index.php on line 2
+[26-Jun-2018 03:28:46 UTC] PHP Fatal error:  require(): Failed opening required '../conn.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/denlpmm/public_html/umz2018/index.php on line 2
+[26-Jun-2018 03:30:34 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/login.php on line 2
+[26-Jun-2018 03:30:34 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/login.php on line 2
+[26-Jun-2018 03:30:34 UTC] PHP Fatal error:  require(): Failed opening required '../conn.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/denlpmm/public_html/umz2018/login.php on line 2
+[26-Jun-2018 10:01:31 Asia/Yangon] PHP Notice:  Undefined variable: rows_supplier in /home/denlpmm/public_html/umz2018/edit_driver.php on line 66
+[26-Jun-2018 10:01:31 Asia/Yangon] PHP Warning:  Invalid argument supplied for foreach() in /home/denlpmm/public_html/umz2018/edit_driver.php on line 66
+[26-Jun-2018 10:02:26 Asia/Yangon] PHP Notice:  Undefined variable: rows_supplier in /home/denlpmm/public_html/umz2018/edit_driver.php on line 66
+[26-Jun-2018 10:02:26 Asia/Yangon] PHP Warning:  Invalid argument supplied for foreach() in /home/denlpmm/public_html/umz2018/edit_driver.php on line 66
+[26-Jun-2018 10:02:32 Asia/Yangon] PHP Notice:  Undefined variable: rows_supplier in /home/denlpmm/public_html/umz2018/edit_driver.php on line 66
+[26-Jun-2018 10:02:32 Asia/Yangon] PHP Warning:  Invalid argument supplied for foreach() in /home/denlpmm/public_html/umz2018/edit_driver.php on line 66
+[01-Jul-2018 13:36:54 Asia/Yangon] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[42S02]: Base table or view not found: 1146 Table 'denlpmm_mzw2018.services' doesn't exist' in /home/denlpmm/public_html/umz2018/conn.php:50
+Stack trace:
+#0 /home/denlpmm/public_html/umz2018/conn.php(50): PDOStatement->execute()
+#1 /home/denlpmm/public_html/umz2018/conn.php(54): Database->execute()
+#2 /home/denlpmm/public_html/umz2018/functions.php(1561): Database->resultset()
+#3 /home/denlpmm/public_html/umz2018/services.php(18): table_services('select', NULL)
+#4 {main}
+  thrown in /home/denlpmm/public_html/umz2018/conn.php on line 50
+[19-Jul-2018 20:17:27 Asia/Yangon] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'services.Valid_From' in 'field list'' in /home/denlpmm/public_html/umz2018/conn.php:50
+Stack trace:
+#0 /home/denlpmm/public_html/umz2018/conn.php(50): PDOStatement->execute()
+#1 /home/denlpmm/public_html/umz2018/conn.php(54): Database->execute()
+#2 /home/denlpmm/public_html/umz2018/functions.php(1561): Database->resultset()
+#3 /home/denlpmm/public_html/umz2018/services.php(18): table_services('select', NULL)
+#4 {main}
+  thrown in /home/denlpmm/public_html/umz2018/conn.php on line 50
+[19-Jul-2018 20:18:07 Asia/Yangon] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'services.Valid_From' in 'field list'' in /home/denlpmm/public_html/umz2018/conn.php:50
+Stack trace:
+#0 /home/denlpmm/public_html/umz2018/conn.php(50): PDOStatement->execute()
+#1 /home/denlpmm/public_html/umz2018/conn.php(54): Database->execute()
+#2 /home/denlpmm/public_html/umz2018/functions.php(1561): Database->resultset()
+#3 /home/denlpmm/public_html/umz2018/services.php(18): table_services('select', NULL)
+#4 {main}
+  thrown in /home/denlpmm/public_html/umz2018/conn.php on line 50
+[20-Jul-2018 09:31:18 Asia/Yangon] PHP Notice:  Undefined index: usersId in /home/denlpmm/public_html/umz2018/functions.php on line 9
+[27-Jul-2018 22:37:23 Asia/Yangon] PHP Notice:  Undefined index: usersId in /home/denlpmm/public_html/umz2018/functions.php on line 9
+[07-Aug-2018 14:07:43 Asia/Yangon] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'services.Valid_From' in 'field list'' in /home/denlpmm/public_html/umz2018/conn.php:50
+Stack trace:
+#0 /home/denlpmm/public_html/umz2018/conn.php(50): PDOStatement->execute()
+#1 /home/denlpmm/public_html/umz2018/conn.php(54): Database->execute()
+#2 /home/denlpmm/public_html/umz2018/functions.php(1561): Database->resultset()
+#3 /home/denlpmm/public_html/umz2018/services.php(18): table_services('select', NULL)
+#4 {main}
+  thrown in /home/denlpmm/public_html/umz2018/conn.php on line 50
+[07-Aug-2018 14:07:43 Asia/Yangon] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'services.Valid_From' in 'field list'' in /home/denlpmm/public_html/umz2018/conn.php:50
+Stack trace:
+#0 /home/denlpmm/public_html/umz2018/conn.php(50): PDOStatement->execute()
+#1 /home/denlpmm/public_html/umz2018/conn.php(54): Database->execute()
+#2 /home/denlpmm/public_html/umz2018/functions.php(1561): Database->resultset()
+#3 /home/denlpmm/public_html/umz2018/services.php(18): table_services('select', NULL)
+#4 {main}
+  thrown in /home/denlpmm/public_html/umz2018/conn.php on line 50
+[07-Aug-2018 20:23:05 Asia/Yangon] PHP Notice:  Undefined index: usersId in /home/denlpmm/public_html/umz2018/functions.php on line 9
+[07-Aug-2018 20:52:06 Asia/Yangon] PHP Notice:  Undefined index: usersId in /home/denlpmm/public_html/umz2018/functions.php on line 9
+[02-Oct-2018 14:13:44 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/index.php on line 2
+[02-Oct-2018 14:13:44 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/index.php on line 2
+[02-Oct-2018 14:13:44 UTC] PHP Fatal error:  require(): Failed opening required '../conn.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/denlpmm/public_html/umz2018/index.php on line 2
+[03-Oct-2018 02:16:39 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/index.php on line 2
+[03-Oct-2018 02:16:39 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/umz2018/index.php on line 2
+[03-Oct-2018 02:16:39 UTC] PHP Fatal error:  require(): Failed opening required '../conn.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/denlpmm/public_html/umz2018/index.php on line 2
+[04-Oct-2018 13:19:08 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/sites/umz2018/index.php on line 2
+[04-Oct-2018 13:19:08 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/sites/umz2018/index.php on line 2
+[04-Oct-2018 13:19:08 UTC] PHP Fatal error:  require(): Failed opening required '../conn.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/denlpmm/public_html/sites/umz2018/index.php on line 2
+[04-Oct-2018 13:22:10 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/sites/umz2018/index.php on line 2
+[04-Oct-2018 13:22:10 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/sites/umz2018/index.php on line 2
+[04-Oct-2018 13:22:10 UTC] PHP Fatal error:  require(): Failed opening required '../conn.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/denlpmm/public_html/sites/umz2018/index.php on line 2
+[04-Oct-2018 13:22:12 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/sites/umz2018/index.php on line 2
+[04-Oct-2018 13:22:12 UTC] PHP Warning:  require(../conn.php): failed to open stream: No such file or directory in /home/denlpmm/public_html/sites/umz2018/index.php on line 2
+[04-Oct-2018 13:22:12 UTC] PHP Fatal error:  require(): Failed opening required '../conn.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/denlpmm/public_html/sites/umz2018/index.php on line 2
+[04-Oct-2018 19:53:11 Asia/Yangon] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[42S02]: Base table or view not found: 1146 Table 'denlpmm_mzw2018.bookings' doesn't exist' in /home/denlpmm/public_html/sites/umz2018/conn.php:50
+Stack trace:
+#0 /home/denlpmm/public_html/sites/umz2018/conn.php(50): PDOStatement->execute()
+#1 /home/denlpmm/public_html/sites/umz2018/conn.php(54): Database->execute()
+#2 /home/denlpmm/public_html/sites/umz2018/functions.php(2054): Database->resultset()
+#3 /home/denlpmm/public_html/sites/umz2018/bookings.php(13): table_bookings('select', NULL)
+#4 {main}
+  thrown in /home/denlpmm/public_html/sites/umz2018/conn.php on line 50
+[04-Oct-2018 19:58:07 Asia/Yangon] PHP Warning:  include(includes/booking_menu.html): failed to open stream: No such file or directory in /home/denlpmm/public_html/sites/umz2018/booking_summary.php on line 30
+[04-Oct-2018 19:58:07 Asia/Yangon] PHP Warning:  include(includes/booking_menu.html): failed to open stream: No such file or directory in /home/denlpmm/public_html/sites/umz2018/booking_summary.php on line 30
+[04-Oct-2018 19:58:07 Asia/Yangon] PHP Warning:  include(): Failed opening 'includes/booking_menu.html' for inclusion (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/denlpmm/public_html/sites/umz2018/booking_summary.php on line 30
+[04-Oct-2018 19:59:39 Asia/Yangon] PHP Notice:  Undefined variable: Service_Date in /home/denlpmm/public_html/sites/umz2018/booking_services.php on line 65
+[04-Oct-2018 19:59:51 Asia/Yangon] PHP Notice:  Undefined variable: Service_Date in /home/denlpmm/public_html/sites/umz2018/booking_services.php on line 65
+[04-Oct-2018 20:00:11 Asia/Yangon] PHP Notice:  Undefined variable: Service_Date in /home/denlpmm/public_html/sites/umz2018/booking_services.php on line 65
+[05-Dec-2018 11:36:44 Asia/Yangon] PHP Notice:  Undefined index: usersId in /home/denlpmm/public_html/sites/umz2018/functions.php on line 9
+[05-Dec-2018 13:13:20 Asia/Yangon] PHP Notice:  Undefined property: Database::$query in /home/denlpmm/public_html/sites/umz2018/functions.php on line 2036
+[05-Dec-2018 13:13:20 Asia/Yangon] PHP Notice:  Undefined variable: query in /home/denlpmm/public_html/sites/umz2018/functions.php on line 2060
+[05-Dec-2018 13:13:20 Asia/Yangon] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '();gentId,
+                            agents.Name AS agentsName,
+              ' at line 6' in /home/denlpmm/public_html/sites/umz2018/conn.php:50
+Stack trace:
+#0 /home/denlpmm/public_html/sites/umz2018/conn.php(50): PDOStatement->execute()
+#1 /home/denlpmm/public_html/sites/umz2018/conn.php(54): Database->execute()
+#2 /home/denlpmm/public_html/sites/umz2018/functions.php(2099): Database->resultset()
+#3 /home/denlpmm/public_html/sites/umz2018/edit_booking.php(8): table_bookings('select', '1')
+#4 {main}
+  thrown in /home/denlpmm/public_html/sites/umz2018/conn.php on line 50
+[05-Dec-2018 13:13:27 Asia/Yangon] PHP Notice:  Undefined property: Database::$query in /home/denlpmm/public_html/sites/umz2018/functions.php on line 2036
+[05-Dec-2018 13:13:27 Asia/Yangon] PHP Notice:  Undefined variable: query in /home/denlpmm/public_html/sites/umz2018/functions.php on line 2060
+[05-Dec-2018 13:13:27 Asia/Yangon] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '();gentId,
+                            agents.Name AS agentsName,
+              ' at line 6' in /home/denlpmm/public_html/sites/umz2018/conn.php:50
+Stack trace:
+#0 /home/denlpmm/public_html/sites/umz2018/conn.php(50): PDOStatement->execute()
+#1 /home/denlpmm/public_html/sites/umz2018/conn.php(54): Database->execute()
+#2 /home/denlpmm/public_html/sites/umz2018/functions.php(2099): Database->resultset()
+#3 /home/denlpmm/public_html/sites/umz2018/booking_summary.php(8): table_bookings('select', '1')
+#4 {main}
+  thrown in /home/denlpmm/public_html/sites/umz2018/conn.php on line 50
+[14-Dec-2018 12:16:54 Asia/Yangon] PHP Notice:  Undefined variable: Service_Date in /home/denlpmm/public_html/sites/umz2018/booking_services.php on line 92

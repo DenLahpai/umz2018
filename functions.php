@@ -1,5 +1,5 @@
 <?php
-require "../conn.php";
+require "conn.php";
 // checking if a user is logged in
 if (!isset($_SESSION['usersId'])){
     header("location:index.php?error=2");
