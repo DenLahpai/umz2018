@@ -2724,6 +2724,81 @@ function table_services_booking($job, $bookingsId) {
             $database->bind(':bookingsId', $bookingsId);
             return $r = $database->resultset();
             break;
+
+            case 'driver_job':
+                $query = "SELECT
+                    services_booking.Id,
+                    services_booking.ServiceId,
+                    services.Service_TypeId,
+                    services_booking.Service_Date,
+                    services_booking.Pickup,
+                    services_booking.Pickup_Time,
+                    services_booking.Dropoff,
+                    services_booking.Dropoff_Time,
+                    services_booking.VehicleId,
+                    services_booking.DriverId,
+                    services_booking.Tour_GuideId,
+                    services_booking.Special_RQ,
+                    services_booking.Remark AS services_bookingRemark,
+                    services_booking.StatusId,
+                    services_booking.UserId,
+                    bookings.Reference AS Reference,
+                    bookings.Name AS bookingsName,
+                    bookings.Pax AS Pax,
+                    bookings.AgentId AS AgentId,
+                    agents.Name AS agentsName,
+                    service_types.Code AS service_typesCode,
+                    services.Service,
+                    services.Additional,
+                    services.Remark,
+                    suppliers.Name AS suppliersName,
+                    suppliers.Address,
+                    suppliers.City,
+                    suppliers.Phone,
+                    suppliers.Email,
+                    vehicles.License AS vehiclesLicense,
+                    vehicles.Type AS vehiclesType,
+                    vehicles.Seats AS vehicleSeat,
+                    drivers.Title AS driversTitle,
+                    drivers.Name AS driversName,
+                    drivers.Mobile AS driversMobile,
+                    drivers.License AS driversLicense,
+                    drivers.Class AS driversClass,
+                    tour_guides.Title AS tour_guidesTitle,
+                    tour_guides.Name AS tour_guidesName,
+                    tour_guides.Mobile AS tour_guidesMobile,
+                    tour_guides.Language AS tour_guidesLanguage,
+                    tour_guides.Email AS tour_guidesEmail,
+                    service_statuses.Code AS service_statusesCode
+                    FROM services_booking
+                    LEFT OUTER JOIN bookings
+                    ON services_booking.BookingsId = bookings.Id
+                    LEFT OUTER JOIN agents
+                    ON bookings.AgentId = agents.Id
+                    LEFT OUTER JOIN services
+                    ON services_booking.ServiceId = services.Id
+                    LEFT OUTER JOIN service_types
+                    ON services.Service_TypeId = service_types.Id
+                    LEFT OUTER JOIN suppliers
+                    ON services.SupplierId = suppliers.Id
+                    LEFT OUTER JOIN vehicles
+                    ON services_booking.VehicleId = vehicles.Id
+                    LEFT OUTER JOIN drivers
+                    ON services_booking.DriverId = drivers.Id
+                    LEFT OUTER JOIN tour_guides
+                    ON services_booking.Tour_GuideId = tour_guides.Id
+                    LEFT OUTER JOIN service_statuses
+                    ON services_booking.StatusId = service_statuses.Id
+                    WHERE bookings.Id = :bookingsId
+                    AND service_types.Id = '1'
+                    AND services_booking.Visible = TRUE
+                ";
+                $database->query($query);
+                $database->bind(':bookingsId', $bookingsId);
+                return $r = $database->resultset();
+                break;
+
+
         default:
             // code...
             break;

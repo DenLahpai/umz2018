@@ -64,14 +64,6 @@ header h1 {
     display: inline;
 }
 
-section {
-    grid-area: section;
-}
-
-section ul li {
-    list-style: none;
-    display: inline;
-}
 
 main {
     grid-area: main;
@@ -92,6 +84,14 @@ main ul li input {
     border-bottom: 1px solid #FC8325;
 }
 
+section {
+    grid-area: section;
+}
+
+section ul li {
+    display: inline;
+    list-style: none;
+}
 
 aside {
     grid-area: aside;

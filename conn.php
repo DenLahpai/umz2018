@@ -13,8 +13,8 @@ class Database {
 
         try {
             $this->database = new PDO("mysql: host=localhost;
-                port=3601;  dbname=denlpmm_mzw2018",
-                "denlpmm_mzw", "LinkCorp@2018");
+                port=3601;  dbname=mzw2018",
+                "root", "");
             $this->database->setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $this->database->setAttribute(PDO:: ATTR_DEFAULT_FETCH_MODE, PDO:: FETCH_OBJ);
         }
