@@ -14,10 +14,10 @@ else {
 }
 
 if(empty($search) || $search == NULL || $search == "") {
-    $rows_users = table_users('select', NULL);
+    $rows_users = table_users('select_all', NULL, NULL);
 }
 else {
-    $rows_users = table_users('search', $search);
+    $rows_users = table_users('search', $search, NULL);
 }
 
 ?>

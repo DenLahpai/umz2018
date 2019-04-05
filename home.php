@@ -10,10 +10,10 @@ else {
 }
 
 if(empty($search) || $search == NULL || $search == "") {
-    $rows_posts = table_posts('select', NULL);
+    $rows_posts = table_posts('select_all', NULL, NULL);
 }
 else {
-    $rows_posts = table_posts('search', $search);
+    $rows_posts = table_posts('search', $search, NULL);
 }
 
 ?>
@@ -61,6 +61,7 @@ else {
                     echo "<li>".$row_posts->Post."</li>";
                     echo "<li style=\"font-style:italic; \"><span style=\"color: blue;\">".$row_posts->Fullname."</span>";
                     echo "&nbsp;on ".$row_posts->Created."</li>";
+                    echo "<li><a href=\"edit_post.php?postsId=$row_posts->postsId\"><button class=\"button link\">Edit</button></a></li>";
                     echo "</ul>";
                     echo "</div>";
                     echo "<!-- end of grid-item -->";

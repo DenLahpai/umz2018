@@ -6,27 +6,25 @@ if ($d > 2) {
 
 //getting users Id to be edited
 $Id = $_REQUEST['Id'];
+if (!is_numeric ($Id)) {
+    echo "There has been an error! Please go back and try again!";
+    die();
+}
 
 //getting data from the tables users
-$rows_users = table_users('select', $Id);
+$rows_users = table_users('select_one', $Id, NULL);
 foreach ($rows_users as $row_users) {
     // code...
 }
 
 //update the users data when the form is submitted
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Username = trim($_REQUEST['Username']);
-    if ($Username == $row_users->Username) {
-        table_users('update', $Id);
+    $rowCount =  table_users ('check_before_update', $Id, NULL);
+    if ($rowCount == 0) {
+        table_users ('update', $Id, NULL);
     }
     else {
-        $rowCount = table_users('check', NULL);
-        if($rowCount == 0) {
-            table_users('update', $Id);
-        }
-        else {
-            $error_message = "Username already exists!";
-        }
+        $error_message = "Duplicate Entry!";
     }
 }
 ?>

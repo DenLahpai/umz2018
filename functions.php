@@ -6,7 +6,7 @@ if (!isset($_SESSION['usersId'])){
 }
 
 // checking for deactivated users and getting users DepartmentId to check access
-$ROWS = table_users('select', $_SESSION['usersId']);
+$ROWS = table_users('select_one', $_SESSION['usersId'], NULL);
 foreach ($ROWS as $ROW) {
     $s = $ROW->Status;
     $d = $ROW->DepartmentId;
@@ -44,57 +44,67 @@ function select_titles($Title) {
 }
 
 //function to use the table users
-function table_users($job, $usersId) {
+function table_users($job, $var1, $var2) {
     $database = new Database();
 
-    if ($job == 'insert') {
-        $Username = trim($_REQUEST['Username']);
-        $Password = trim($_REQUEST['Password']);
-        $Title = trim($_REQUEST['Title']);
-        $Fullname = trim($_REQUEST['Fullname']);
-        $Position = trim($_REQUEST['Position']);
-        $DepartmentId = trim($_REQUEST['DepartmentId']);
-        $Status = trim($_REQUEST['Status']);
-        $Email = trim($_REQUEST['Email']);
-        $Mobile = trim($_REQUEST['Mobile']);
-        $query = "INSERT INTO users (
-            Username,
-            Password,
-            Title,
-            Fullname,
-            Position,
-            DepartmentId,
-            Status,
-            Email,
-            Mobile
-            ) VALUES(
-            :Username,
-            :Password,
-            :Title,
-            :Fullname,
-            :Position,
-            :DepartmentId,
-            :Status,
-            :Email,
-            :Mobile
-            )
-        ;";
-        $database->query($query);
-        $database->bind(':Username', $Username);
-        $database->bind(':Password', $Password);
-        $database->bind(':Title', $Title);
-        $database->bind(':Fullname', $Fullname);
-        $database->bind(':Position', $Position);
-        $database->bind(':DepartmentId', $DepartmentId);
-        $database->bind(':Status', $Status);
-        $database->bind(':Email', $Email);
-        $database->bind(':Mobile', $Mobile);
-        if($database->execute()) {
-            header('location:users.php');
-        }
-    }
-    elseif ($job == 'select') {
-        if ($usersId == NULL || empty($usersId) || $usersId == "") {
+    switch ($job) {
+        case 'check_beofre_insert':
+            $Username = trim($_REQUEST['Username']);
+            $query = "SELECT * FROM users WHERE Username = :Username ;";
+            $database->query($query);
+            $database->bind(':Username', $Username);
+            return $r = $database->rowCount();
+            break;
+
+        case 'insert':
+            $Username = trim($_REQUEST['Username']);
+            $Password = trim($_REQUEST['Password']);
+            $Title = trim($_REQUEST['Title']);
+            $Fullname = trim($_REQUEST['Fullname']);
+            $Position = trim($_REQUEST['Position']);
+            $DepartmentId = trim($_REQUEST['DepartmentId']);
+            $Status = trim($_REQUEST['Status']);
+            $Email = trim($_REQUEST['Email']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $query = "INSERT INTO users (
+                Username,
+                Password,
+                Title,
+                Fullname,
+                Position,
+                DepartmentId,
+                Status,
+                Email,
+                Mobile
+                ) VALUES(
+                :Username,
+                :Password,
+                :Title,
+                :Fullname,
+                :Position,
+                :DepartmentId,
+                :Status,
+                :Email,
+                :Mobile
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Username', $Username);
+            $database->bind(':Password', $Password);
+            $database->bind(':Title', $Title);
+            $database->bind(':Fullname', $Fullname);
+            $database->bind(':Position', $Position);
+            $database->bind(':DepartmentId', $DepartmentId);
+            $database->bind(':Status', $Status);
+            $database->bind(':Email', $Email);
+            $database->bind(':Mobile', $Mobile);
+            if($database->execute()) {
+                header('location:users.php');
+            }
+            break;
+
+        case 'select_all':
+            // selecting all the users
             $query = "SELECT
                 users.Id,
                 users.Username,
@@ -113,8 +123,11 @@ function table_users($job, $usersId) {
                 ON users.DepartmentId = departments.Id
             ;";
             $database->query($query);
-        }
-        else {
+            return $r = $database->resultset();
+            break;
+
+        case 'select_one':
+            // $var1 = usersId
             $query = "SELECT
                 users.Id,
                 users.Username,
@@ -134,122 +147,135 @@ function table_users($job, $usersId) {
                 WHERE users.Id = :usersId
             ;";
             $database->query($query);
-            $database->bind(':usersId', $usersId);
-        }
-        return $r = $database->resultset();
-    }
-    elseif ($job == 'search') {
-        $search = '%'.$usersId.'%';
-        $query = "SELECT
-            users.Id,
-            users.Username,
-            users.Password,
-            users.Title,
-            users.Fullname,
-            users.Position,
-            users.DepartmentId,
-            users.Access,
-            users.Status,
-            users.Email,
-            users.Mobile,
-            departments.Name AS DepartmentsName
-            FROM users LEFT JOIN departments
-            ON users.DepartmentId = departments.Id
-            WHERE CONCAT(
-            users.Username,
-            users.Password,
-            users.Title,
-            users.Fullname,
-            users.Position,
-            departments.Name,
-            users.Access,
-            users.Status,
-            users.Email,
-            users.Mobile
-        ) LIKE :search
-        ;";
-        $database->query($query);
-        $database->bind(':search', $search);
-        return $r = $database->resultset();
-    }
-    elseif ($job == 'check') {
-        $Username = trim($_REQUEST['Username']);
+            $database->bind(':usersId', $var1);
+            return $r = $database->resultset();
+            break;
 
-        $query = "SELECT Id FROM users WHERE Username = :Username ;";
-        $database->query($query);
-        $database->bind(':Username', $Username);
-        return $r = $database->rowCount();
+        case 'check_before_update':
+            $Username = trim($_REQUEST['Username']);
+            $query = "SELECT * FROM users
+                WHERE Username = :Username
+                AND Id != :Id
+            ;";
+            $database->query($query);
+            $database->bind(':Username', $Username);
+            $database->bind(':Id', $var1);
+            return $r = $database->rowCount();
+            break;
+
+        case 'update':
+            $Username = trim($_REQUEST['Username']);
+            $Password = trim($_REQUEST['Password']);
+            $Title = trim($_REQUEST['Title']);
+            $Fullname = trim($_REQUEST['Fullname']);
+            $Position = trim($_REQUEST['Position']);
+            $DepartmentId = trim($_REQUEST['DepartmentId']);
+            $Status = trim($_REQUEST['Status']);
+            $Email = trim($_REQUEST['Email']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $Id = $_REQUEST['Id'];
+
+            $query = "UPDATE users SET
+            Username = :Username,
+            Password = :Password,
+            Title = :Title,
+            Fullname = :Fullname,
+            Position = :Position,
+            DepartmentId = :DepartmentId,
+            Status = :Status,
+            Email = :Email,
+            Mobile = :Mobile
+            WHERE Id = :Id
+            ;";
+            $database->query($query);
+            $database->bind(':Username', $Username);
+            $database->bind(':Password', $Password);
+            $database->bind(':Title', $Title);
+            $database->bind(':Fullname', $Fullname);
+            $database->bind(':Position', $Position);
+            $database->bind(':DepartmentId', $DepartmentId);
+            $database->bind(':Status', $Status);
+            $database->bind(':Email', $Email);
+            $database->bind(':Mobile', $Mobile);
+            $database->bind(':Id', $Id);
+            if ($database->execute()) {
+                header("location:edit_user.php?Id=$Id");
+            }
+            break;
+
+        case 'search':
+            // $var1 = search
+            $search = '%'.$var1.'%';
+            $query = "SELECT
+                users.Id,
+                users.Username,
+                users.Password,
+                users.Title,
+                users.Fullname,
+                users.Position,
+                users.DepartmentId,
+                users.Access,
+                users.Status,
+                users.Email,
+                users.Mobile,
+                departments.Name AS DepartmentsName
+                FROM users LEFT JOIN departments
+                ON users.DepartmentId = departments.Id
+                WHERE CONCAT(
+                users.Username,
+                users.Password,
+                users.Title,
+                users.Fullname,
+                users.Position,
+                departments.Name,
+                users.Access,
+                users.Status,
+                users.Email,
+                users.Mobile
+            ) LIKE :search
+            ;";
+            $database->query($query);
+            $database->bind(':search', $search);
+            return $r = $database->resultset();
+            break;
+
+        default:
+            // code...
+            break;
     }
 
-    elseif ($job == 'update') {
-        $Username = trim($_REQUEST['Username']);
-        $Password = trim($_REQUEST['Password']);
-        $Title = trim($_REQUEST['Title']);
-        $Fullname = trim($_REQUEST['Fullname']);
-        $Position = trim($_REQUEST['Position']);
-        $DepartmentId = trim($_REQUEST['DepartmentId']);
-        $Status = trim($_REQUEST['Status']);
-        $Email = trim($_REQUEST['Email']);
-        $Mobile = trim($_REQUEST['Mobile']);
-        $Id = $_REQUEST['Id'];
-
-        $query = "UPDATE users SET
-        Username = :Username,
-        Password = :Password,
-        Title = :Title,
-        Fullname = :Fullname,
-        Position = :Position,
-        DepartmentId = :DepartmentId,
-        Status = :Status,
-        Email = :Email,
-        Mobile = :Mobile
-        WHERE Id = :Id
-        ;";
-        $database->query($query);
-        $database->bind(':Username', $Username);
-        $database->bind(':Password', $Password);
-        $database->bind(':Title', $Title);
-        $database->bind(':Fullname', $Fullname);
-        $database->bind(':Position', $Position);
-        $database->bind(':DepartmentId', $DepartmentId);
-        $database->bind(':Status', $Status);
-        $database->bind(':Email', $Email);
-        $database->bind(':Mobile', $Mobile);
-        $database->bind(':Id', $Id);
-        if ($database->execute()) {
-            header("location:edit_user.php?Id=$Id");
-        }
-    }
 }
 
 //function to use the table posts
-function table_posts($job, $postsId) {
+function table_posts($job, $var1, $var2) {
     $database = new Database();
 
-    if($job == 'insert') {
-        $UserId = $_SESSION['usersId'];
-        $Subject = trim($_REQUEST['Subject']);
-        $Post = $_REQUEST['Post'];
-        $query = "INSERT INTO posts (
-            Subject,
-            Post,
-            UserId
-            ) VALUE (
-            :Subject,
-            :Post,
-            :UserId
-            )
-        ;";
-        $database->query($query);
-        $database->bind(':Subject', $Subject);
-        $database->bind(':Post', $Post);
-        $database->bind(':UserId', $UserId);
-        if($database->execute()) {
-            header('location:home.php');
-        }
-    }
-    elseif ($job == 'select') {
-        if ($postsId == NULL || empty($postsId) || $postsId == "") {
+    switch ($job) {
+
+        case 'insert':
+            $UserId = $_SESSION['usersId'];
+            $Subject = trim($_REQUEST['Subject']);
+            $Post = $_REQUEST['Post'];
+            $query = "INSERT INTO posts (
+                Subject,
+                Post,
+                UserId
+                ) VALUE (
+                :Subject,
+                :Post,
+                :UserId
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Subject', $Subject);
+            $database->bind(':Post', $Post);
+            $database->bind(':UserId', $UserId);
+            if($database->execute()) {
+                header('location:home.php');
+            }
+            break;
+
+        case 'select_all':
             $query = "SELECT
                 posts.Id AS postsId,
                 posts.Subject AS Subject,
@@ -266,8 +292,36 @@ function table_posts($job, $postsId) {
             ;";
             $database->query($query);
             return $r = $database->resultset();
-        }
-        else {
+            break;
+
+        case 'search':
+            // $var1 = search
+            $search = '%'.$var1.'%';
+            $query = "SELECT
+                posts.Id AS postsId,
+                posts.Subject AS Subject,
+                posts.Post AS Post,
+                posts.Generator AS Generator,
+                posts.UserId AS UserId,
+                posts.Created AS Created,
+                posts.Updated AS Updated,
+                users.Fullname AS Fullname
+                FROM posts
+                LEFT OUTER JOIN users
+                ON posts.UserId = users.Id
+                WHERE CONCAT(
+                    posts.Subject,
+                    posts.Post,
+                    users.Fullname
+                ) LIKE :search
+            ;";
+            $database->query($query);
+            $database->bind(':search', $search);
+            return $r = $database->resultset();
+            break;
+
+        case 'select_one':
+            // $var1 = postsId
             $query = "SELECT
                 posts.Id AS postsId,
                 posts.Subject AS Subject,
@@ -284,34 +338,15 @@ function table_posts($job, $postsId) {
                 ORDER BY posts.Updated
             ;";
             $database->query($query);
-            $database->bind(':postsId', $postsId);
+            $database->bind(':postsId', $var1);
             return $r = $database->resultset();
-        }
+            break;
+
+        default:
+            // code...
+            break;
     }
-    elseif($job == 'search') {
-        $search = '%'.$postsId.'%';
-        $query = "SELECT
-            posts.Id AS postsId,
-            posts.Subject AS Subject,
-            posts.Post AS Post,
-            posts.Generator AS Generator,
-            posts.UserId AS UserId,
-            posts.Created AS Created,
-            posts.Updated AS Updated,
-            users.Fullname AS Fullname
-            FROM posts
-            LEFT OUTER JOIN users
-            ON posts.UserId = users.Id
-            WHERE CONCAT(
-                posts.Subject,
-                posts.Post,
-                users.Fullname
-            ) LIKE :search
-        ;";
-        $database->query($query);
-        $database->bind(':search', $search);
-        return $r = $database->resultset();
-    }
+
 }
 
 // function to get the table departments
@@ -2033,7 +2068,7 @@ function table_bookings($job, $bookingsId) {
                             bookings.Reference AS Reference,
                             bookings.Name AS bookingsName,
                             bookings.Pax AS bookingsPax,
-                            bookings.AgentId AS A$database->query($query);gentId,
+                            bookings.AgentId AS AgentId,
                             agents.Name AS agentsName,
                             bookings.Guide_RequestId AS Guide_RequestId,
                             guide_requests.Request AS guide_requestsRequest,

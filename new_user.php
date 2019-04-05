@@ -6,9 +6,9 @@ if ($d > 2) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $rowCount = table_users('check', NULL);
+    $rowCount = table_users('check_beofre_insert', NULL, NULL);
     if ($rowCount == 0) {
-        table_users('insert', NULL);
+        table_users('insert', NULL, NULL);
     }
     else {
         $error_message = "Duplicate Username!";
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="text" name="Mobile" id="Mobile" placeholder="">
                         </li>
                         <li>
-                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit" onclick="check2Fields('Title', 'Title');">Create</button>
+                            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit" onclick="check2Fields('Title', 'Username');">Create</button>
                         </li>
                     </ul>
                 </form>
