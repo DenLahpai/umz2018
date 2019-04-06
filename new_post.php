@@ -2,7 +2,7 @@
 require_once "functions.php";
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    table_posts('insert', NULL);
+    table_posts('insert', NULL, NULL);
 }
 ?>
 <!DOCTYPE html>
