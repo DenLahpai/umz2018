@@ -342,6 +342,24 @@ function table_posts($job, $var1, $var2) {
             return $r = $database->resultset();
             break;
 
+        case 'update':
+            // $var1 = postsId
+            $Subject = trim($_REQUEST['Subject']);
+            $Post = $_REQUEST['Post'];
+            $query = "UPDATE posts SET
+                Subject = :Subject,
+                Post = :Post
+                WHERE Id = :postsId
+            ;";
+            $database->query($query);
+            $database->bind(':Subject', $Subject);
+            $database->bind(':Post', $Post);
+            $database->bind(':postsId', $var1);
+            if ($database->execute()) {
+                header("location: edit_post.php?postsId=$var1");
+            }
+            break;
+
         default:
             // code...
             break;
@@ -365,7 +383,6 @@ function table_departments($job, $departmentsId) {
         return $r = $database->resultset();
     }
 }
-
 
 //function to use the table agents
 function table_agents($job, $agentsId) {
@@ -1436,10 +1453,20 @@ function table_service_types($job, $service_typesId) {
 }
 
 //function to use the table service_statuses
-function table_service_statuses($job, $service_statusesId) {
+function table_service_statuses($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
+
+        case 'check_before_insert':
+            $Code = strtoupper($_REQUEST['Code']);
+            $Description = trim($_REQUEST['Description']);
+
+            $query = "SELECT Id FROM service_statuses WHERE Code = :Code ;";
+            $database->query($query);
+            $database->bind(':Code', $Code);
+            return $r = $database->rowCount();
+            break;
 
         case 'insert':
             $Code = strtoupper($_REQUEST['Code']);
@@ -1462,20 +1489,36 @@ function table_service_statuses($job, $service_statusesId) {
 
             break;
 
-        case 'select':
-            if ($service_statusesId == NULL || $service_statusesId == "" || empty($service_statusesId)) {
-                $query = "SELECT * FROM service_statuses ;";
-                $database->query($query);
-            }
-            else {
-                $query = "SELECT * FROM service_statuses WHERE Id = :service_statusesId ;";
-                $database->query($query);
-                $database->bind(':service_statusesId' , $service_statusesId);
-            }
+        case 'select_all':
+            $query = "SELECT * FROM service_statuses ;";
+            $database->query($query);
             return $r = $database->resultset();
             break;
 
+        case 'select_one':
+            // $var1 = service_statusesId
+            $query = "SELECT * FROM service_statuses WHERE Id = :service_statusesId ;";
+            $database->query($query);
+            $database->bind(':service_statusesId', $var1);
+            return $r = $database->resultset();
+            break;
+
+        case 'check_before_update':
+            // $var1 = service_statusesId
+            $Code = strtoupper($_REQUEST['Code']);
+
+            $query = "SELECT * FROM service_statuses
+                WHERE Code = :Code
+                AND Id != :service_statusesId
+            ;";
+            $database->query($query);
+            $database->bind(':Code', $Code);
+            $database->bind(':service_statusesId', $var1);
+            return $r = $database->rowCount();
+            break;
+
         case 'update':
+                // $var1 = service_statusesId
                 $Code = strtoupper($_REQUEST['Code']);
                 $Description = trim($_REQUEST['Description']);
 
@@ -1487,18 +1530,13 @@ function table_service_statuses($job, $service_statusesId) {
                 $database->query($query);
                 $database->bind(':Code', $Code);
                 $database->bind(':Description', $Description);
-                $database->bind(':service_statusesId', $service_typesId);
+                $database->bind(':service_statusesId', $var1);
+                if ($database->execute()) {
+                    header("location: edit_service_statuses.php?service_statusesId=$var1");
+                }
             break;
 
-        case 'check':
-            $Code = strtoupper($_REQUEST['Code']);
-            $Description = trim($_REQUEST['Description']);
 
-            $query = "SELECT Id FROM service_statuses WHERE Code = :Code ;";
-            $database->query($query);
-            $database->bind(':Code', $Code);
-            return $r = $database->rowCount();
-            break;
 
         default:
             # code...

@@ -8,25 +8,25 @@ if ($d > 2) {
 //getting Id for service_statuses
 $service_statusesId = trim($_REQUEST['service_statusesId']);
 
+if (!is_numeric ($service_statusesId)) {
+    echo "There was an error! Please go back and try again!";
+    die();
+}
+
 //getting data from the table service_statuses
-$rows_service_statuses = table_service_statuses('select', $service_statusesId);
+$rows_service_statuses = table_service_statuses('select_one', $service_statusesId, NULL);
 foreach ($rows_service_statuses as $row_service_statuses) {
     // code...
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Code = strtoupper($_REQUEST['Code']);
-    if ($Code == $row_service_statuses->Code) {
-        table_service_statuses('update', $service_statusesId);
+    echo $rowCount = table_service_statuses ('check_before_update', $service_statusesId, NULL);
+
+    if ($rowCount == 0) {
+        table_service_statuses ('update', $service_statusesId, NULL);
     }
     else {
-        $rowCount = table_service_statuses('check', NULL);
-        if ($rowCount == 0) {
-            table_service_statuses('update', $service_statusesId);
-        }
-        else {
-            $error_message = "Duplicate entry!";
-        }
+        $error_messge = "Duplicate entry!";
     }
 }
 

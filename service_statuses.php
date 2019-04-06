@@ -7,9 +7,9 @@ if ($d > 2) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $rowCount = table_service_statuses('check', NULL);
+    $rowCount = table_service_statuses('check_before_insert', NULL, NULL);
     if ($rowCount == 0) {
-        table_service_statuses('insert', NULL);
+        table_service_statuses('insert', NULL, NULL);
     }
     else {
         $error_messge = "Duplicate Entry!";
@@ -58,12 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     echo "</tr>";
                                 }
 
-                                $rows_service_statuses = table_service_statuses('select', NULL);
+                                $rows_service_statuses = table_service_statuses('select_all', NULL, NULL);
                                 foreach ($rows_service_statuses as $row_service_statuses) {
                                     echo "<tr>";
                                     echo "<td>".$row_service_statuses->Code."</td>";
                                     echo "<td>".$row_service_statuses->Description."</td>";
-                                    echo "<td><a href=\"edit_service_statuses.php?service_statusesId=$row_service_statuses->Id\"><button class=\"button link\">Edit</button></a></td>";
+                                    echo "<td><a href=\"edit_service_statuses.php?service_statusesId=$row_service_statuses->Id\"><button type=\"button\" class=\"button link\">Edit</button></a></td>";
                                     echo "</tr>";
                                 }
                                 ?>
