@@ -10,10 +10,10 @@ else {
 }
 
 if(empty($search) || $search == NULL || $search == "") {
-    $rows_vehicles = table_vehicles('select', NULL);
+    $rows_vehicles = table_vehicles('select_all', NULL, NULL);
 }
 else {
-    $rows_vehicles = table_vehicles('search', $search);
+    $rows_vehicles = table_vehicles('search', $search, NULL);
 }
 ?>
 <!DOCTYPE html>

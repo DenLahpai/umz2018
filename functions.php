@@ -1147,6 +1147,16 @@ function table_vehicles($job, $vehiclesId) {
     $database = new Database();
 
     switch ($job) {
+
+        case 'check_before_insert':
+            $License = trim($_REQUEST['License']);
+
+            $query = "SELECT Id FROM vehicles WHERE License = :License ;";
+            $database->query($query);
+            $database->bind(':License', $License);
+            return $r = $database->rowCount();
+            break;
+
         case 'insert':
             $Type = trim($_REQUEST['Type']);
             $Seats = $_REQUEST['Seats'];
@@ -1175,42 +1185,44 @@ function table_vehicles($job, $vehiclesId) {
             }
             break;
 
-        case 'select':
-            if ($vehiclesId == NULL || $vehiclesId == "" || empty($vehiclesId)) {
-                $query = "SELECT
-                    vehicles.Id,
-                    vehicles.Type,
-                    vehicles.Seats,
-                    vehicles.License,
-                    vehicles.SupplierId,
-                    suppliers.name AS suppliersName
-                    FROM vehicles
-                    LEFT OUTER JOIN suppliers
-                    ON suppliers.Id = vehicles.SupplierId
-                ;";
-                $database->query($query);
-            }
-            else {
-                $query = "SELECT
-                    vehicles.Id,
-                    vehicles.Type,
-                    vehicles.Seats,
-                    vehicles.License,
-                    vehicles.SupplierId,
-                    suppliers.name AS suppliersName
-                    FROM vehicles
-                    LEFT OUTER JOIN suppliers
-                    ON suppliers.Id = vehicles.SupplierId
-                    WHERE vehicles.Id = :vehiclesId
-                ;";
-                $database->query($query);
-                $database->bind(':vehiclesId', $vehiclesId);
-            }
+        case 'select_all':
+            $query = "SELECT
+                vehicles.Id,
+                vehicles.Type,
+                vehicles.Seats,
+                vehicles.License,
+                vehicles.SupplierId,
+                suppliers.Name AS suppliersName
+                FROM vehicles
+                LEFT OUTER JOIN suppliers
+                ON suppliers.Id = vehicles.SupplierId
+            ;";
+            $database->query($query);
+            return $r = $database->resultset();
+            break;
+
+        case 'select_one':
+            // $var1 = vehiclesId
+            $query = "SELECT
+                vehicles.Id,
+                vehicles.Type,
+                vehicles.Seats,
+                vehicles.License,
+                vehicles.SupplierId,
+                suppliers.Name AS suppliersName
+                FROM vehicles
+                LEFT OUTER JOIN suppliers
+                ON suppliers.Id = vehicles.SupplierId
+                WHERE vehicles.Id = :vehiclesId
+            ;";
+            $database->query($query);
+            $database->bind(':vehiclesId', $var1);
             return $r = $database->resultset();
             break;
 
         case 'search':
-            $search = '%'.$vehiclesId.'%';
+            //$var1 = search
+            $search = '%'.$var1.'%';
 
             $query = "SELECT
                 vehicles.Id,
@@ -1232,6 +1244,10 @@ function table_vehicles($job, $vehiclesId) {
             $database->query($query);
             $database->bind(':search', $search);
             return $r = $database->resultset();
+            break;
+
+        case 'check_before_update':
+            // code...
             break;
 
         case 'update':
@@ -1256,15 +1272,6 @@ function table_vehicles($job, $vehiclesId) {
             if ($database->execute()) {
                 header("location: edit_vehicle.php?vehiclesId=$vehiclesId");
             }
-            break;
-
-        case 'check':
-            $License = trim($_REQUEST['License']);
-
-            $query = "SELECT Id FROM vehicles WHERE License = :License ;";
-            $database->query($query);
-            $database->bind(':License', $License);
-            return $r = $database->rowCount();
             break;
 
         default:
