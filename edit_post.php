@@ -14,10 +14,9 @@ foreach ($rows_posts as $row_posts) {
     // code...
 }
 
-//checking if the current user is the owner of the post 
-if ($_SESSION['usersId'] != $row_posts->UserId) {
-	echo "Only the owner of this post can edit it!";
-	die();
+if ($_SESSION['usersId'] != $row_posts->UsersId) {
+    echo "Only the user can edit this post!";
+    die();
 }
 ?>
 <!DOCTYPE html>
@@ -27,21 +26,10 @@ if ($_SESSION['usersId'] != $row_posts->UserId) {
     include "includes/head.html";
     ?>
     <body>
-		<!-- content -->
-		<div class="content">
-			<?php
-			$header = "Edit Post";
-			include "includes/header.html";
-			include "includes/main_menu.html";
-			?>
-			<main>
-				<form id="theform" action="#" method="post">
-					
-				
-					
-				</form>	
-			</main>	
-		</div>		
-		<!-- end of content -->
+        <?php
+        $header = "Edit Post";
+        include "includes/header.html";
+        include "includes/main_menu.html";
+        ?>
     </body>
 </html>
