@@ -10,10 +10,10 @@ else {
 }
 
 if(empty($search) || $search == NULL || $search == "") {
-    $rows_supplier_contacts = table_supplier_contacts('select', NULL);
+    $rows_supplier_contacts = table_supplier_contacts('select_all', NULL, NULL);
 }
 else {
-    $rows_supplier_contacts = table_supplier_contacts('search', $search);
+    $rows_supplier_contacts = table_supplier_contacts('search', $search, NULL);
 }
 ?>
 <!DOCTYPE html>

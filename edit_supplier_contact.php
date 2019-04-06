@@ -4,28 +4,26 @@ require "functions.php";
 //getting agent_contact Id to be edited
 $supplier_contactsId = trim($_REQUEST['supplier_contactsId']);
 
+if (!is_numeric ($supplier_contactsId)) {
+    echo "There was a problem! Please go back and try agian.";
+    die();
+}
+
 //getting data from the table agent_contacts
-$rows_supplier_contacts = table_supplier_contacts('select', $supplier_contactsId);
+$rows_supplier_contacts = table_supplier_contacts('select_one', $supplier_contactsId, NULL);
 foreach ($rows_supplier_contacts as $row_supplier_contacts) {
     // code
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Name = trim($_REQUEST['Name']);
-    if ($Name == $row_supplier_contacts->Name) {
-        table_supplier_contacts('update', $supplier_contactsId);
+    $rowCount = table_supplier_contacts('check_before_update', NULL, NULL);
+    if ($rowCount == 0) {
+        table_supplier_contacts('update', $supplier_contactsId, NULL);
     }
     else {
-        $rowCount = table_supplier_contacts('check', NULL);
-        if ($rowCount == 0) {
-            table_supplier_contacts('update', $supplier_contactsId);
-        }
-        else {
-            $error_message = "Duplicate Entry!";
-        }
+        $error_message = "Duplicate Entry!";
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -81,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             Supplier: &nbsp;
                             <select id="SupplierId" name="SupplierId">
                                 <?php
-                                $rows_suppliers = table_suppliers('select', $row_supplier_contacts->SupplierId);
+                                $rows_suppliers = table_suppliers('select_all', $row_supplier_contacts->SupplierId, NULL);
                                 foreach ($rows_suppliers as $row_suppliers) {
                                     if ($row_supplier_contacts->SupplierId == $row_suppliers->Id) {
                                         echo "<option value=\"$row_suppliers->Id\" selected>".$row_suppliers->Name."</option>";

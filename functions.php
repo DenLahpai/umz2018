@@ -886,7 +886,7 @@ function table_suppliers($job, $var1, $var2) {
             break;
 
         case 'search':
-            $search = '%'.$suppliersId.'%';
+            $search = '%'.$var1.'%';
             $query = "SELECT * FROM suppliers WHERE CONCAT(
                 Name,
                 Address,
@@ -941,16 +941,6 @@ function table_suppliers($job, $var1, $var2) {
             }
             break;
 
-        case 'check':
-            $Name = trim($_REQUEST['Name']);
-
-            $query = "SELECT Id FROM suppliers WHERE
-                Name = :Name
-            ;";
-            $database->query($query);
-            $database->bind(':Name', $Name);
-            return $r = $database->rowCount();
-            break;
         default:
             # code...
             break;
@@ -958,10 +948,28 @@ function table_suppliers($job, $var1, $var2) {
 }
 
 //function to use data from the table supplier_contacts
-function table_supplier_contacts($job, $supplier_contactsId) {
+function table_supplier_contacts($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
+
+        case 'check_before_insert':
+            $Title = $_REQUEST['Title'];
+            $Name = trim($_REQUEST['Name']);
+            $SupplierId = $_REQUEST['SupplierId'];
+
+            $query = "SELECT Id FROM supplier_contacts WHERE
+                Title = :Title AND
+                Name = :Name AND
+                SupplierId = :SupplierId
+            ;";
+            $database->query($query);
+            $database->bind(':Title', $Title);
+            $database->bind(':Name', $Name);
+            $database->bind(':SupplierId', $SupplierId);
+            return $r = $database->rowCount();
+            break;
+
         case 'insert':
             $Title = $_REQUEST['Title'];
             $Name = trim($_REQUEST['Name']);
@@ -1001,47 +1009,51 @@ function table_supplier_contacts($job, $supplier_contactsId) {
                 header("location: supplier_contacts.php");
             }
             break;
-        case 'select':
-            if ($supplier_contactsId == NULL || $supplier_contactsId == "" || empty($supplier_contactsId)) {
-                $query = "SELECT
-                    supplier_contacts.Id AS supplier_contactsId,
-                    supplier_contacts.Title AS Title,
-                    supplier_contacts.Name AS Name,
-                    supplier_contacts.Position AS Position,
-                    supplier_contacts.Department AS Department,
-                    supplier_contacts.Mobile AS Mobile,
-                    supplier_contacts.Email AS Email,
-                    supplier_contacts.SupplierId AS SupplierId,
-                    suppliers.Name AS suppliersName
-                    FROM supplier_contacts
-                    LEFT OUTER JOIN suppliers
-                    ON supplier_contacts.SupplierId = suppliers.Id
-                ;";
-                $database->query($query);
-            }
-            else {
-                $query = "SELECT
-                    supplier_contacts.Id AS supplier_contactsId,
-                    supplier_contacts.Title AS Title,
-                    supplier_contacts.Name AS Name,
-                    supplier_contacts.Position AS Position,
-                    supplier_contacts.Department AS Department,
-                    supplier_contacts.Mobile AS Mobile,
-                    supplier_contacts.Email AS Email,
-                    supplier_contacts.SupplierId AS SupplierId,
-                    suppliers.Name AS suppliersName
-                    FROM supplier_contacts
-                    LEFT OUTER JOIN suppliers
-                    ON supplier_contacts.SupplierId = suppliers.Id
-                    WHERE supplier_contacts.Id = :supplier_contactsId
-                ;";
-                $database->query($query);
-                $database->bind(':supplier_contactsId', $supplier_contactsId);
-            }
+
+        case 'select_all':
+            $query = "SELECT
+                supplier_contacts.Id AS supplier_contactsId,
+                supplier_contacts.Title AS Title,
+                supplier_contacts.Name AS Name,
+                supplier_contacts.Position AS Position,
+                supplier_contacts.Department AS Department,
+                supplier_contacts.Mobile AS Mobile,
+                supplier_contacts.Email AS Email,
+                supplier_contacts.SupplierId AS SupplierId,
+                suppliers.Name AS suppliersName
+                FROM supplier_contacts
+                LEFT OUTER JOIN suppliers
+                ON supplier_contacts.SupplierId = suppliers.Id
+            ;";
+            $database->query($query);
             return $r = $database->resultset();
             break;
+
+        case 'select_one':
+            // $var1 = $supplier_contactsId
+            $query = "SELECT
+                supplier_contacts.Id AS supplier_contactsId,
+                supplier_contacts.Title AS Title,
+                supplier_contacts.Name AS Name,
+                supplier_contacts.Position AS Position,
+                supplier_contacts.Department AS Department,
+                supplier_contacts.Mobile AS Mobile,
+                supplier_contacts.Email AS Email,
+                supplier_contacts.SupplierId AS SupplierId,
+                suppliers.Name AS suppliersName
+                FROM supplier_contacts
+                LEFT OUTER JOIN suppliers
+                ON supplier_contacts.SupplierId = suppliers.Id
+                WHERE supplier_contacts.Id = :supplier_contactsId
+            ;";
+            $database->query($query);
+            $database->bind(':supplier_contactsId', $var1);
+            return $r = $database->resultset();
+            break;
+
         case 'search':
-            $search = '%'.$supplier_contactsId.'%';
+            //$var1 = search;
+            $search = '%'.$var1.'%';
 
             $query = "SELECT
                 supplier_contacts.Id AS supplier_contactsId,
@@ -1071,7 +1083,27 @@ function table_supplier_contacts($job, $supplier_contactsId) {
             return $r = $database->resultset();
             break;
 
+        case 'check_before_update':
+            // $var = $supplier_contactsId
+            $Name = trim($_REQUEST['Name']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $SupplierId = $_REQUEST['SupplierId'];
+            $query = "SELECT * FROM supplier_contacts
+                WHERE Name = :Name
+                AND Mobile = :Mobile
+                AND SupplierId = :SupplierId
+                AND Id = :supplier_contactsId
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':Mobile', $Mobile);
+            $database->bind(':SupplierId', $SupplierId);
+            $database->bind(':supplier_contactsId', $var1);
+            return $r = $database->rowCount();
+            break;
+
         case 'update':
+            // $var1 = $supplier_contactsId
             $Title = $_REQUEST['Title'];
             $Name = trim($_REQUEST['Name']);
             $Position = trim($_REQUEST['Position']);
@@ -1098,27 +1130,10 @@ function table_supplier_contacts($job, $supplier_contactsId) {
             $database->bind(':Mobile', $Mobile);
             $database->bind(':Email', $Email);
             $database->bind(':SupplierId', $SupplierId);
-            $database->bind(':supplier_contactsId', $supplier_contactsId);
+            $database->bind(':supplier_contactsId', $var1);
             if ($database->execute()) {
-                header("location: edit_supplier_contact.php?supplier_contactsId=$supplier_contactsId");
+                header("location: edit_supplier_contact.php?supplier_contactsId=$var1");
             }
-            break;
-
-        case 'check':
-            $Title = $_REQUEST['Title'];
-            $Name = trim($_REQUEST['Name']);
-            $SupplierId = $_REQUEST['SupplierId'];
-
-            $query = "SELECT Id FROM supplier_contacts WHERE
-                Title = :Title AND
-                Name = :Name AND
-                SupplierId = :SupplierId
-            ;";
-            $database->query($query);
-            $database->bind(':Title', $Title);
-            $database->bind(':Name', $Name);
-            $database->bind(':SupplierId', $SupplierId);
-            return $r = $database->rowCount();
             break;
 
         default:

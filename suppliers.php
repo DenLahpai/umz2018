@@ -38,16 +38,16 @@ else {
             <!-- sub-menu -->
 			<div class="sub-menu">
 				<form action="#" method="post">
-                <ul>
-                    <li>
-                        <a href="new_supplier.php">
-                            <button type="button" class="button medium" name="button">Create New Supplier</button></a>
-                    </li>
-                    <li>
-                        <input type="text" name="search" value="<?php echo $search; ?>" placeholder="Search Suppliers">
-                        <button type="submit" class="button search" name="buttonSearch">Search</button>
-                    </li>
-                </ul>
+                    <ul>
+                        <li>
+                            <a href="new_supplier.php">
+                                <button type="button" class="button medium" name="button">Create New Supplier</button></a>
+                        </li>
+                        <li>
+                            <input type="text" name="search" value="<?php echo $search; ?>" placeholder="Search Suppliers">
+                            <button type="submit" class="button search" name="buttonSearch">Search</button>
+                        </li>
+                    </ul>
                 </form>
 			</div>
             <!-- end of sub-menu -->
@@ -69,7 +69,7 @@ else {
                         echo "</div>";
                         echo "<!-- end of grid-item -->";
                     }
-                     ?>
+                    ?>
                 </div>
                 <!-- end of grid-div -->
             </main>
