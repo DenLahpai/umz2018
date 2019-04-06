@@ -21,6 +21,6 @@ foreach ($rows_posts as $row_posts) {
     include "includes/head.html";
     ?>
     <body>
-        
+
     </body>
 </html>
