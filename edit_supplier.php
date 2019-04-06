@@ -6,29 +6,26 @@ if ($d > 2) {
 }
 //getting suppliers Id to be edited
 $suppliersId = trim($_REQUEST['suppliersId']);
+if (!is_numeric ($suppliersId)) {
+    echo "There was an error! Please go back and try again.";
+    die();
+}
 
 //getting data from the table suppliers
-$rows_suppliers = table_suppliers('select', $suppliersId);
+$rows_suppliers = table_suppliers('select_one', $suppliersId, NULL);
 foreach ($rows_suppliers as $row_suppliers) {
     // code...
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Name = trim($_REQUEST['Name']);
-    if ($Name == $row_suppliers->Name) {
-        table_suppliers('update', $suppliersId);
+    $rowCount = table_suppliers ('check_before_update', $suppliersId, NULL);
+    if ($rowCount == 0) {
+        table_suppliers('update', $suppliersId, NULL);
     }
     else {
-        $rowCount = table_suppliers('check', NULL);
-        if ($rowCount == 0) {
-            table_suppliers('update', $suppliersId);
-        }
-        else {
             $error_message = "Duplicated Entry!";
-        }
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">

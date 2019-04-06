@@ -7,9 +7,9 @@ if ($d > 2) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $rowCount = table_service_types('check', NULL);
+    $rowCount = table_service_types('check_before_insert', NULL, NULL);
     if ($rowCount == 0) {
-        table_service_types('insert', NULL);
+        table_service_types('insert', NULL, NULL);
     }
     else {
         $error_message = "Duplicate Entry!";
@@ -58,13 +58,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     echo "<th colspan=\"3\" class=\"notice error\">".$error_message."</td>";
                                     echo "</tr>";
                                 }
-
-                                $rows_service_types = table_service_types('select', NULL);
+                                
+                                $rows_service_types = table_service_types ('select_all', NULL, NULL);
                                 foreach ($rows_service_types as $row_service_types) {
                                     echo "<tr>";
                                     echo "<td>".$row_service_types->Code."</td>";
                                     echo "<td>".$row_service_types->Name."</td>";
-                                    echo "<td><a href=\"edit_service_type.php?service_typesId=$row_service_types->Id\"><button class=\"button link\">Edit</button></a></td>";
+                                    echo "<td><a href=\"edit_service_type.php?service_typesId=$row_service_types->Id\"><button type=\"button\" class=\"button link\">Edit</button></a></td>";
                                     echo "</tr>";
                                 }
                                 ?>

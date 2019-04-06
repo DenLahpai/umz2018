@@ -48,7 +48,7 @@ function table_users($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
-        case 'check_beofre_insert':
+        case 'check_before_insert':
             $Username = trim($_REQUEST['Username']);
             $query = "SELECT * FROM users WHERE Username = :Username ;";
             $database->query($query);
@@ -825,10 +825,20 @@ function table_tour_guides($job, $tour_guidesId) {
 }
 
 //function to use the table table_suppliers
-function table_suppliers($job, $suppliersId) {
+function table_suppliers($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
+        case 'check_before_insert':
+            $Name = trim($_REQUEST['Name']);
+            $query = "SELECT * FROM suppliers
+                WHERE Name = :Name
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            return $r = $database->rowCount();
+            break;
+
         case 'insert':
             $Name = trim($_REQUEST['Name']);
             $Address = trim($_REQUEST['Address']);
@@ -860,18 +870,21 @@ function table_suppliers($job, $suppliersId) {
                 header("location: suppliers.php");
             }
             break;
-        case 'select':
-            if ($suppliersId == NULL || $suppliersId == "" || empty($suppliersId)) {
-                $query = "SELECT * FROM suppliers ;";
-                $database->query($query);
-            }
-            else  {
-                $query = "SELECT * FROM suppliers WHERE Id = :suppliersId ;";
-                $database->query($query);
-                $database->bind(':suppliersId', $suppliersId);
-            }
+
+        case 'select_all':
+            $query = "SELECT * FROM suppliers ;";
+            $database->query($query);
             return $r = $database->resultset();
             break;
+
+        case 'select_one':
+            // $var1 = $suppliersId
+            $query = "SELECT * FROM suppliers WHERE Id = :suppliersId ;";
+            $database->query($query);
+            $database->bind(':suppliersId', $var1);
+            return $r = $database->resultset();
+            break;
+
         case 'search':
             $search = '%'.$suppliersId.'%';
             $query = "SELECT * FROM suppliers WHERE CONCAT(
@@ -886,7 +899,22 @@ function table_suppliers($job, $suppliersId) {
             $database->bind(':search', $search);
             return $r = $database->resultset();
             break;
+
+        case 'check_before_update':
+            // $var1 = $suppliersId
+            $Name = trim($_REQUEST['Name']);
+            $query = "SELECT * FROM suppliers
+                WHERE Name = :Name
+                AND Id != :suppliersId
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':suppliersId', $var1);
+            return $r = $database->rowCount();
+            break;
+
         case 'update':
+            // $var1 = $suppliersId
             $Name = trim($_REQUEST['Name']);
             $Address = trim($_REQUEST['Address']);
             $City = trim($_REQUEST['City']);
@@ -907,11 +935,12 @@ function table_suppliers($job, $suppliersId) {
             $database->bind(':City', $City);
             $database->bind(':Phone', $Phone);
             $database->bind(':Email', $Email);
-            $database->bind(':suppliersId', $suppliersId);
+            $database->bind(':suppliersId', $var1);
             if ($database->execute()) {
-                header("location: edit_supplier.php?suppliersId=$suppliersId");
+                header("location: edit_supplier.php?suppliersId=$var1");
             }
             break;
+
         case 'check':
             $Name = trim($_REQUEST['Name']);
 
@@ -1380,10 +1409,20 @@ function table_drivers ($job, $driversId) {
 }
 
 //function to use the table service_types
-function table_service_types($job, $service_typesId) {
+function table_service_types ($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
+
+        case 'check_before_insert':
+            $Code = strtoupper($_REQUEST['Code']);
+            $Name = trim($_REQUEST['Name']);
+
+            $query = "SELECT Id FROM service_types WHERE Code = :Code ;";
+            $database->query($query);
+            $database->bind(':Code', $Code);
+            return $r = $database->rowCount();
+            break;
 
         case 'insert':
             $Code = strtoupper($_REQUEST['Code']);
@@ -1405,20 +1444,35 @@ function table_service_types($job, $service_typesId) {
 
             break;
 
-        case 'select':
-            if ($service_typesId == NULL || $service_typesId == "" ||empty($service_typesId)) {
-                $query = "SELECT * FROM service_types ;";
-                $database->query($query);
-            }
-            else {
-                $query = "SELECT * FROM service_types WHERE Id = :service_typesId ;";
-                $database->query($query);
-                $database->bind(':service_typesId', $service_typesId);
-            }
+        case 'select_all':
+            $query = "SELECT * FROM service_types ;";
+            $database->query($query);
             return $r = $database->resultset();
             break;
 
+        case 'select_one':
+            // $var1 = $service_typesId
+            $query = "SELECT * FROM service_types WHERE Id = :service_typesId ;";
+            $database->query($query);
+            $database->bind(':service_typesId', $var1);
+            return $r = $database->resultset();
+            break;
+
+        case 'check_before_update':
+            // $var1 = $service_typesId
+            $Code = strtoupper($_REQUEST['Code']);
+            $query = "SELECT * FROM service_types
+                WHERE Code = :Code
+                AND Id != :service_typesId
+            ;";
+            $database->query($query);
+            $database->bind(':Code', $Code);
+            $database->bind(':service_typesId', $var1);
+            return $r = $database->rowCount();
+            break;
+
         case 'update':
+            // $var1 = $service_typesId
             $Code = strtoupper($_REQUEST['Code']);
             $Name = trim($_REQUEST['Name']);
 
@@ -1430,20 +1484,10 @@ function table_service_types($job, $service_typesId) {
             $database->query($query);
             $database->bind(':Code', $Code);
             $database->bind(':Name', $Name);
-            $database->bind(':service_typesId', $service_typesId);
+            $database->bind(':service_typesId', $var1);
             if ($database->execute()) {
-                header("location: edit_service_type.php?service_typesId=$service_typesId");
+                header("location: edit_service_type.php?service_typesId=$var1");
             }
-            break;
-
-        case 'check':
-            $Code = strtoupper($_REQUEST['Code']);
-            $Name = trim($_REQUEST['Name']);
-
-            $query = "SELECT Id FROM service_types WHERE Code = :Code ;";
-            $database->query($query);
-            $database->bind(':Code', $Code);
-            return $r = $database->rowCount();
             break;
 
         default:

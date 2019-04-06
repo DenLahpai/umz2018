@@ -7,9 +7,9 @@ if ($d > 2) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $rowCount = table_suppliers('check', NULL);
+    $rowCount = table_suppliers('check_before_insert', NULL, NULL);
     if ($rowCount == 0) {
-        table_suppliers('insert', NULL);
+        table_suppliers('insert', NULL, NULL);
     }
     else {
         $error_message = "Duplicate Entry!";

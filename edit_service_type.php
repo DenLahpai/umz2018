@@ -8,29 +8,27 @@ if ($d > 2) {
 
 //getting the service_typesId
 $service_typesId = trim($_REQUEST['service_typesId']);
+if (!is_numeric ($service_typesId)) {
+    echo "There was an error! Please go back and try again!";
+    die();
+}
 
 //getting data from the table service_types
-$rows_service_types = table_service_types('select', $service_typesId);
+$rows_service_types = table_service_types('select_one', $service_typesId, NULL);
 foreach ($rows_service_types as $row_service_types) {
     // code...
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Code = strtoupper($_REQUEST['Code']);
-    if ($Code == $row_service_types->Code) {
-        table_service_types('update', $service_typesId);
+    $rowCount = table_service_types ('check_before_update', $service_typesId, NULL);
+
+    if ($rowCount == 0) {
+        table_service_types ('update', $service_typesId, NULL);
     }
     else {
-        $rowCount = table_service_types('check', NULL);
-        if ($rowCount == 0) {
-            table_service_types('update', $service_typesId);
-        }
-        else {
-            $error_message = "Duplicate Entry!";
-        }
+        $error_message = "Duplicate Entry!";
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">

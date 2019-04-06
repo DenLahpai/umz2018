@@ -15,10 +15,10 @@ else {
 }
 
 if(empty($search) || $search == NULL || $search == "") {
-    $rows_suppliers = table_suppliers('select', NULL);
+    $rows_suppliers = table_suppliers('select_all', NULL, NULL);
 }
 else {
-    $rows_suppliers = table_suppliers('search', $search);
+    $rows_suppliers = table_suppliers('search', $search, NULL);
 }
 ?>
 <!DOCTYPE html>
