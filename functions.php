@@ -1274,10 +1274,25 @@ function table_vehicles($job, $vehiclesId) {
 }
 
 //function to use data from the table drivers
-function table_drivers ($job, $driversId) {
+function table_drivers ($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
+
+        case 'check_before_insert':
+            $Name = trim($_REQUEST['Name']);
+            $License = trim($_REQUEST['License']);
+
+            $query = "SELECT Id FROM drivers
+                WHERE Name = :Name
+                AND License = :License
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':License', $License);
+            return $r = $database->rowCount();
+            break;
+
         case 'insert':
             $Title = $_REQUEST['Title'];
             $Name = trim($_REQUEST['Name']);
@@ -1310,44 +1325,46 @@ function table_drivers ($job, $driversId) {
             }
             break;
 
-        case 'select':
-            if ($driversId == NULL || $driversId == "" ||empty($driversId)) {
-                $query = "SELECT
-                    drivers.Id,
-                    drivers.Title,
-                    drivers.Name,
-                    drivers.Mobile,
-                    drivers.License,
-                    drivers.Class,
-                    drivers.SupplierId,
-                    suppliers.Name AS suppliersName
-                    FROM drivers LEFT OUTER JOIN suppliers
-                    ON drivers.SupplierId = suppliers.Id
-                ;";
-                $database->query($query);
-            }
-            else {
-                $query = "SELECT
-                    drivers.Id,
-                    drivers.Title,
-                    drivers.Name,
-                    drivers.Mobile,
-                    drivers.License,
-                    drivers.Class,
-                    drivers.SupplierId,
-                    suppliers.Name AS suppliersName
-                    FROM drivers LEFT OUTER JOIN suppliers
-                    ON drivers.SupplierId = suppliers.Id
-                    WHERE drivers.Id = :driversId
-                ;";
-                $database->query($query);
-                $database->bind(':driversId', $driversId);
-            }
+        case 'select_all':
+            $query = "SELECT
+                drivers.Id,
+                drivers.Title,
+                drivers.Name,
+                drivers.Mobile,
+                drivers.License,
+                drivers.Class,
+                drivers.SupplierId,
+                suppliers.Name AS suppliersName
+                FROM drivers LEFT OUTER JOIN suppliers
+                ON drivers.SupplierId = suppliers.Id
+            ;";
+            $database->query($query);
+            return $r = $database->resultset();
+            break;
+
+        case 'select_one':
+            // $var1 = $driversId
+            $query = "SELECT
+                drivers.Id,
+                drivers.Title,
+                drivers.Name,
+                drivers.Mobile,
+                drivers.License,
+                drivers.Class,
+                drivers.SupplierId,
+                suppliers.Name AS suppliersName
+                FROM drivers LEFT OUTER JOIN suppliers
+                ON drivers.SupplierId = suppliers.Id
+                WHERE drivers.Id = :driversId
+            ;";
+            $database->query($query);
+            $database->bind(':driversId', $var1);
             return $r = $database->resultset();
             break;
 
         case 'search':
-            $search = '%'.$driversId.'%';
+            // $var1 = search
+            $search = '%'.$var1.'%';
             $query = "SELECT
                 drivers.Id,
                 drivers.Title,
@@ -1373,7 +1390,28 @@ function table_drivers ($job, $driversId) {
             return $r = $database->resultset();
             break;
 
+        case 'check_before_update':
+            // $var1 = $driversId
+            $Name = trim($_REQUEST['Name']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $License = trim($_REQUEST['License']);
+
+            $query = "SELECT * FROM drivers
+                WHERE Name = :Name
+                AND Mobile = :Mobile
+                AND License = :License
+                AND Id != :driversId
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':Mobile', $Mobile);
+            $database->bind(':License', $License);
+            $database->bind(':driversId', $var1);
+            return $r = $database->rowCount();
+            break;
+
         case 'update':
+            //$var1 = $driversId
             $Title = $_REQUEST['Title'];
             $Name = trim($_REQUEST['Name']);
             $Mobile = trim($_REQUEST['Mobile']);
@@ -1397,24 +1435,10 @@ function table_drivers ($job, $driversId) {
             $database->bind(':License', $License);
             $database->bind(':Class', $Class);
             $database->bind(':SupplierId', $SupplierId);
-            $database->bind(':driversId', $driversId);
+            $database->bind(':driversId', $var1);
             if ($database->execute()) {
-                header("location: edit_driver.php?driversId=$driversId");
+                header("location: edit_driver.php?driversId=$var1");
             }
-            break;
-
-        case 'check':
-            $Name = trim($_REQUEST['Name']);
-            $License = trim($_REQUEST['License']);
-
-            $query = "SELECT Id FROM drivers
-                WHERE Name = :Name
-                AND License = :License
-            ;";
-            $database->query($query);
-            $database->bind(':Name', $Name);
-            $database->bind(':License', $License);
-            return $r = $database->rowCount();
             break;
 
         default:

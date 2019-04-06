@@ -2,9 +2,9 @@
 require "functions.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	$rowCount = table_drivers('check', NULL);
+	$rowCount = table_drivers('check_before_insert', NULL, NULL);
 	if ($rowCount == 0) {
-		table_drivers('insert', NULL);
+		table_drivers('insert', NULL, NULL);
 	}
 	else {
 		$error_message = "Duplicate Entry!";
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 							<select Id="SupplierId" name="SupplierId">
 								<option value="">Select</option>
 								<?php
-								$rows_suppliers = table_suppliers('select', NULL);
+								$rows_suppliers = table_suppliers('select_all', NULL, NULL);
 								foreach ($rows_suppliers as $row_suppliers) {
 									echo "<option value=\"$row_suppliers->Id\">".$row_suppliers->Name."</option>";
 								}

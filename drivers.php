@@ -10,10 +10,10 @@ else {
 }
 
 if(empty($search) || $search == NULL || $search == "") {
-    $rows_drivers = table_drivers('select', NULL);
+    $rows_drivers = table_drivers('select_all', NULL, NULL);
 }
 else {
-    $rows_drivers = table_drivers('search', $search);
+    $rows_drivers = table_drivers('search', $search, NULL);
 }
 ?>
 <!DOCTYPE html>

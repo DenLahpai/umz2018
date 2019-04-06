@@ -3,27 +3,25 @@ require "functions.php";
 
 //getting drivers Id to be edited
 $driversId = trim($_REQUEST['driversId']);
+if (!is_numeric ($driversId)) {
+    echo "There was a problem! Please go back and try again.";
+    die();
+}
 
 //getting the drivers Id and data from the table drivers
-$rows_drivers = table_drivers('select', $driversId);
+$rows_drivers = table_drivers('select_one', $driversId, NULL);
 foreach ($rows_drivers as $row_drivers) {
     // code...
 }
 
 //checking and updating the table drivers
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Name = trim($_REQUEST['Name']);
-    if ($Name == $row_drivers->Name) {
-        table_drivers('update', $driversId);
+    $rowCount = table_drivers('check_before_update', $driversId, NULL);
+    if ($rowCount == 0) {
+        table_drivers('update', $driversId, NULL);
     }
     else {
-        $rowCount = table_drivers('check', NULL);
-        if ($rowCount == 0) {
-            table_drivers('update', $driversId);
-        }
-        else {
-            $error_message = "Duplicate Entry!";
-        }
+        $error_message = "Duplicate Entry!";
     }
 }
 ?>
@@ -77,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             Supplier: &nbsp;
                             <select id="SupplierId" name="SupplierId">
                                 <?php
-                                $rows_suppliers = table_suppliers('select', NULL);
+                                $rows_suppliers = table_suppliers('select_all', NULL, NULL);
                                 foreach ($rows_suppliers as $row_suppliers) {
                                     if ($row_suppliers->Id == $row_drivers->SupplierId) {
                                         echo "<option value=\"$row_suppliers->Id\" selected>".$row_suppliers->Name."</option>";
