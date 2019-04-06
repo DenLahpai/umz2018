@@ -175,7 +175,7 @@ footer {
 }
 
 .button.medium {
-    padding: 6px 12px;
+    padding: 6px 18px;
     border: 1px solid white;
     background: #511695;
     color: white;
@@ -189,7 +189,7 @@ footer {
 }
 
 .button.link {
-    padding: 6px;
+    padding: 6px 18px;
 }
 
 input {
