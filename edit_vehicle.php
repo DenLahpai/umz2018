@@ -1,29 +1,32 @@
 <?php
 require "functions.php";
 
+//Only departments id 1 and 2 has access to this page.
+if ($d > 2) {
+    header("location: no_access.php");
+}
+
 //getting the Id
 $vehiclesId = trim($_REQUEST['vehiclesId']);
+if (!is_numeric ($vehiclesId)) {
+	echo "There was a problem! Please go back and try again.";
+	die();
+}
 
 // getting the data to be edited from the table vehicles
-$rows_vehicles = table_vehicles('select', $vehiclesId);
+$rows_vehicles = table_vehicles('select_one', $vehiclesId, NULL);
 foreach ($rows_vehicles as $row_vehicles) {
 	# code...
 }
 
 //updating the table vehicles when the button update is pressed
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	$License = trim($_REQUEST['License']);
-	if ($License == $row_vehicles->License) {
-		table_vehicles('update', $vehiclesId);
+	$rowCount = table_vehicles ('check_before_update', $vehiclesId, NULL);
+	if ($rowCount == 0) {
+		table_vehicles ('update', $vehiclesId, NULL);
 	}
 	else {
-		$rowCount = table_vehicles('check', NULL);
-		if ($rowCount == 0) {
-			table_vehicles('update', $vehiclesId);
-		}
-		else {
-			$error_message = "Duplicate Entry!";
-		}
+		$error_message = "Duplicate Entry!";
 	}
 }
 ?>
@@ -66,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             Supplier: &nbsp;
                             <select id="SupplierId" name="SupplierId">
                                 <?php
-                                $rows_suppliers = table_suppliers('select', $row_vehicles->SupplierId);
+                                $rows_suppliers = table_suppliers('select_all', NULL, NULL);
                                 foreach ($rows_suppliers as $row_suppliers) {
                                     if ($row_suppliers->Id == $row_vehicles->SupplierId) {
                                         echo "<option value=\"$row_suppliers->Id\" selected>".$row_suppliers->Name."</option>";

@@ -1,6 +1,11 @@
 <?php
 require "functions.php";
 
+//Only departments id 1 and 2 has access to this page.
+if ($d > 2) {
+    header("location: no_access.php");
+}
+
 //getting data from the table
 if (isset($_REQUEST['buttonSearch'])) {
     $search = $_REQUEST['search'];

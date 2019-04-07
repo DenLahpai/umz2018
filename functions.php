@@ -1143,7 +1143,7 @@ function table_supplier_contacts($job, $var1, $var2) {
 }
 
 //function to use the table vehicle
-function table_vehicles($job, $vehiclesId) {
+function table_vehicles($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
@@ -1247,14 +1247,24 @@ function table_vehicles($job, $vehiclesId) {
             break;
 
         case 'check_before_update':
-            // code...
+            // $var1 = $vehiclesId
+            $License = trim($_REQUEST['License']);
+            $query = "SELECT * FROM vehicles
+                WHERE License = :License
+                AND Id != :vehiclesId
+            ;";
+            $database->query($query);
+            $database->bind(':License', $License);
+            $database->bind(':vehiclesId', $var1);
+            return $r = $database->rowCount();
             break;
 
         case 'update':
+            //$var1 = $vehiclesId
             $License = trim($_REQUEST['License']);
             $Type = trim($_REQUEST['Type']);
             $Seats = trim($_REQUEST['Seats']);
-            $SupplierId = trim($_REQUEST['Supplierid']);
+            $SupplierId = $_REQUEST['SupplierId'];
 
             $query = "UPDATE vehicles SET
                 License = :License,
@@ -1268,9 +1278,9 @@ function table_vehicles($job, $vehiclesId) {
             $database->bind(':Type', $Type);
             $database->bind(':Seats', $Seats);
             $database->bind(':SupplierId', $SupplierId);
-            $database->bind(':vehiclesId', $vehiclesId);
+            $database->bind(':vehiclesId', $var1);
             if ($database->execute()) {
-                header("location: edit_vehicle.php?vehiclesId=$vehiclesId");
+                header("location: edit_vehicle.php?vehiclesId=$var1");
             }
             break;
 
