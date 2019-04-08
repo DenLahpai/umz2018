@@ -5,27 +5,25 @@ if ($d > 2) {
 }
 //getting agants Id to be edited
 $agentsId = trim($_REQUEST['agentsId']);
+if (!is_numeric ($agentsId)) {
+    echo "There was an error! Please go back and try again.";
+    die();
+}
 
 //getting the agentsId and data from the table agents
-$rows_agents = table_agents('select', $agentsId);
+$rows_agents = table_agents('select_one', $agentsId, NULL);
 foreach ($rows_agents as $row_agents) {
     // code...
 }
 
 //updating the table agents when clicked update
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Name = trim($_REQUEST['Name']);
-    if ($Name == $row_agents->Name) {
-        table_agents('update', $agentsId);
+    $rowCount = table_agents ('check_before_update', $agentsId, NULL);
+    if ($rowCount == 0) {
+        table_agents ('update', $agentsId, NULL);
     }
     else {
-        $rowCount = table_agents('check', NULL);
-        if ($rowCount == 0) {
-            table_agents('update', $agentsId);
-        }
-        else {
-            $error_message = "Duplicate Entry!";
-        }
+        $error_message = "Duplicate Entry!";
     }
 }
 ?>

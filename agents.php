@@ -15,10 +15,10 @@ else {
 }
 
 if(empty($search) || $search == NULL || $search == "") {
-    $rows_agents = table_agents('select', NULL);
+    $rows_agents = table_agents('select_all', NULL, NULL);
 }
 else {
-    $rows_agents = table_agents('search', $search);
+    $rows_agents = table_agents('search', $search, NULL);
 }
 
 ?>

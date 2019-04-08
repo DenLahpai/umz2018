@@ -384,136 +384,159 @@ function table_departments($job, $departmentsId) {
 }
 
 //function to use the table agents
-function table_agents($job, $agentsId) {
+function table_agents($job, $var1, $var2) {
     $database = new Database();
 
-    if ($job == 'insert') {
-        $Name = trim($_REQUEST['Name']);
-        $Address = trim($_REQUEST['Address']);
-        $Township = trim($_REQUEST['Township']);
-        $City = trim($_REQUEST['City']);
-        $Country = trim($_REQUEST['Country']);
-        $Phone = trim($_REQUEST['Phone']);
-        $Fax = trim($_REQUEST['Fax']);
-        $Email = trim($_REQUEST['Email']);
-        $Website = trim($_REQUEST['Website']);
+    switch ($job) {
+        case 'check_before_insert':
+            $Name = trim($_REQUEST['Name']);
+            $query = "SELECT Id FROM agents WHERE
+                Name = :Name
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->execute();
+            return $r = $database->rowCount();
+            break;
 
-        $query = "INSERT INTO agents (
-            Name,
-            Address,
-            Township,
-            City,
-            Country,
-            Phone,
-            Fax,
-            Email,
-            Website
-            ) VALUES (
-            :Name,
-            :Address,
-            :Township,
-            :City,
-            :Country,
-            :Phone,
-            :Fax,
-            :Email,
-            :Website
-            )
-        ;";
-        $database->query($query);
-        $database->bind(':Name', $Name);
-        $database->bind(':Address', $Address);
-        $database->bind(':Township', $Township);
-        $database->bind(':City', $City);
-        $database->bind(':Country', $Country);
-        $database->bind(':Phone', $Phone);
-        $database->bind(':Fax', $Fax);
-        $database->bind(':Email', $Email);
-        $database->bind(':Website', $Website);
-        if ($database->execute()) {
-            header("location: agents.php");
-        }
-    }
-    elseif ($job == 'select') {
-        if ($agentsId == NULL || $agentsId == "" || empty($agentsId)) {
+        case 'insert':
+            $Name = trim($_REQUEST['Name']);
+            $Address = trim($_REQUEST['Address']);
+            $Township = trim($_REQUEST['Township']);
+            $City = trim($_REQUEST['City']);
+            $Country = trim($_REQUEST['Country']);
+            $Phone = trim($_REQUEST['Phone']);
+            $Fax = trim($_REQUEST['Fax']);
+            $Email = trim($_REQUEST['Email']);
+            $Website = trim($_REQUEST['Website']);
+
+            $query = "INSERT INTO agents (
+                Name,
+                Address,
+                Township,
+                City,
+                Country,
+                Phone,
+                Fax,
+                Email,
+                Website
+                ) VALUES (
+                :Name,
+                :Address,
+                :Township,
+                :City,
+                :Country,
+                :Phone,
+                :Fax,
+                :Email,
+                :Website
+                )
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':Address', $Address);
+            $database->bind(':Township', $Township);
+            $database->bind(':City', $City);
+            $database->bind(':Country', $Country);
+            $database->bind(':Phone', $Phone);
+            $database->bind(':Fax', $Fax);
+            $database->bind(':Email', $Email);
+            $database->bind(':Website', $Website);
+            if ($database->execute()) {
+                header("location: agents.php");
+            }
+            break;
+
+        case 'select_all':
             $query = "SELECT * FROM agents ;";
             $database->query($query);
             return $r = $database->resultset();
-        }
-        else {
+            break;
+
+        case 'select_one':
+            //$var1 = agentsId
             $query = "SELECT * FROM agents WHERE Id = :Id ;";
             $database->query($query);
-            $database->bind(':Id', $agentsId);
+            $database->bind(':Id', $var1);
             return $r = $database->resultset();
-        }
-    }
-    elseif ($job == 'search') {
-        $search = '%'.$agentsId.'%';
-        $query = "SELECT * FROM agents
-            WHERE CONCAT(
-            Name,
-            Address,
-            Township,
-            City,
-            Country,
-            Phone,
-            Fax,
-            Email,
-            Website
-            ) LIKE :search
-        ;";
-        $database->query($query);
-        $database->bind(':search', $search);
-        return $r = $database->resultset();
-    }
-    elseif ($job == 'update') {
-        $Name = trim($_REQUEST['Name']);
-        $Address = trim($_REQUEST['Address']);
-        $Township = trim($_REQUEST['Township']);
-        $City = trim($_REQUEST['City']);
-        $Country = trim($_REQUEST['Country']);
-        $Phone = trim($_REQUEST['Phone']);
-        $Fax = trim($_REQUEST['Fax']);
-        $Email = trim($_REQUEST['Email']);
-        $Website = trim($_REQUEST['Website']);
+            break;
 
-        $query = "UPDATE agents SET
-            Name = :Name,
-            Address = :Address,
-            Township = :Township,
-            City = :City,
-            Country = :Country,
-            Phone = :Phone,
-            Fax = :Fax,
-            Email = :Email,
-            Website = :Website
-            WHERE Id = :agentsId
-        ;";
-        $database->query($query);
-        $database->bind(':Name', $Name);
-        $database->bind(':Address', $Address);
-        $database->bind(':Township', $Township);
-        $database->bind(':City', $City);
-        $database->bind(':Country', $Country);
-        $database->bind(':Phone', $Phone);
-        $database->bind(':Fax', $Fax);
-        $database->bind(':Email', $Email);
-        $database->bind(':Website', $Website);
-        $database->bind(':agentsId', $agentsId);
-        if ($database->execute()) {
-            header("location:edit_agent.php?agentsId=$agentsId");
-        }
-    }
-    elseif ($job == 'check') {
-        $Name = trim($_REQUEST['Name']);
+        case 'check_before_update':
+            //$var1 = $agentsId
+            $Name = trim($_REQUEST['Name']);
+            $query = "SELECT * FROM agents
+                WHERE Name = :Name
+                AND Id != :agentsId
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':agentsId', $var1);
+            break;
 
-        $query = "SELECT Id FROM agents WHERE
-            Name = :Name
-        ;";
-        $database->query($query);
-        $database->bind(':Name', $Name);
-        $database->execute();
-        return $r = $database->rowCount();
+        case 'update':
+            //$var1 = $agentsId
+            $Name = trim($_REQUEST['Name']);
+            $Address = trim($_REQUEST['Address']);
+            $Township = trim($_REQUEST['Township']);
+            $City = trim($_REQUEST['City']);
+            $Country = trim($_REQUEST['Country']);
+            $Phone = trim($_REQUEST['Phone']);
+            $Fax = trim($_REQUEST['Fax']);
+            $Email = trim($_REQUEST['Email']);
+            $Website = trim($_REQUEST['Website']);
+
+            $query = "UPDATE agents SET
+                Name = :Name,
+                Address = :Address,
+                Township = :Township,
+                City = :City,
+                Country = :Country,
+                Phone = :Phone,
+                Fax = :Fax,
+                Email = :Email,
+                Website = :Website
+                WHERE Id = :agentsId
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':Address', $Address);
+            $database->bind(':Township', $Township);
+            $database->bind(':City', $City);
+            $database->bind(':Country', $Country);
+            $database->bind(':Phone', $Phone);
+            $database->bind(':Fax', $Fax);
+            $database->bind(':Email', $Email);
+            $database->bind(':Website', $Website);
+            $database->bind(':agentsId', $var1);
+            if ($database->execute()) {
+                header("location:edit_agent.php?agentsId=$var1");
+            }
+            break;
+
+        case 'search':
+            // $var1 = search
+            $search = '%'.$var1.'%';
+            $query = "SELECT * FROM agents
+                WHERE CONCAT(
+                Name,
+                Address,
+                Township,
+                City,
+                Country,
+                Phone,
+                Fax,
+                Email,
+                Website
+                ) LIKE :search
+            ;";
+            $database->query($query);
+            $database->bind(':search', $search);
+            return $r = $database->resultset();
+            break;
+
+        default:
+            // code...
+            break;
     }
 }
 
@@ -758,6 +781,7 @@ function table_tour_guides($job, $var1, $var2) {
                 header("location: tourguides.php");
             }
             break;
+
         case 'select_all':
             $query = "SELECT * FROM tour_guides ORDER BY Name ;";
             $database->query($query);
@@ -787,6 +811,21 @@ function table_tour_guides($job, $var1, $var2) {
             $database->query($query);
             $database->bind(':search', $search);
             return $r = $database->resultset();
+            break;
+
+        case 'check_before_update':
+            // $var1 = $tour_guidesId
+            $Name = trim($_REQUEST['Name']);
+            $License = trim($_REQUEST['License']);
+            $query = "SELECT * FROM tour_guides
+                WHERE Name = :Name
+                AND License = :License
+                AND Id != :tour_guidesId
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':License', $License);
+            $database->bind(':tour_guidesId', $var1);
             break;
 
         case 'update':

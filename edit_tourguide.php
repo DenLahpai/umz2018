@@ -2,32 +2,26 @@
 require "functions.php";
 //getting agants Id to be edited
 $tour_guidesId = trim($_REQUEST['tour_guidesId']);
+if (!is_numeric ($tour_guidesId)) {
+    echo "There was a problem! Please go back and try again.";
+}
 
 //getting the agentsId and data from the table agents
-$rows_tour_guides = table_tour_guides('select', $tour_guidesId);
+$rows_tour_guides = table_tour_guides('select_one', $tour_guidesId, NULL);
 foreach ($rows_tour_guides as $row_tour_guides) {
     // code...
 }
 
 //updating the table tour_guides when clicked update
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Name = trim($_REQUEST['Name']);
-    $Mobile = trim($_REQUEST['Mobile']);
-    if ($Name == $row_tour_guides->Name) {
-        table_tour_guides('update', $tour_guidesId);
+    $rowCount = table_tour_guides ('check_before_update', $tour_guidesId, NULL);
+    if ($rowCount == 0) {
+        table_tour_guides ('update', $tour_guidesId, NULL);
     }
     else {
-        $rowCount = table_tour_guides('check', NULL);
-        if ($rowCount == 0) {
-            table_tour_guides('update', $tour_guidesId);
-        }
-        else {
-            $error_message = "Dupicate Entry!";
-        }
+        $error_message = "Duplicate Entry!";
     }
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">

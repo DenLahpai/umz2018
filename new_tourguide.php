@@ -2,9 +2,9 @@
 require "functions.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $rowCount = table_tour_guides('check', NULL);
+    $rowCount = table_tour_guides('check_before_insert', NULL, NULL);
     if ($rowCount == 0) {
-        table_tour_guides('insert', NULL);
+        table_tour_guides('insert', NULL, NULL);
     }
     else {
         $error_message = "Duplicate Username!";
@@ -77,5 +77,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <!-- end of content -->
         <?php include "includes/footer.html"; ?>
     </body>
-    <script type="text/javascript" src="js/scripts.js"></script>    
+    <script type="text/javascript" src="js/scripts.js"></script>
 </html>
