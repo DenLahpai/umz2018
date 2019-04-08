@@ -176,16 +176,16 @@ function table_users($job, $var1, $var2) {
             $Id = $_REQUEST['Id'];
 
             $query = "UPDATE users SET
-            Username = :Username,
-            Password = :Password,
-            Title = :Title,
-            Fullname = :Fullname,
-            Position = :Position,
-            DepartmentId = :DepartmentId,
-            Status = :Status,
-            Email = :Email,
-            Mobile = :Mobile
-            WHERE Id = :Id
+                Username = :Username,
+                Password = :Password,
+                Title = :Title,
+                Fullname = :Fullname,
+                Position = :Position,
+                DepartmentId = :DepartmentId,
+                Status = :Status,
+                Email = :Email,
+                Mobile = :Mobile
+                WHERE Id = :Id
             ;";
             $database->query($query);
             $database->bind(':Username', $Username);
@@ -243,7 +243,6 @@ function table_users($job, $var1, $var2) {
             // code...
             break;
     }
-
 }
 
 //function to use the table posts
@@ -695,10 +694,31 @@ function table_agent_contacts($job, $agent_contactsId) {
 }
 
 //function to use the table tour_guides
-function table_tour_guides($job, $tour_guidesId) {
+function table_tour_guides($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
+
+        case 'check_before_insert':
+            $Name = trim($_REQUEST['Name']);
+            $License = trim($_REQUEST['License']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $Email = trim($_REQUEST['Email']);
+
+            $query = "SELECT Id FROM tour_guides WHERE
+                Name = :Name AND
+                Mobile = :Mobile AND
+                License = :License AND
+                Email = :Email
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':License', $License);
+            $database->bind(':Mobile', $Mobile);
+            $database->bind(':Email', $Email);
+            return $r = $database->rowCount();
+            break;
+
         case 'insert':
             $Title = $_REQUEST['Title'];
             $Name = trim($_REQUEST['Name']);
@@ -738,21 +758,22 @@ function table_tour_guides($job, $tour_guidesId) {
                 header("location: tourguides.php");
             }
             break;
-        case 'select':
-            if ($tour_guidesId == "" ||$tour_guidesId == NULL || empty($tour_guidesId)) {
-                $query = "SELECT * FROM tour_guides ORDER BY Name ;";
-                $database->query($query);
-            }
-            else {
-                $query = "SELECT * FROM tour_guides WHERE Id = :Id ;";
-                $database->query($query);
-                $database->bind(':Id', $tour_guidesId);
-            }
+        case 'select_all':
+            $query = "SELECT * FROM tour_guides ORDER BY Name ;";
+            $database->query($query);
+            return $r = $database->resultset();
+            break;
+
+        case 'select_one':
+            // $var1 = $tour_guidesId
+            $query = "SELECT * FROM tour_guides WHERE Id = :Id ;";
+            $database->query($query);
+            $database->bind(':Id', $var1);
             return $r = $database->resultset();
             break;
 
         case 'search':
-            $search = '%'.$tour_guidesId.'%';
+            $search = '%'.$var1.'%';
             $query = "SELECT * FROM tour_guides WHERE CONCAT (
                 Title,
                 Name,
@@ -767,6 +788,7 @@ function table_tour_guides($job, $tour_guidesId) {
             $database->bind(':search', $search);
             return $r = $database->resultset();
             break;
+
         case 'update':
             $Title = $_REQUEST['Title'];
             $Name = trim($_REQUEST['Name']);
@@ -794,30 +816,12 @@ function table_tour_guides($job, $tour_guidesId) {
             $database->bind(':Type',$Type);
             $database->bind(':Language', $Language);
             $database->bind(':Email', $Email);
-            $database->bind(':tour_guidesId', $tour_guidesId);
+            $database->bind(':tour_guidesId', $var1);
             if ($database->execute()) {
-                header("location: edit_tourguide.php?tour_guidesId=$tour_guidesId");
+                header("location: edit_tourguide.php?tour_guidesId=$var1");
             }
             break;
-        case 'check':
-            $Name = trim($_REQUEST['Name']);
-            $License = trim($_REQUEST['License']);
-            $Mobile = trim($_REQUEST['Mobile']);
-            $Email = trim($_REQUEST['Email']);
 
-            $query = "SELECT Id FROM tour_guides WHERE
-                Name = :Name AND
-                Mobile = :Mobile AND
-                License = :License AND
-                Email = :Email
-            ;";
-            $database->query($query);
-            $database->bind(':Name', $Name);
-            $database->bind(':License', $License);
-            $database->bind(':Mobile', $Mobile);
-            $database->bind(':Email', $Email);
-            return $r = $database->rowCount();
-            break;
         default:
             // code...
             break;
@@ -948,7 +952,7 @@ function table_suppliers($job, $var1, $var2) {
 }
 
 //function to use data from the table supplier_contacts
-function table_supplier_contacts($job, $var1, $var2) {
+function table_supplier_contacts ($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
@@ -1143,7 +1147,7 @@ function table_supplier_contacts($job, $var1, $var2) {
 }
 
 //function to use the table vehicle
-function table_vehicles($job, $var1, $var2) {
+function table_vehicles ($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
@@ -1553,7 +1557,7 @@ function table_service_types ($job, $var1, $var2) {
 }
 
 //function to use the table service_statuses
-function table_service_statuses($job, $var1, $var2) {
+function table_service_statuses ($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
@@ -1636,8 +1640,6 @@ function table_service_statuses($job, $var1, $var2) {
                 }
             break;
 
-
-
         default:
             # code...
             break;
@@ -1645,7 +1647,7 @@ function table_service_statuses($job, $var1, $var2) {
 }
 
 // function to use the table services
-function table_services($job, $servicesId) {
+function table_services ($job, $servicesId) {
     $database = new Database();
 
     switch ($job) {
@@ -1814,10 +1816,19 @@ function table_services($job, $servicesId) {
 }
 
 //function to use the table guide_requests
-function table_guide_requests($job, $guide_requestsId) {
+function table_guide_requests ($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
+
+        case 'check_before_insert':
+            $Request = trim($_REQUEST['Request']);
+            $query = "SELECT Id FROM guide_requests WHERE Request = :Request ;";
+            $database->query($query);
+            $database->bind(':Request', $Request);
+            return $r = $database->rowCount();
+            break;
+
         case 'insert':
             $Request = trim($_REQUEST['Request']);
             $query = "INSERT INTO guide_requests (
@@ -1833,21 +1844,37 @@ function table_guide_requests($job, $guide_requestsId) {
             }
             break;
 
-        case 'select':
-            if ($guide_requestsId == NULL || $guide_requestsId == "" || empty($guide_requestsId)) {
-                $query = "SELECT * FROM guide_requests ;";
-                $database->query($query);
-                return $r = $database->resultset();
-            }
-            else {
-                $query = "SELECT * FROM guide_requests WHERE Id = :guide_requestsId ;";
-                $database->query($query);
-                $database->bind(':guide_requestsId', $guide_requestsId);
-                return $r = $database->resultset();
-            }
+        case 'select_all':
+            $query = "SELECT * FROM guide_requests ;";
+            $database->query($query);
+            return $r = $database->resultset();
+            break;
+
+        case 'select_one':
+            // $var1 = $guide_requestsId
+            $query = "SELECT * FROM guide_requests
+                WHERE Id = :guide_requestsId
+            ;";
+            $database->query($query);
+            $database->bind(':guide_requestsId', $var1);
+            return $r = $database->resultset();
+            break;
+
+        case 'check_before_update':
+            // $var1 = $guide_requestsId
+            $Request = trim($_REQUEST['Request']);
+            $query = "SELECT * FROM guide_requests
+                WHERE Request = :Request
+                AND Id != :guide_requestsId
+            ;";
+            $database->query($query);
+            $database->bind(':Request', $Request);
+            $database->bind(':guide_requestsId', $var1);
+            return $r = $database->rowCount();
             break;
 
         case 'update':
+            // $var1 = $guide_requestsId
             $Request = trim($_REQUEST['Request']);
             $query = "UPDATE guide_requests SET
                 Request = :Request
@@ -1855,18 +1882,10 @@ function table_guide_requests($job, $guide_requestsId) {
             ;";
             $database->query($query);
             $database->bind(':Request', $Request);
-            $database->bind(':guide_requestsId', $guide_requestsId);
+            $database->bind(':guide_requestsId', $var1);
              if ($database->execute()) {
-                header("location: edit_guide_request.php?guide_requestsId=$guide_requestsId");
+                header("location: edit_guide_request.php?guide_requestsId=$var1");
              }
-            break;
-
-        case 'check':
-            $Request = trim($_REQUEST['Request']);
-            $query = "SELECT Id FROM guide_requests WHERE Request = :Request ;";
-            $database->query($query);
-            $database->bind(':Request', $Request);
-            return $r = $database->rowCount();
             break;
 
         default:
@@ -1876,10 +1895,18 @@ function table_guide_requests($job, $guide_requestsId) {
 }
 
 // function to use the table booking_statuses
-function table_booking_statuses($job, $booking_statusesId) {
+function table_booking_statuses ($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
+        case 'check_before_insert':
+                $Status = trim($_REQUEST['Status']);
+                $query = "SELECT Id FROM booking_statuses WHERE Status = :Status ;";
+                $database->query($query);
+                $database->bind(':Status', $Status);
+                return $r = $database->rowCount();
+                break;
+
         case 'insert':
             $Status = trim($_REQUEST['Status']);
 
@@ -1894,19 +1921,33 @@ function table_booking_statuses($job, $booking_statusesId) {
             $database->execute();
             break;
 
-        case 'select':
-            if ($booking_statusesId == NULL || $booking_statusesId == "" || empty($booking_statusesId)) {
-                $query = "SELECT * FROM booking_statuses ;";
-                $database->query($query);
-            }
-            else {
-                $query = "SELECT * FROM booking_statuses
-                    WHERE Id = :booking_statusesId
-                ;";
-                $database->query($query);
-                $database->bind(':booking_statusesId', $booking_statusesId);
-            }
+        case 'select_all':
+            $query = "SELECT * FROM booking_statuses ;";
+            $database->query($query);
             return $r = $database->resultset();
+            break;
+
+        case 'select_one':
+            // $var1 = $booking_statusesId
+            $query = "SELECT * FROM booking_statuses
+                WHERE Id = :booking_statusesId
+            ;";
+            $database->query($query);
+            $database->bind(':booking_statusesId', $var1);
+            return $r = $database->resultset();
+            break;
+
+        case 'check_before_update':
+            // $var1 = $booking_statusesId
+            $Status = trim($_REQUEST['Status']);
+            $query = "SELECT * FROM booking_statuses
+                WHERE Status = :Status
+                AND Id != :booking_statusesId
+            ;";
+            $database->query($query);
+            $database->bind(':Status', $Status);
+            $database->bind(':booking_statusesId', $var1);
+            return $r = $database->rowCount();
             break;
 
         case 'update':
@@ -1919,17 +1960,10 @@ function table_booking_statuses($job, $booking_statusesId) {
             $database->bind(':Status', $Status);
             $database->bind(':booking_statusesId', $booking_statusesId);
             if ($database->execute()) {
-                header("location: edit_booking_status.php?booking_statusesId=$booking_statusesId");
+                header("location: edit_booking_status.php?booking_statusesId=$var1");
             }
             break;
 
-        case 'check':
-                $Status = trim($_REQUEST['Status']);
-                $query = "SELECT Id FROM booking_statuses WHERE Status = :Status ;";
-                $database->query($query);
-                $database->bind(':Status', $Status);
-                return $r = $database->rowCount();
-                break;
         default:
             # code...
             break;
@@ -1937,7 +1971,7 @@ function table_booking_statuses($job, $booking_statusesId) {
 }
 
 // function to use table bookings
-function table_bookings($job, $bookingsId) {
+function table_bookings ($job, $bookingsId) {
     $database = new Database();
     $rows_users = table_users('select', $_SESSION['usersId']);
     foreach ($rows_users as $row_users) {
@@ -2520,7 +2554,7 @@ function table_bookings($job, $bookingsId) {
 }
 
 //function to filter search services to be added in services_booking
-function search_services($Service_TypeId) {
+function search_services ($Service_TypeId) {
     $database = new Database();
     $query = "SELECT
         services.Id,
@@ -2545,7 +2579,7 @@ function search_services($Service_TypeId) {
 }
 
 //function to insert data to the table services_booking
-function table_services_booking($job, $bookingsId) {
+function table_services_booking ($job, $bookingsId) {
     $database = new Database();
     $UserId = $_SESSION['usersId'];
 

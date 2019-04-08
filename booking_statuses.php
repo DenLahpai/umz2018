@@ -7,15 +7,14 @@ if ($d > 2) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $rowCount = table_booking_statuses('check', NULL);
+    $rowCount = table_booking_statuses('check_before_insert', NULL, NULL);
     if ($rowCount == 0) {
-        table_booking_statuses('insert', NULL);
+        table_booking_statuses('insert', NULL, NULL);
     }
     else {
         $error_message = "Duplicate Entry!";
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -55,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     echo "<th colspan=\"3\">".$error_message."</th>";
                                     echo "</tr>";
                                 }
-                                    $rows_booking_statuses = table_booking_statuses('select', NULL);
+                                    $rows_booking_statuses = table_booking_statuses('select_all', NULL, NULL);
                                     foreach ($rows_booking_statuses as $row_booking_statuses) {
                                         echo "<tr>";
                                         echo "<td>".$row_booking_statuses->Id."</td>";

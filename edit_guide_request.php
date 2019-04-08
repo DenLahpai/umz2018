@@ -3,26 +3,24 @@ require "functions.php";
 
 //getting guide_requestsId
 $guide_requestsId = trim($_REQUEST['guide_requestsId']);
+if (!is_numeric ($guide_requestsId)) {
+    echo "There was an error! Please go back and try again.";
+    die();
+}
 
 //getting data from the table guide_requests
-$rows_guide_requests = table_guide_requests('select', $guide_requestsId);
+$rows_guide_requests = table_guide_requests('select_one', $guide_requestsId, NULL);
 foreach ($rows_guide_requests as $row_guide_requests) {
     // code...
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Request = trim($_REQUEST['Request']);
-    if ($Request == $row_guide_requests->Request) {
-        table_guide_requests('update', $guide_requestsId);
+    $rowCount = table_guide_requests ('check_before_update', $guide_requestsId, NULL);
+    if ($rowCount == 0) {
+        table_guide_requests ('update', $guide_requestsId, NULL);
     }
     else {
-        $rowCount = table_guide_requests('check', NULL);
-        if ($rowCount == 0) {
-            table_guide_requests('update', $guide_requestsId);
-        }
-        else {
-            $error_message = "Duplicate Entry!";
-        }
+        $error_message = 'Duplicate Entry!';
     }
 }
 ?>

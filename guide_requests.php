@@ -8,9 +8,9 @@ if ($d > 2) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $Request = trim($_REQUEST['Request']);
-    $rowCount = table_guide_requests('check', NULL);
+    $rowCount = table_guide_requests('check_before_insert', NULL, NULL);
     if ($rowCount == 0) {
-        table_guide_requests('insert', NULL);
+        table_guide_requests('insert', NULL, NULL);
     }
     else {
         $error_message = "Duplicate Entry!";
@@ -55,12 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     echo "<th colspan=\"3\" class=\"notice error\">";
                                     echo "</tr>";
                                 }
-                                $rows_guide_requests = table_guide_requests('select', NULL);
+                                $rows_guide_requests = table_guide_requests('select_all', NULL, NULL);
                                 foreach ($rows_guide_requests as $row_guide_requests) {
                                     echo "<tr>";
                                     echo "<td>".$row_guide_requests->Id."</td>";
                                     echo "<td>".$row_guide_requests->Request."</td>";
-                                    echo "<td><a href=\"edit_guide_request.php?guide_requestsId=$row_guide_requests->Id\"><button class=\"button link\">Edit</button></a></td>";
+                                    echo "<td><a href=\"edit_guide_request.php?guide_requestsId=$row_guide_requests->Id\"><button type=\"button\" class=\"button link\">Edit</button></a></td>";
                                     echo "</tr>";
                                 }
                                 ?>

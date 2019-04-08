@@ -8,27 +8,24 @@ if ($d > 2) {
 
 //getting booking_statusesId
 $booking_statusesId = trim($_REQUEST['booking_statusesId']);
+if (!is_numeric ($booking_statusesId)) {
+    echo "There was an error! Please go back and try again.";
+    die();
+}
 
 //getting data  from the table booking_statuses
-$rows_booking_statuses = table_booking_statuses('select', $booking_statusesId);
+$rows_booking_statuses = table_booking_statuses('select_one', $booking_statusesId, NULL);
 foreach ($rows_booking_statuses as $row_booking_statuses) {
     // code...
 }
-
 //updating the table booking_statuses
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Status = trim($_REQUEST['Status']);
-    if ($Status == $row_booking_statuses->Status) {
-        table_booking_statuses('update', $booking_statusesId);
+    $rowCount = table_booking_statuses('check_before_update', NULL, NULL);
+    if ($rowCoun == 0) {
+        table_booking_statuses ('update', $booking_statusesId, NULL);
     }
     else {
-        $rowCount = table_booking_statuses('check', NULL);
-        if ($rowCount == 0) {
-            table_booking_statuses('update', $booking_statusesId);
-        }
-        else {
-            $error_message = "Duplicate Entry!";
-        }
+        $error_message = "Duplicate Entry!";
     }
 }
 ?>
