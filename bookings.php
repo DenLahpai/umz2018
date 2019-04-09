@@ -3,17 +3,17 @@ require_once "functions.php";
 
 //getting data from the table
 if (isset($_REQUEST['buttonSearch'])) {
-    $search = $_REQUEST['search'];
+    $search = trim($_REQUEST['search']);
 }
 else {
     $search = NULL;
 }
 
 if(empty($search) || $search == NULL || $search == "") {
-    $rows_bookings = table_bookings('select', NULL);
+    $rows_bookings = table_bookings('select_all', NULL, NULL);
 }
 else {
-    $rows_bookings = table_bookings('search', $search);
+    $rows_bookings = table_bookings('search', $search, NULL);    
 }
 ?>
 <!DOCTYPE html>
