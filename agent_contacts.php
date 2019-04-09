@@ -10,10 +10,10 @@ else {
 }
 
 if(empty($search) || $search == NULL || $search == "") {
-    $rows_agent_contacts = table_agent_contacts('select', NULL);
+    $rows_agent_contacts = table_agent_contacts('select_all', NULL, NULL);
 }
 else {
-    $rows_agent_contacts = table_agent_contacts('search', $search);
+    $rows_agent_contacts = table_agent_contacts('search', $search, NULL);
 }
 
 ?>

@@ -3,26 +3,24 @@ require "functions.php";
 
 //getting agent_contact Id to be edited
 $agent_contactsId = trim($_REQUEST['agent_contactsId']);
+if (!is_numeric ($agent_contactsId)) {
+    echo "There was an error! Please go back and try again.";
+    die();
+}
 
 //getting data from the table agent_contacts
-$rows_agent_contacts = table_agent_contacts('select', $agent_contactsId);
+$rows_agent_contacts = table_agent_contacts('select_one', $agent_contactsId, NULL);
 foreach ($rows_agent_contacts as $row_agent_contacts) {
     // code
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $Name = trim($_REQUEST['Name']);
-    if ($Name == $row_agent_contacts->Name) {
-        table_agent_contacts('update', $agent_contactsId);
+    $rowCount = table_agent_contacts ('check_before_update', $agent_contactsId, NULL);
+    if ($rowCount == 0) {
+        table_agent_contacts('update', $agent_contactsId, NULL);
     }
     else {
-        $rowCount = table_agent_contacts('check', NULL);
-        if ($rowCount == 0) {
-            table_agent_contacts('update', $agent_contactsId);
-        }
-        else {
-            $error_message = "Duplicate entry!";
-        }
+        $error_message = "Duplicate entry!";
     }
 }
 ?>
@@ -80,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             Agent: &nbsp;
                             <select id="AgentId" name="AgentId">
                                 <?php
-                                $rows_agents = table_agents('select', NULL);
+                                $rows_agents = table_agents('select_all', NULL, NULL);
                                 foreach ($rows_agents as $row_agents) {
                                     if  ($row_agents->Id == $row_agent_contacts->AgentId) {
                                         echo "<option value=\"$row_agents->Id\" selected>".$row_agents->Name."</option>";

@@ -541,10 +541,33 @@ function table_agents($job, $var1, $var2) {
 }
 
 //function to use the table agent_contacts
-function table_agent_contacts($job, $agent_contactsId) {
+function table_agent_contacts($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
+
+        case 'check_before_insert':
+            $Title = $_REQUEST['Title'];
+            $Name = trim($_REQUEST['Name']);
+            $Position = trim($_REQUEST['Position']);
+            $Department = trim($_REQUEST['Department']);
+            $Mobile = trim($_REQUEST['Mobile']);
+            $Email = trim($_REQUEST['Email']);
+            $AgentId = trim($_REQUEST['AgentId']);
+
+            $query = "SELECT * FROM agent_contacts WHERE
+                Name = :Name
+                AND Email = :Email
+                AND AgentId = :AgentId
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':Email', $Email);
+            $database->bind(':AgentId', $AgentId);
+            $database->execute();
+            return $r = $database->rowCount();
+            break;
+
         case 'insert':
             $Title = $_REQUEST['Title'];
             $Name = trim($_REQUEST['Name']);
@@ -585,48 +608,49 @@ function table_agent_contacts($job, $agent_contactsId) {
             }
             break;
 
-        case 'select':
-            if ($agent_contactsId == NULL || $agent_contactsId == "" || empty($agent_contactsId)) {
-                $query = "SELECT
-                    agent_contacts.Id,
-                    agent_contacts.Title,
-                    agent_contacts.Name,
-                    agent_contacts.Position,
-                    agent_contacts.Department,
-                    agent_contacts.Mobile,
-                    agent_contacts.Email,
-                    agent_contacts.AgentId,
-                    agents.Name AS AgentName
-                    FROM agent_contacts
-                    LEFT OUTER JOIN agents
-                    ON agent_contacts.AgentId = agents.Id
-                ;";
-                $database->query($query);
-            }
-            else {
-                $query = "SELECT
-                    agent_contacts.Id,
-                    agent_contacts.Title,
-                    agent_contacts.Name,
-                    agent_contacts.Position,
-                    agent_contacts.Department,
-                    agent_contacts.Mobile,
-                    agent_contacts.Email,
-                    agent_contacts.AgentId,
-                    agents.Name AS AgentName
-                    FROM agent_contacts
-                    LEFT OUTER JOIN agents
-                    ON agent_contacts.AgentId = agents.Id
-                    WHERE agent_contacts.Id = :agent_contactsId
-                ;";
-                $database->query($query);
-                $database->bind(':agent_contactsId', $agent_contactsId);
-            }
+        case 'select_all':
+            $query = "SELECT
+                agent_contacts.Id,
+                agent_contacts.Title,
+                agent_contacts.Name,
+                agent_contacts.Position,
+                agent_contacts.Department,
+                agent_contacts.Mobile,
+                agent_contacts.Email,
+                agent_contacts.AgentId,
+                agents.Name AS AgentName
+                FROM agent_contacts
+                LEFT OUTER JOIN agents
+                ON agent_contacts.AgentId = agents.Id
+            ;";
+            $database->query($query);
+            return $r = $database->resultset();
+            break;
+
+        case 'select_one':
+            // $var1 = $agent_contactsId
+            $query = "SELECT
+                agent_contacts.Id,
+                agent_contacts.Title,
+                agent_contacts.Name,
+                agent_contacts.Position,
+                agent_contacts.Department,
+                agent_contacts.Mobile,
+                agent_contacts.Email,
+                agent_contacts.AgentId,
+                agents.Name AS AgentName
+                FROM agent_contacts
+                LEFT OUTER JOIN agents
+                ON agent_contacts.AgentId = agents.Id
+                WHERE agent_contacts.Id = :agent_contactsId
+            ;";
+            $database->query($query);
+            $database->bind(':agent_contactsId', $var1);
             return $r = $database->resultset();
             break;
 
         case 'search':
-            $search = '%'.$agent_contactsId.'%';
+            $search = '%'.$var1.'%';
             $query = "SELECT
                 agent_contacts.Id,
                 agent_contacts.Title,
@@ -653,6 +677,23 @@ function table_agent_contacts($job, $agent_contactsId) {
             $database->query($query);
             $database->bind(':search', $search);
             return $r = $database->resultset();
+            break;
+
+        case 'check_before_update':
+            // $var1 = $agent_contactsId
+            $Name = trim($_REQUEST['Name']);
+            $Email = trim($_REQUEST['Email']);
+
+            $query = "SELECT * FROM agent_contacts
+                WHERE Name = :Name
+                AND Email = :Email
+                AND Id != :agent_contactsId
+            ;";
+            $database->query($query);
+            $database->bind(':Name', $Name);
+            $database->bind(':Email', $Email);
+            $database->bind(':agent_contactsId', $var1);
+            return $r = $database->rowCount();
             break;
 
         case 'update':
@@ -682,32 +723,10 @@ function table_agent_contacts($job, $agent_contactsId) {
             $database->bind(':Mobile', $Mobile);
             $database->bind(':Email', $Email);
             $database->bind(':AgentId', $AgentId);
-            $database->bind(':agent_contactsId', $agent_contactsId);
+            $database->bind(':agent_contactsId', $var1);
             if ($database->execute()) {
-                header("location: edit_agent_contact.php?agent_contactsId=$agent_contactsId");
+                header("location: edit_agent_contact.php?agent_contactsId=$var1");
             }
-            break;
-
-        case 'check':
-            $Title = $_REQUEST['Title'];
-            $Name = trim($_REQUEST['Name']);
-            $Position = trim($_REQUEST['Position']);
-            $Department = trim($_REQUEST['Department']);
-            $Mobile = trim($_REQUEST['Mobile']);
-            $Email = trim($_REQUEST['Email']);
-            $AgentId = trim($_REQUEST['AgentId']);
-
-            $query = "SELECT * FROM agent_contacts WHERE
-                Name = :Name
-                AND Email = :Email
-                AND AgentId = :AgentId
-            ;";
-            $database->query($query);
-            $database->bind(':Name', $Name);
-            $database->bind(':Email', $Email);
-            $database->bind(':AgentId', $AgentId);
-            $database->execute();
-            return $r = $database->rowCount();
             break;
 
         default:
