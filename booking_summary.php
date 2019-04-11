@@ -3,20 +3,24 @@ require "functions.php";
 
 //getting bookingsId
 $bookingsId = trim($_REQUEST['bookingsId']);
+if (!is_numeric ($bookingsId)) {
+    echo "There was an error! Please go back and try again.";
+    die();
+}
 
 //getting data from the table bookings
-$rows_bookings = table_bookings('select', $bookingsId);
+$rows_bookings = table_bookings('select_one', $bookingsId, NULL);
 foreach ($rows_bookings as $row_bookings) {
     // code...
 }
 
 //checking if the user has the right to view this page
-$rows_users = table_users('select', $_SESSION['usersId']);
+$rows_users = table_users('select_one', $_SESSION['usersId'], NULL);
 foreach ($rows_users as $row_users) {
     $DepartmentId = $row_users->DepartmentId;
 }
 
-$rows_services_booking = table_services_booking('select', $bookingsId);
+$rows_services_booking = table_services_booking('select_for_one_booking', $bookingsId, NULL);
 
 switch ($DepartmentId) {
     case '5':
@@ -83,7 +87,7 @@ switch ($DepartmentId) {
                                 echo $row_services_booking->tour_guidesMobile."</li>";
                             }
                             echo "<li>Status: ".$row_services_booking->service_statusesCode."</li>";
-                            
+
                             echo "<li style=\"text-align:center;\"><a href=\"edit_services_booking.php?services_bookingId=$row_services_booking->Id\">";
                             echo "<button class=\"button link\">Edit</button></a>&nbsp;";
 

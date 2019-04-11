@@ -1705,10 +1705,31 @@ function table_service_statuses ($job, $var1, $var2) {
 }
 
 // function to use the table services
-function table_services ($job, $servicesId) {
+function table_services ($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
+
+        case 'check_before_insert':
+            $SupplierId = $_REQUEST['SupplierId'];
+            $Service_TypeId = $_REQUEST['Service_TypeId'];
+            $Service = trim($_REQUEST['Service']);
+            $Additional = trim($_REQUEST['Additional']);
+
+            $query = "SELECT Id FROM services WHERE
+                SupplierId = :SupplierId AND
+                Service_TypeId = :Service_TypeId AND
+                Service = :Service AND
+                Additional = :Additional
+            ;";
+            $database->query($query);
+            $database->bind(':SupplierId', $SupplierId);
+            $database->bind(':Service_TypeId', $Service_TypeId);
+            $database->bind(':Service', $Service);
+            $database->bind(':Additional', $Additional);
+            return $r = $database->rowCount();
+            break;
+
         case 'insert':
             $SupplierId = $_REQUEST['SupplierId'];
             $Service_TypeId = $_REQUEST['Service_TypeId'];
@@ -1745,9 +1766,8 @@ function table_services ($job, $servicesId) {
             }
             break;
 
-        case 'select':
-            if ($servicesId == NULL || $servicesId == "" || empty($servicesId)) {
-                $query = "SELECT
+        case 'select_all':
+            $query = "SELECT
                 services.Id,
                 services.SupplierId,
                 suppliers.Name,
@@ -1762,35 +1782,38 @@ function table_services ($job, $servicesId) {
                 ON services.SupplierId = suppliers.Id
                 LEFT JOIN service_types
                 ON services.Service_TypeId = service_types.Id
-                ;";
-                $database->query($query);
-            }
-            else {
-                $query = "SELECT
-                    services.Id,
-                    services.SupplierId,
-                    suppliers.Name,
-                    services.Service_TypeId,
-                    service_types.Code,
-                    service_types.Name AS service_typesName,
-                    services.Service,
-                    services.Additional,
-                    services.Remark,
-                    services.Status
-                    FROM services LEFT JOIN suppliers
-                    ON services.SupplierId = suppliers.Id
-                    LEFT JOIN service_types
-                    ON services.Service_TypeId = service_types.Id
-                    WHERE services.Id = :servicesId
-                ;";
-                $database->query($query);
-                $database->bind(':servicesId', $servicesId);
-            }
+            ;";
+            $database->query($query);
+            return $database->resultset();
+            break;
+
+        case 'select_one':
+            // $var1 = $servicesId
+            $query = "SELECT
+                services.Id,
+                services.SupplierId,
+                suppliers.Name,
+                services.Service_TypeId,
+                service_types.Code,
+                service_types.Name AS service_typesName,
+                services.Service,
+                services.Additional,
+                services.Remark,
+                services.Status
+                FROM services LEFT JOIN suppliers
+                ON services.SupplierId = suppliers.Id
+                LEFT JOIN service_types
+                ON services.Service_TypeId = service_types.Id
+                WHERE services.Id = :servicesId
+            ;";
+            $database->query($query);
+            $database->bind(':servicesId', $var1);
             return $r = $database->resultset();
             break;
 
         case 'search':
-            $search = '%'.$servicesId.'%';
+            //$var1 = $servicesId
+            $search = '%'.$var1.'%';
             $query = "SELECT
                 services.Id,
                 services.SupplierId,
@@ -1819,7 +1842,27 @@ function table_services ($job, $servicesId) {
             return $r = $database->resultset();
             break;
 
+        case 'check_before_update':
+            // $var1 = $servicesId
+            $SupplierId = $_REQUEST['SupplierId'];
+            $Service = trim($_REQUEST['Service']);
+            $Additional = trim($_REQUEST['Additional']);
+            $query = "SELECT * FROM services
+                WHERE SupplierId = :SupplierId
+                AND Service = :Service
+                AND Additional = :Additional
+                AND Id != :servicesId
+            ;";
+            $database->query($query);
+            $database->bind(':SupplierId', $SupplierId);
+            $database->bind(':Service', $Service);
+            $database->bind(':Additional', $Additional);
+            $database->bind(':servicesId', $var1);
+            return $r = $database->rowCount();
+            break;
+
         case 'update':
+            // $var1 = $servicesId
             $SupplierId = $_REQUEST['SupplierId'];
             $Service = trim($_REQUEST['Service']);
             $Additional = trim($_REQUEST['Additional']);
@@ -1840,31 +1883,10 @@ function table_services ($job, $servicesId) {
             $database->bind(':Additional', $Additional);
             $database->bind(':Remark', $Remark);
             $database->bind(':Status', $Status);
-            $database->bind(':servicesId', $servicesId);
+            $database->bind(':servicesId', $var1);
             if ($database->execute()) {
-                header("location: edit_service.php?servicesId=$servicesId");
+                header("location: edit_service.php?servicesId=$var1");
             }
-            break;
-
-        case 'check':
-            $SupplierId = $_REQUEST['SupplierId'];
-            $Service_TypeId = $_REQUEST['Service_TypeId'];
-            $Service = trim($_REQUEST['Service']);
-            $Additional = trim($_REQUEST['Additional']);
-
-            $query = "SELECT Id FROM services WHERE
-                SupplierId = :SupplierId AND
-                Service_TypeId = :Service_TypeId AND
-                Service = :Service AND
-                Additional = :Additional
-
-            ;";
-            $database->query($query);
-            $database->bind(':SupplierId', $SupplierId);
-            $database->bind(':Service_TypeId', $Service_TypeId);
-            $database->bind(':Service', $Service);
-            $database->bind(':Additional', $Additional);
-            return $r = $database->rowCount();
             break;
 
         default:
@@ -2391,7 +2413,7 @@ function search_services ($Service_TypeId) {
 }
 
 //function to insert data to the table services_booking
-function table_services_booking ($job, $bookingsId) {
+function table_services_booking ($job, $var1, $var2) {
     $database = new Database();
     $UserId = $_SESSION['usersId'];
 
@@ -2412,154 +2434,88 @@ function table_services_booking ($job, $bookingsId) {
                 )
             ;";
             $database->query($query);
-            $database->bind(':BookingsId', $bookingsId);
+            $database->bind(':BookingsId', $var1);
             $database->bind(':ServiceId', $servicesId);
             $database->bind(':Service_Date', $Service_Date);
             $database->bind(':UserId', $UserId);
             if ($database->execute()) {
-                header("location:booking_summary.php?bookingsId=$bookingsId");
+                header("location:booking_summary.php?bookingsId=$var1");
             }
             break;
-        case 'select':
-            if ($bookingsId == NULL || $bookingsId == "" || empty($bookingsId)) {
-                $query = "SELECT
-                    services_booking.ServiceId,
-                    services.Service_TypeId,
-                    services_booking.Service_Date,
-                    services_booking.Pickup,
-                    services_booking.Pickup_Time,
-                    services_booking.Dropoff,
-                    services_booking.Dropoff_Time,
-                    services_booking.VehicleId,
-                    services_booking.DriverId,
-                    services_booking.Tour_GuideId,
-                    services_booking.Special_RQ,
-                    services_booking.Remark AS services_bookingRemark,
-                    services_booking.StatusId,
-                    services_booking.UserId,
-                    bookings.Reference AS Reference,
-                    bookings.Name AS bookingsName,
-                    bookings.Pax AS Pax,
-                    bookings.AgentId AS AgentId,
-                    agents.Name AS agentsName,
-                    service_types.Code AS service_typesCode,
-                    services.Service,
-                    services.Additional,
-                    services.Remark,
-                    suppliers.Name AS suppliersName,
-                    suppliers.Address,
-                    suppliers.City,
-                    suppliers.Phone,
-                    suppliers.Email,
-                    vehicles.License AS vehiclesLicense,
-                    vehicles.Type AS vehiclesType,
-                    vehicles.Seats AS vehicleSeat,
-                    drivers.Title AS driversTitle,
-                    drivers.Name AS driversName,
-                    drivers.Mobile AS driversMobile,
-                    drivers.License AS driversLicense,
-                    drivers.Class AS driversClass,
-                    tour_guides.Title AS tour_guidesTitle,
-                    tour_guides.Name AS tour_guidesName,
-                    tour_guides.Mobile AS tour_guidesMobile,
-                    tour_guides.Language AS tour_guidesLanguage,
-                    tour_guides.Email AS tour_guidesEmail,
-                    service_statuses.Code AS service_statusesCode
-                    FROM services_booking
-                    LEFT OUTER JOIN bookings
-                    ON services_booking.BookingsId = bookings.Id
-                    LEFT OUTER JOIN agents
-                    ON bookings.AgentId = agents.Id
-                    LEFT OUTER JOIN services
-                    ON services_booking.ServiceId = services.Id
-                    LEFT OUTER JOIN service_types
-                    ON services.Service_TypeId = service_types.Id
-                    LEFT OUTER JOIN suppliers
-                    ON services.SupplierId = suppliers.Id
-                    LEFT OUTER JOIN vehicles
-                    ON services_booking.VehicleId = vehicles.Id
-                    LEFT OUTER JOIN drivers
-                    ON services_booking.DriverId = drivers.Id
-                    LEFT OUTER JOIN tour_guides
-                    ON services_booking.Tour_GuideId = tour_guides.Id
-                    LEFT OUTER JOIN service_statuses
-                    ON services_booking.StatusId = service_statuses.Id
-                    WHERE services_booking.Visible = TRUE
-                ;";
-                $database->query($query);
-            }
-            else {
-                $query = "SELECT
-                    services_booking.Id,
-                    services_booking.ServiceId,
-                    services.Service_TypeId,
-                    services_booking.Service_Date,
-                    services_booking.Pickup,
-                    services_booking.Pickup_Time,
-                    services_booking.Dropoff,
-                    services_booking.Dropoff_Time,
-                    services_booking.VehicleId,
-                    services_booking.DriverId,
-                    services_booking.Tour_GuideId,
-                    services_booking.Special_RQ,
-                    services_booking.Remark AS services_bookingRemark,
-                    services_booking.StatusId,
-                    services_booking.UserId,
-                    bookings.Reference AS Reference,
-                    bookings.Name AS bookingsName,
-                    bookings.Pax AS Pax,
-                    bookings.AgentId AS AgentId,
-                    agents.Name AS agentsName,
-                    service_types.Code AS service_typesCode,
-                    services.Service,
-                    services.Additional,
-                    services.Remark,
-                    suppliers.Name AS suppliersName,
-                    suppliers.Address,
-                    suppliers.City,
-                    suppliers.Phone,
-                    suppliers.Email,
-                    vehicles.License AS vehiclesLicense,
-                    vehicles.Type AS vehiclesType,
-                    vehicles.Seats AS vehicleSeat,
-                    drivers.Title AS driversTitle,
-                    drivers.Name AS driversName,
-                    drivers.Mobile AS driversMobile,
-                    drivers.License AS driversLicense,
-                    drivers.Class AS driversClass,
-                    tour_guides.Title AS tour_guidesTitle,
-                    tour_guides.Name AS tour_guidesName,
-                    tour_guides.Mobile AS tour_guidesMobile,
-                    tour_guides.Language AS tour_guidesLanguage,
-                    tour_guides.Email AS tour_guidesEmail,
-                    service_statuses.Code AS service_statusesCode
-                    FROM services_booking
-                    LEFT OUTER JOIN bookings
-                    ON services_booking.BookingsId = bookings.Id
-                    LEFT OUTER JOIN agents
-                    ON bookings.AgentId = agents.Id
-                    LEFT OUTER JOIN services
-                    ON services_booking.ServiceId = services.Id
-                    LEFT OUTER JOIN service_types
-                    ON services.Service_TypeId = service_types.Id
-                    LEFT OUTER JOIN suppliers
-                    ON services.SupplierId = suppliers.Id
-                    LEFT OUTER JOIN vehicles
-                    ON services_booking.VehicleId = vehicles.Id
-                    LEFT OUTER JOIN drivers
-                    ON services_booking.DriverId = drivers.Id
-                    LEFT OUTER JOIN tour_guides
-                    ON services_booking.Tour_GuideId = tour_guides.Id
-                    LEFT OUTER JOIN service_statuses
-                    ON services_booking.StatusId = service_statuses.Id
-                    WHERE bookings.Id = :bookingsId
-                    AND services_booking.Visible = TRUE
-                ;";
-                $database->query($query);
-                $database->bind('bookingsId', $bookingsId);
-            }
+
+        case 'select_for_one_booking':
+            // $var1 = $bookingsId
+            $query = "SELECT
+                services_booking.Id,
+                services_booking.ServiceId,
+                services.Service_TypeId,
+                services_booking.Service_Date,
+                services_booking.Pickup,
+                services_booking.Pickup_Time,
+                services_booking.Dropoff,
+                services_booking.Dropoff_Time,
+                services_booking.VehicleId,
+                services_booking.DriverId,
+                services_booking.Tour_GuideId,
+                services_booking.Special_RQ,
+                services_booking.Remark AS services_bookingRemark,
+                services_booking.StatusId,
+                services_booking.UserId,
+                bookings.Reference AS Reference,
+                bookings.Name AS bookingsName,
+                bookings.Pax AS Pax,
+                bookings.AgentId AS AgentId,
+                agents.Name AS agentsName,
+                service_types.Code AS service_typesCode,
+                services.Service,
+                services.Additional,
+                services.Remark,
+                suppliers.Name AS suppliersName,
+                suppliers.Address,
+                suppliers.City,
+                suppliers.Phone,
+                suppliers.Email,
+                vehicles.License AS vehiclesLicense,
+                vehicles.Type AS vehiclesType,
+                vehicles.Seats AS vehicleSeat,
+                drivers.Title AS driversTitle,
+                drivers.Name AS driversName,
+                drivers.Mobile AS driversMobile,
+                drivers.License AS driversLicense,
+                drivers.Class AS driversClass,
+                tour_guides.Title AS tour_guidesTitle,
+                tour_guides.Name AS tour_guidesName,
+                tour_guides.Mobile AS tour_guidesMobile,
+                tour_guides.Language AS tour_guidesLanguage,
+                tour_guides.Email AS tour_guidesEmail,
+                service_statuses.Code AS service_statusesCode
+                FROM services_booking
+                LEFT OUTER JOIN bookings
+                ON services_booking.BookingsId = bookings.Id
+                LEFT OUTER JOIN agents
+                ON bookings.AgentId = agents.Id
+                LEFT OUTER JOIN services
+                ON services_booking.ServiceId = services.Id
+                LEFT OUTER JOIN service_types
+                ON services.Service_TypeId = service_types.Id
+                LEFT OUTER JOIN suppliers
+                ON services.SupplierId = suppliers.Id
+                LEFT OUTER JOIN vehicles
+                ON services_booking.VehicleId = vehicles.Id
+                LEFT OUTER JOIN drivers
+                ON services_booking.DriverId = drivers.Id
+                LEFT OUTER JOIN tour_guides
+                ON services_booking.Tour_GuideId = tour_guides.Id
+                LEFT OUTER JOIN service_statuses
+                ON services_booking.StatusId = service_statuses.Id
+                WHERE bookings.Id = :bookingsId
+                AND services_booking.Visible = TRUE
+            ;";
+            $database->query($query);
+            $database->bind('bookingsId', $var1);
             return $r = $database->resultset();
             break;
+
         case 'select_one':
             $query = "SELECT
                 services_booking.Id,
@@ -2740,7 +2696,7 @@ function table_services_booking ($job, $bookingsId) {
                 AND services_booking.Visible = TRUE
             ";
             $database->query($query);
-            $database->bind(':bookingsId', $bookingsId);
+            $database->bind(':bookingsId', $var1);
             return $r = $database->resultset();
             break;
 
