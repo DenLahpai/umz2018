@@ -65,7 +65,7 @@
             <select name="StatusId">
                 <option value="0">Select One</option>
                 <?php
-                $rows_service_statuses = table_service_statuses('select', NULL);
+                $rows_service_statuses = table_service_statuses('select_all', NULL, NULL);
                 foreach ($rows_service_statuses as $row_service_statuses) {
                     if ($row_services_booking->StatusId == $row_service_statuses->Id) {
                         echo "<option value=\"$row_service_statuses->Id\" selected>".$row_service_statuses->Code."</option>";

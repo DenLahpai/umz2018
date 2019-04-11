@@ -2,20 +2,24 @@
 require "functions.php";
 
 $services_bookingId = trim($_REQUEST['services_bookingId']);
-$rows_services_booking = table_services_booking('select_one', $services_bookingId);
+if (!is_numeric ($services_bookingId)) {
+    echo "There was an error! Please go back and try again.";
+    die();
+}
+$rows_services_booking = table_services_booking('select_one', $services_bookingId, NULL);
 
 foreach ($rows_services_booking as $row_services_booking) {
     $bookingsId = $row_services_booking->BookingsId;
 }
 
 //getting data from the table bookings
-$rows_bookings = table_bookings('select', $bookingsId);
+$rows_bookings = table_bookings('select_one', $bookingsId, NULL);
 foreach ($rows_bookings as $row_bookings) {
     // code...
 }
 
 //checking if the user has the right to view this page
-$rows_users = table_users('select', $_SESSION['usersId']);
+$rows_users = table_users('select_one', $_SESSION['usersId'], NULL);
 foreach ($rows_users as $row_users) {
     $DepartmentId = $row_users->DepartmentId;
 }

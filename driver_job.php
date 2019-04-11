@@ -3,15 +3,19 @@ require "functions.php";
 
 //getting bookingsId
 $bookingsId = trim($_REQUEST['bookingsId']);
+if (!is_numeric ($bookingsId)) {
+    echo "There was a problem! Please go back and try again.";
+    die();
+}
 
 //getting data from the table bookings
-$rows_bookings = table_bookings('select', $bookingsId);
+$rows_bookings = table_bookings('select_one', $bookingsId, NULL);
 foreach ($rows_bookings as $row_bookings) {
     // code...
 }
 
 //checking if the user has the right to view this page
-$rows_users = table_users('select', $_SESSION['usersId']);
+$rows_users = table_users('select_one', $_SESSION['usersId'], NULL);
 foreach ($rows_users as $row_users) {
     $DepartmentId = $row_users->DepartmentId;
 }
@@ -73,7 +77,7 @@ switch ($DepartmentId) {
                     </thead>
                     <tbody>
                         <?php
-                        $rows_transfers = table_services_booking('driver_job', $bookingsId);
+                        $rows_transfers = table_services_booking('driver_job', $bookingsId, NULL);
                         foreach ($rows_transfers as $row_transfers) {
                             echo "<tr>";
                             echo "<td>".date("d-m-y", strtotime($row_transfers->Service_Date))."</td>";

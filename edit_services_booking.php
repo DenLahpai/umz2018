@@ -2,23 +2,25 @@
 require "functions.php";
 
 $services_bookingId = trim($_REQUEST['services_bookingId']);
-$rows_services_booking = table_services_booking('select_one', $services_bookingId);
+if (!is_numeric ($services_bookingId)) {
+    echo "There was an error! Please go back and try again.";
+    die ();
+}
+
+$rows_services_booking = table_services_booking('select_one', $services_bookingId, NULL);
 
 foreach ($rows_services_booking as $row_services_booking) {
     $bookingsId = $row_services_booking->BookingsId;
 }
 
-// //getting bookingsId
-// $bookingsId = trim($_REQUEST['bookingsId']);
-//
 //getting data from the table bookings
-$rows_bookings = table_bookings('select', $bookingsId);
+$rows_bookings = table_bookings('select_one', $bookingsId, NULL);
 foreach ($rows_bookings as $row_bookings) {
     // code...
 }
 
 //checking if the user has the right to view this page
-$rows_users = table_users('select', $_SESSION['usersId']);
+$rows_users = table_users('select_one', $_SESSION['usersId'], NULL);
 foreach ($rows_users as $row_users) {
     $DepartmentId = $row_users->DepartmentId;
 }
@@ -46,16 +48,16 @@ switch ($DepartmentId) {
 }
 
 //getting data from the table vehicles
-$rows_vehicles = table_vehicles('select', NULL);
+$rows_vehicles = table_vehicles('select_all', NULL, NULL);
 
 //getting data from the table drivers
-$rows_drivers = table_drivers('select', NULL);
+$rows_drivers = table_drivers('select_all', NULL, NULL);
 
 //getting data from the table tour_guides
-$rows_tour_guides = table_tour_guides('select', NULL);
+$rows_tour_guides = table_tour_guides('select_all', NULL, NULL);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    table_services_booking('update', $services_bookingId);
+    table_services_booking('update', $services_bookingId, NULL);
 }
 
 ?>

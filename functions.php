@@ -2418,6 +2418,21 @@ function table_services_booking ($job, $var1, $var2) {
     $UserId = $_SESSION['usersId'];
 
     switch ($job) {
+        case 'check_before_insert':
+            $servicesId = $_REQUEST['servicesId'];
+            $Service_Date = $_REQUEST['Service_Date'];
+            $query = "SELECT * FROM services_booking
+                WHERE BookingsId = :BookingsId
+                AND ServiceId = :servicesId
+                AND Service_Date = :Service_Date
+            ;";
+            $database->query($query);
+            $database->bind(':BookingsId', $bookingsId);
+            $database->bind(':servicesId', $servicesId);
+            $database->bind(':Service_Date', $Service_Date);
+            return $r = $database->rowCount();
+            break;
+
         case 'insert':
             $servicesId = $_REQUEST['servicesId'];
             $Service_Date = $_REQUEST['Service_Date'];
@@ -2584,7 +2599,7 @@ function table_services_booking ($job, $var1, $var2) {
                 WHERE services_booking.Id = :Id
             ;";
             $database->query($query);
-            $database->bind(':Id', $bookingsId);
+            $database->bind(':Id', $var1);
             return $r = $database->resultset();
             break;
 
@@ -2623,7 +2638,7 @@ function table_services_booking ($job, $var1, $var2) {
             $database->bind(':StatusId', $StatusId);
             $database->bind(':bookingsId', $bookingsId);
             if ($database->execute()) {
-                header("location: edit_services_booking.php?services_bookingId=$bookingsId");
+                header("location: edit_services_booking.php?services_bookingId=$var1");
             }
             break;
 
@@ -2769,10 +2784,9 @@ function table_services_booking ($job, $var1, $var2) {
                     AND services_booking.Visible = TRUE
                 ";
                 $database->query($query);
-                $database->bind(':bookingsId', $bookingsId);
+                $database->bind(':bookingsId', $var1);
                 return $r = $database->resultset();
                 break;
-
 
         default:
             // code...

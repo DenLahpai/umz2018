@@ -140,9 +140,6 @@ if (isset($_REQUEST['buttonAdd'])) {
                 </div>
                 <!-- end of table_services -->
             </main>
-            <aside>
-
-            </aside>
         </div>
         <!-- end of content -->
         <?php include "includes/footer.html"; ?>
