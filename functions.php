@@ -729,6 +729,10 @@ function table_agent_contacts($job, $var1, $var2) {
             }
             break;
 
+        case 'search':
+            // $var1 = search
+            break;
+
         default:
             // code...
             break;
