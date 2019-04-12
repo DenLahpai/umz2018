@@ -15,10 +15,10 @@ else {
 }
 
 if(empty($search) || $search == NULL || $search == "") {
-    $rows_services = table_services('select', NULL);
+    $rows_services = table_services('select_all', NULL, NULL);
 }
 else {
-    $rows_services = table_services('search', $search);
+    $rows_services = table_services('search', $search< NULL);
 }
 ?>
 <!DOCTYPE html>

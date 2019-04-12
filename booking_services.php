@@ -3,15 +3,19 @@ require "functions.php";
 
 //getting bookingsId
 $bookingsId = trim($_REQUEST['bookingsId']);
+if (!is_numeric ($bookingsId)) {
+    echo "There was an error! Please go back and try again.";
+    die();
+}
 
 //getting data from the table bookings
-$rows_bookings = table_bookings('select', $bookingsId);
+$rows_bookings = table_bookings('select_one', $bookingsId, NULL);
 foreach ($rows_bookings as $row_bookings) {
     // code...
 }
 
 //checking if the user has the right to view this page
-$rows_users = table_users('select', $_SESSION['usersId']);
+$rows_users = table_users('select_one', $_SESSION['usersId'], NULL);
 foreach ($rows_users as $row_users) {
     $DepartmentId = $row_users->DepartmentId;
 }
@@ -44,7 +48,7 @@ if (isset($_REQUEST['buttonSubmit'])) {
 }
 
 if (isset($_REQUEST['buttonAdd'])) {
-    table_services_booking('insert', $bookingsId);
+    table_services_booking('insert', $bookingsId, NULL);
 }
 
 ?>
@@ -80,7 +84,7 @@ if (isset($_REQUEST['buttonAdd'])) {
                             <select id="Service_TypeId" name="Service_TypeId">
                                 <option value="">Select</option>
                                 <?php
-                                $rows_service_types = table_service_types('select', NULL);
+                                $rows_service_types = table_service_types('select_all', NULL,  NULL);
                                 foreach ($rows_service_types as $row_service_types) {
                                     echo "<option value=\"$row_service_types->Id\">".$row_service_types->Code." - ".$row_service_types->Name."</option>";
                                 }
@@ -136,9 +140,6 @@ if (isset($_REQUEST['buttonAdd'])) {
                 </div>
                 <!-- end of table_services -->
             </main>
-            <aside>
-
-            </aside>
         </div>
         <!-- end of content -->
         <?php include "includes/footer.html"; ?>

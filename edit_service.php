@@ -3,29 +3,25 @@ require "functions.php";
 
 //getting services Id
 $servicesId = trim($_REQUEST['servicesId']);
+if (!is_numeric ($servicesId)) {
+    echo "There was an error! Please go back and try again.";
+    die();
+}
 
 // getting data from the table services
-$rows_services = table_services('select', $servicesId);
+$rows_services = table_services('select_one', $servicesId, NULL);
 foreach ($rows_services as $row_services) {
     // code...
 }
 
 // updating the table services
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $SupplierId = $_REQUEST['SupplierId'];
-    $Service = trim($_REQUEST['Service']);
-    $Additional = trim($_REQUEST['Additional']);
-    if ($SupplierId == $row_services->SupplierId && $Service == $row_services->Service && $Additional == $row_services->Additional) {
-        table_services('update', $servicesId);
+    $rowCount = table_services('check_before_update', $servicesId, NULL);
+    if ($rowCount == 0) {
+        table_services('update', $servicesId, NULL);
     }
     else {
-        $rowCount = table_services('check', NULL);
-        if ($rowCount == 0) {
-            table_services('update', $servicesId);
-        }
-        else {
-            $error_message = "Duplicate Entry!";
-        }
+        $error_message = "Duplicate Entry!";
     }
 }
 ?>
@@ -57,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             Supplier: &nbsp;
                             <select id="SupplierId" name="SupplierId">
                                 <?php
-                                $rows_suppliers = table_suppliers('select', NULL);
+                                $rows_suppliers = table_suppliers('select_all', NULL, NULL);
                                 foreach ($rows_suppliers as $row_suppliers) {
                                     if ($row_services->SupplierId == $row_suppliers->Id) {
                                         echo "<option value=\"$row_suppliers->Id\" selected>".$row_suppliers->Name."</option>";
@@ -73,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             Service Type: &nbsp;
                             <select id="Service_TypeId" name="Service_TypeId">
                                 <?php
-                                $rows_service_types = table_service_types('select', $row_services->Service_TypeId);
+                                $rows_service_types = table_service_types('select_all', NULL, NULL);
                                 foreach ($rows_service_types as $row_service_types) {
                                     if ($row_services->Service_TypeId == $row_service_types->Id) {
                                         echo "<option value=\"$row_service_types->Id\" selected>".$row_service_types->Code."</option>";

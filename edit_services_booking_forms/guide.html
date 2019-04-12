@@ -34,7 +34,7 @@
             <select id="Tour_GuideId" name="Tour_GuideId">
                 <?php
                 // getting data from the table tour_guides
-                $rows_tour_guides = table_tour_guides('select', NULL);
+                $rows_tour_guides = table_tour_guides('select_all', NULL,  NULL);
                 foreach ($rows_tour_guides as $row_tour_guides) {
                     if ($row_services_booking->Tour_GuideId == $row_tour_guides->Id) {
                         echo "<option value=\"$row_tour_guides->Id\" id=\"guideOption$row_tour_guides->Id\" selected>".$row_tour_guides->Name."</option>";
@@ -59,7 +59,7 @@
             <select name="StatusId">
                 <option value="0">Select One</option>
                 <?php
-                $rows_service_statuses = table_service_statuses('select', NULL);
+                $rows_service_statuses = table_service_statuses('select_all', NULL, NULL);
                 foreach ($rows_service_statuses as $row_service_statuses) {
                     if ($row_services_booking->StatusId == $row_service_statuses->Id) {
                         echo "<option value=\"$row_service_statuses->Id\" selected>".$row_service_statuses->Code."</option>";

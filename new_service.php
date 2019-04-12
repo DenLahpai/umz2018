@@ -7,9 +7,9 @@ if ($d > 2) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $rowCount = table_services('check', NULL);
+    $rowCount = table_services('check_before_insert', NULL, NULL);
     if ($rowCount == 0) {
-        table_services('insert', NULL);
+        table_services('insert', NULL, NULL);
     }
     else {
         $error_message = "Duplicate Entry!";
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <select id="SupplierId" name="SupplierId">
                                 <option value="">Select</option>
                                 <?php
-                                $rows_suppliers = table_suppliers('select', NULL);
+                                $rows_suppliers = table_suppliers('select_all', NULL, NULL);
                                 foreach ($rows_suppliers as $row_suppliers) {
                                     echo "<option value=\"$row_suppliers->Id\">".$row_suppliers->Name."</option>";
                                 }
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <select id="Service_TypeId" name="Service_TypeId" onchange="setRequired('Additional', 'Additional');">
                                 <option value="">Select</option>
                                 <?php
-                                $rows_service_types = table_service_types('select', NULL);
+                                $rows_service_types = table_service_types('select_all', NULL, NULL);
                                 foreach ($rows_service_types as $row_service_types) {
                                     echo "<option value=\"$row_service_types->Id\">".$row_service_types->Code." - ".$row_service_types->Name."</option>";
                                 }

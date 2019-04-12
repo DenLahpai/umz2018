@@ -1,14 +1,10 @@
 <?php
 require "functions.php";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    table_bookings('insert', NULL);
-}
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $rowCount = table_bookings('check', NULL);
+    $rowCount = table_bookings('check_before_insert', NULL,  NULL);
     if ($rowCount == 0) {
-        table_bookings('insert', NULL);
+        table_bookings('insert', NULL, NULL);
     }
     else {
         $error_message = "Duplicate entry";
@@ -56,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                             <select id="AgentId" name="AgentId">
                                 <option value="">Select</option>
                                 <?php
-                                $rows_agents = table_agents('select', NULL);
+                                $rows_agents = table_agents('select_all', NULL, NULL);
                                 foreach ($rows_agents as $row_agents) {
                                     echo "<option value=\"$row_agents->Id\">".$row_agents->Name."</option>";
                                 }
@@ -68,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                             <select id="Guide_RequestId" name="Guide_RequestId">
                                 <option value="">Select</option>
                                 <?php
-                                $rows_guide_requests = table_guide_requests('select', NULL);
+                                $rows_guide_requests = table_guide_requests('select_all', NULL, NULL);
                                 foreach ($rows_guide_requests as $row_guide_requests) {
                                     echo "<option value=\"$row_guide_requests->Id\">".$row_guide_requests->Request."</option>";
                                 }
@@ -81,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                                 <option value="">Select</option>
                                 <?php
                                 // getting data from the table tour_guides
-                                $rows_tour_guides = table_tour_guides('select', NULL);
+                                $rows_tour_guides = table_tour_guides('select_all', NULL, NULL);
                                 foreach ($rows_tour_guides as $row_tour_guides) {
                                     echo "<option value=\"$row_tour_guides->Id\" id=\"guideOption$row_tour_guides->Id\">".$row_tour_guides->Name."</option>";
                                 }
@@ -101,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                             Status: &nbsp;
                             <select id="StatusId" name="StatusId">
                                 <?php
-                                $rows_booking_statuses = table_booking_statuses('select', NULL);
+                                $rows_booking_statuses = table_booking_statuses('select_all', NULL, NULL);
                                 foreach ($rows_booking_statuses as $row_booking_statuses) {
                                     echo "<option value=\"$row_booking_statuses->Id\">".$row_booking_statuses->Status."</option>";
                                 }
