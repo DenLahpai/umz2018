@@ -212,6 +212,10 @@ input {
     padding: 6px 12px;
 }
 
+.error {
+    color: red;
+}
+
 .invisible {
     display: none;
 }

@@ -2802,4 +2802,25 @@ function table_services_booking ($job, $var1, $var2) {
     }
 }
 
+//function to generate vouchers
+function generate_voucher ($job, $var1, $var2) {
+    $database = new Database();
+
+    switch ($job) {
+        case 'guide_voucher':
+            $tour_guidesId = $_REQUEST['tour_guidesId'];
+            $Service_Date1 = $_REQUEST['Service_Date1'];
+            $Service_Date2 = $_REQUEST['Service_Date2'];
+            if ($Service_Date2 == NULL) {
+                $Service_Date2 = $Service_Date1;
+            }
+            break;
+
+        default:
+            // code...
+            break;
+    }
+
+}
+
 ?>
