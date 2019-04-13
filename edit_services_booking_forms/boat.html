@@ -30,10 +30,6 @@
             <input type="time" name="Dropoff_Time" value="<?php echo $row_services_booking->Dropoff_Time; ?>">
         </li>
         <li>
-            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit"
-            onclick="check2Fields('Pickup','Dropoff');">Update</button>
-        </li>
-        <li>
             Status:
             <select name="StatusId">
                 <option value="0">Select One</option>
@@ -49,6 +45,14 @@
                 }
                 ?>
             </select>
+        </li>
+        <li>
+            Remark:
+            <input type="text" name="Remark" placeholder="Remark">
+        </li>
+        <li>
+            <button type="button" class="button medium" name="buttonSubmit" id="buttonSubmit"
+            onclick="check2Fields('Pickup','Dropoff');">Update</button>
         </li>
     </ul>
 </form>
