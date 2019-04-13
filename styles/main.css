@@ -190,6 +190,7 @@ footer {
 .button.link {
     padding: 6px 18px;
     background: #FC8325;
+    border: 1px solid white;
 }
 
 input {
