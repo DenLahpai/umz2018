@@ -43,7 +43,6 @@ switch ($DepartmentId) {
         // code...
         break;
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -188,6 +187,41 @@ switch ($DepartmentId) {
                             echo "</ul>";
                             echo "</div>";
                             echo "<!-- end of grid-item -->";
+                            }
+                        }
+                        ?>
+                    </div>
+                    <!-- end of grid-div -->
+                    <h3>
+                        Trekking
+                    </h3>
+                    <!-- grid-div -->
+                    <div class="grid-div">
+                        <?php
+                        foreach ($rows_services_booking as $row_services_booking) {
+                            if ($row_services_booking->service_typesCode == 'TRK') {
+                                echo "<!-- grid-item -->";
+                                echo "<div class=\"grid-item\">";
+                                echo "<ul>";
+                                echo "<li style=\"font-weight: bold\">".date("d-M-y", strtotime($row_services_booking->Service_Date))."</li>";
+                                echo "<li style=\"font-weight: bold\">".$row_services_booking->Service."</li>";
+                                echo "<li>".$row_services_booking->Additional."</li>";
+                                echo "<li>Pickup: ".$row_services_booking->Pickup." @ ".$row_services_booking->Pickup_Time."</li>";
+                                echo "<li>Dropoff: ".$row_services_booking->Dropoff." @ ".$row_services_booking->Dropoff_Time."</li>";
+                                if ($row_services_booking->service_statusesCode == NULL) {
+                                    echo "<li>Status: Unassigned</li>";
+                                }
+                                else {
+                                    echo "<li>Status: ".$row_services_booking->service_statusesCode."</li>";
+                                }
+                                echo "<li style=\"text-align:center;\"><a href=\"edit_services_booking.php?services_bookingId=$row_services_booking->Id\">";
+                                echo "<button class=\"button link\">Edit</button></a>&nbsp;";
+
+                                echo "&nbsp;<a href=\"delete_services_booking.php?services_bookingId=$row_services_booking->Id\">";
+                                echo "<button class=\"button link\">Delete</button></a></li>";
+                                echo "</ul>";
+                                echo "</div>";
+                                echo "<!-- end of grid-item -->";
 
                             }
                         }

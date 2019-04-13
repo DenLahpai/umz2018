@@ -116,7 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         include "includes/footer.html";
         ?>
-
     </body>
     <script type="text/javascript" src="js/scripts.js"></script>
     <script type="text/javascript" src="js/modal.js"></script>

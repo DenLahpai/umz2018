@@ -13,7 +13,7 @@ if(empty($search) || $search == NULL || $search == "") {
     $rows_bookings = table_bookings('select_all', NULL, NULL);
 }
 else {
-    $rows_bookings = table_bookings('search', $search, NULL);    
+    $rows_bookings = table_bookings('search', $search, NULL);
 }
 ?>
 <!DOCTYPE html>

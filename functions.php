@@ -2502,6 +2502,7 @@ function table_services_booking ($job, $var1, $var2) {
                 drivers.Mobile AS driversMobile,
                 drivers.License AS driversLicense,
                 drivers.Class AS driversClass,
+                tour_guides.Id AS tour_guidesId,
                 tour_guides.Title AS tour_guidesTitle,
                 tour_guides.Name AS tour_guidesName,
                 tour_guides.Mobile AS tour_guidesMobile,
@@ -2575,6 +2576,7 @@ function table_services_booking ($job, $var1, $var2) {
                 drivers.Mobile AS driversMobile,
                 drivers.License AS driversLicense,
                 drivers.Class AS driversClass,
+                tour_guides.Id AS tour_guidesId,
                 tour_guides.Title AS tour_guidesTitle,
                 tour_guides.Name AS tour_guidesName,
                 tour_guides.Mobile AS tour_guidesMobile,
@@ -2721,6 +2723,7 @@ function table_services_booking ($job, $var1, $var2) {
             break;
 
             case 'driver_job':
+                //$var1 = $bookingsId
                 $query = "SELECT
                     services_booking.Id,
                     services_booking.ServiceId,

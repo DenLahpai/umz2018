@@ -120,7 +120,6 @@ textarea[class="wide"] {
     background: #1E8BDC;
 }
 
-
 .links ul li a {
     color: #511695;
 }
@@ -190,6 +189,7 @@ footer {
 
 .button.link {
     padding: 6px 18px;
+    background: #FC8325;
 }
 
 input {

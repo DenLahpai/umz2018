@@ -35,7 +35,12 @@
                 <option value="0">Select One</option>
                 <?php
                 foreach ($rows_tour_guides as $row_tour_guides) {
-                    echo "<option value=\"$row_tour_guides->Id\">".$row_tour_guides->Title.".".$row_tour_guides->Name."</option>";
+                    if ($row_services_booking->tour_guidesId == $row_tour_guides->Id) {
+                        echo "<option value=\"$row_tour_guides->Id\" selected>".$row_tour_guides->Title.".".$row_tour_guides->Name."</option>";
+                    }
+                    else {
+                        echo "<option value=\"$row_tour_guides->Id\">".$row_tour_guides->Title.".".$row_tour_guides->Name."</option>";
+                    }
                 }
                 ?>
             </select>
