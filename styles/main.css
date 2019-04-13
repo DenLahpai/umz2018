@@ -191,6 +191,7 @@ footer {
     padding: 6px 18px;
     background: #FC8325;
     border: 1px solid white;
+    color: white;
 }
 
 input {
@@ -220,7 +221,6 @@ input {
     background: red;
     color: white;
 }
-
 
 /******************************** Styles for modals ************************************/
 
