@@ -77,6 +77,7 @@ switch ($DepartmentId) {
                             echo "<li>".$row_services_booking->service_typesCode." - ".$row_services_booking->suppliersName."</li>";
                             echo "<li>Pickup: ".$row_services_booking->Pickup." @ ".date('H:i', strtotime($row_services_booking->Pickup_Time))."</li>";
                             echo "<li>Dropoff: ".$row_services_booking->Dropoff." @ ".date('H:i', strtotime($row_services_booking->Dropoff_Time))."</li>";
+                            echo "<li>Remark: ".$row_services_booking->Remark."</li>";
                             if ($row_services_booking->Tour_GuideId < 1) {
                                 echo "<li>Station Guide: Unassigned </li>";
                             }
@@ -117,6 +118,7 @@ switch ($DepartmentId) {
                             echo "<li>".$row_services_booking->service_typesCode." - ".$row_services_booking->suppliersName."</li>";
                             echo "<li>Pickup: ".$row_services_booking->Pickup." @ ".date('H:i', strtotime($row_services_booking->Pickup_Time))."</li>";
                             echo "<li>Dropoff: ".$row_services_booking->Dropoff." @ ".date('H:i', strtotime($row_services_booking->Dropoff_Time))."</li>";
+                            echo "<li>Remark: ".$row_services_booking->Remark."</li>";
 
                             if ($row_services_booking->driversName == NULL) {
                                 echo "<li>Driver: Unassigned</li>";
@@ -170,6 +172,7 @@ switch ($DepartmentId) {
                             echo "<li>".$row_services_booking->service_typesCode." - ".$row_services_booking->suppliersName."</li>";
                             echo "<li>Pickup: ".$row_services_booking->Pickup." @ ".date('H:i', strtotime($row_services_booking->Pickup_Time))."</li>";
                             echo "<li>Dropoff: ".$row_services_booking->Dropoff." @ ".date('H:i', strtotime($row_services_booking->Dropoff_Time))."</li>";
+                            echo "<li>Remark: ".$row_services_booking->Remark."</li>";
 
                             if ($row_services_booking->service_statusesCode == NULL) {
                                 echo "<li>Status: Unassigned</li>";
@@ -208,6 +211,7 @@ switch ($DepartmentId) {
                                 echo "<li>".$row_services_booking->Additional."</li>";
                                 echo "<li>Pickup: ".$row_services_booking->Pickup." @ ".$row_services_booking->Pickup_Time."</li>";
                                 echo "<li>Dropoff: ".$row_services_booking->Dropoff." @ ".$row_services_booking->Dropoff_Time."</li>";
+                                echo "<li>Remark: ".$row_services_booking->Remark."</li>";
                                 if ($row_services_booking->service_statusesCode == NULL) {
                                     echo "<li>Status: Unassigned</li>";
                                 }
@@ -222,7 +226,6 @@ switch ($DepartmentId) {
                                 echo "</ul>";
                                 echo "</div>";
                                 echo "<!-- end of grid-item -->";
-
                             }
                         }
                         ?>

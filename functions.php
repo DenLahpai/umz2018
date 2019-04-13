@@ -2619,6 +2619,7 @@ function table_services_booking ($job, $var1, $var2) {
             $Tour_GuideId = $_REQUEST['Tour_GuideId'];
             $VehicleId = $_REQUEST['VehicleId'];
             $DriverId = $_REQUEST['DriverId'];
+            $Remark = trim($_REQUEST['Remark']);
             $StatusId = $_REQUEST['StatusId'];
 
             $query = "UPDATE services_booking SET
@@ -2630,7 +2631,8 @@ function table_services_booking ($job, $var1, $var2) {
                 Tour_GuideId = :Tour_GuideId,
                 VehicleId = :VehicleId,
                 DriverId = :DriverId,
-                StatusId = :StatusId
+                StatusId = :StatusId,
+                Remark = :Remark
                 WHERE Id = :services_bookingId
             ;";
             $database->query($query);
@@ -2643,6 +2645,7 @@ function table_services_booking ($job, $var1, $var2) {
             $database->bind(':VehicleId', $VehicleId);
             $database->bind(':DriverId', $DriverId);
             $database->bind(':StatusId', $StatusId);
+            $database->bind(':Remark', $Remark);
             $database->bind(':services_bookingId', $var1);
             if ($database->execute()) {
                 header("location: edit_services_booking.php?services_bookingId=$var1");
