@@ -1,9 +1,6 @@
 <?php
 require_once "functions.php";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    generate_voucher ('guide_voucher', NULL, NULL);
-}
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">

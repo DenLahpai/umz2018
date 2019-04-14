@@ -2827,11 +2827,15 @@ function generate_voucher ($job, $var1, $var2) {
                 WHERE services_booking.Tour_GuideId = :tour_guidesId
                 AND services_booking.StatusId = '1'
                 AND services_booking.Visible = '1'
+                AND services_booking.Service_Date >= :Service_Date1
+                AND services_booking.Service_Date <= :Service_Date2
             ;";
-            break;
             $database->query($query);
             $database->bind(':tour_guidesId', $tour_guidesId);
+            $database->bind(':Service_Date1', $Service_Date1);
+            $database->bind(':Service_Date2', $Service_Date2);
             return $r = $database->resultset();
+            break;
         default:
             // code...
             break;
