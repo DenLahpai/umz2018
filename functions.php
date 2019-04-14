@@ -2817,6 +2817,13 @@ function generate_voucher ($job, $var1, $var2) {
             if ($Service_Date2 == NULL) {
                 $Service_Date2 = $Service_Date1;
             }
+            $query = "SELECT
+                services_booking.Service_Date,
+                bookings.Reference,
+                bookings.Name,
+                services.Service
+                FROM services_booking
+            ;";
             break;
 
         default:
