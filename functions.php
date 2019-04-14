@@ -2829,7 +2829,6 @@ function report_guide_assignment_per_guide ($job, $var1, $var2) {
                 LEFT OUTER JOIN service_statuses
                 ON services_booking.StatusId = service_statuses.Id
                 WHERE services_booking.Tour_GuideId = :tour_guidesId
-                AND services_booking.StatusId = '1'
                 AND services_booking.Visible = '1'
                 AND services_booking.Service_Date >= :Service_Date1
                 AND services_booking.Service_Date <= :Service_Date2
@@ -2844,7 +2843,6 @@ function report_guide_assignment_per_guide ($job, $var1, $var2) {
             // code...
             break;
     }
-
 }
 
 ?>
