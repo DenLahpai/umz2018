@@ -2619,7 +2619,6 @@ function table_services_booking ($job, $var1, $var2) {
             $Tour_GuideId = $_REQUEST['Tour_GuideId'];
             $VehicleId = $_REQUEST['VehicleId'];
             $DriverId = $_REQUEST['DriverId'];
-            $Remark = trim($_REQUEST['Remark']);
             $StatusId = $_REQUEST['StatusId'];
 
             $query = "UPDATE services_booking SET
@@ -2631,8 +2630,7 @@ function table_services_booking ($job, $var1, $var2) {
                 Tour_GuideId = :Tour_GuideId,
                 VehicleId = :VehicleId,
                 DriverId = :DriverId,
-                StatusId = :StatusId,
-                Remark = :Remark
+                StatusId = :StatusId
                 WHERE Id = :services_bookingId
             ;";
             $database->query($query);
@@ -2645,7 +2643,6 @@ function table_services_booking ($job, $var1, $var2) {
             $database->bind(':VehicleId', $VehicleId);
             $database->bind(':DriverId', $DriverId);
             $database->bind(':StatusId', $StatusId);
-            $database->bind(':Remark', $Remark);
             $database->bind(':services_bookingId', $var1);
             if ($database->execute()) {
                 header("location: edit_services_booking.php?services_bookingId=$var1");
@@ -2815,7 +2812,7 @@ function generate_voucher ($job, $var1, $var2) {
             $Service_Date1 = $_REQUEST['Service_Date1'];
             $Service_Date2 = $_REQUEST['Service_Date2'];
             if ($Service_Date2 == NULL) {
-                $Service_Date2 = $Service_Date1;
+                $Service_Date2 =
             }
             break;
 
