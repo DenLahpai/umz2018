@@ -2619,7 +2619,6 @@ function table_services_booking ($job, $var1, $var2) {
             $Tour_GuideId = $_REQUEST['Tour_GuideId'];
             $VehicleId = $_REQUEST['VehicleId'];
             $DriverId = $_REQUEST['DriverId'];
-            $Remark = trim($_REQUEST['Remark']);
             $StatusId = $_REQUEST['StatusId'];
 
             $query = "UPDATE services_booking SET
@@ -2631,8 +2630,7 @@ function table_services_booking ($job, $var1, $var2) {
                 Tour_GuideId = :Tour_GuideId,
                 VehicleId = :VehicleId,
                 DriverId = :DriverId,
-                StatusId = :StatusId,
-                Remark = :Remark
+                StatusId = :StatusId
                 WHERE Id = :services_bookingId
             ;";
             $database->query($query);
@@ -2645,7 +2643,6 @@ function table_services_booking ($job, $var1, $var2) {
             $database->bind(':VehicleId', $VehicleId);
             $database->bind(':DriverId', $DriverId);
             $database->bind(':StatusId', $StatusId);
-            $database->bind(':Remark', $Remark);
             $database->bind(':services_bookingId', $var1);
             if ($database->execute()) {
                 header("location: edit_services_booking.php?services_bookingId=$var1");
@@ -2820,12 +2817,21 @@ function generate_voucher ($job, $var1, $var2) {
             $query = "SELECT
                 services_booking.Service_Date,
                 bookings.Reference,
-                bookings.Name,
+                bookings.Name AS bookingsName,
                 services.Service
                 FROM services_booking
+                LEFT OUTER JOIN bookings
+                ON services_booking.BookingsId = bookings.Id
+                LEFT OUTER JOIN services
+                ON services_booking.ServiceId = services.Id
+                WHERE services_booking.Tour_GuideId = :tour_guidesId
+                AND services_booking.StatusId = '1'
+                AND services_booking.Visible = '1'
             ;";
             break;
-
+            $database->query($query);
+            $database->bind(':tour_guidesId', $tour_guidesId);
+            return $r = $database->resultset();
         default:
             // code...
             break;

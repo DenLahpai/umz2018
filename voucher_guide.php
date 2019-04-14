@@ -2,7 +2,7 @@
 require_once "functions.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    table_tour_guides ('voucher', NULL, NULL);
+    generate_voucher ('guide_voucher', NULL, NULL);
 }
 ?>
 <!DOCTYPE html>
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <main>
                 <!-- report form -->
                 <div class="report form">
-                    <form id="theform" action="guide_voucher.php" method="post">
+                    <form id="theform" action="#" method="post">
                         <ul>
                             <li>
                                 Guide:
