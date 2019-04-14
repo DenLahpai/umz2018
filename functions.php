@@ -2803,11 +2803,11 @@ function table_services_booking ($job, $var1, $var2) {
 }
 
 //function to generate vouchers
-function generate_voucher ($job, $var1, $var2) {
+function report_guide_assignment_per_guide ($job, $var1, $var2) {
     $database = new Database();
 
     switch ($job) {
-        case 'guide_voucher':
+        case 'guide_assignment':
             $tour_guidesId = $_REQUEST['tour_guidesId'];
             $Service_Date1 = $_REQUEST['Service_Date1'];
             $Service_Date2 = $_REQUEST['Service_Date2'];
@@ -2815,6 +2815,7 @@ function generate_voucher ($job, $var1, $var2) {
                 $Service_Date2 = $Service_Date1;
             }
             $query = "SELECT
+                services_booking.BookingsId,
                 services_booking.Service_Date,
                 bookings.Reference,
                 bookings.Name AS bookingsName,
@@ -2830,11 +2831,15 @@ function generate_voucher ($job, $var1, $var2) {
                 WHERE services_booking.Tour_GuideId = :tour_guidesId
                 AND services_booking.StatusId = '1'
                 AND services_booking.Visible = '1'
+                AND services_booking.Service_Date >= :Service_Date1
+                AND services_booking.Service_Date <= :Service_Date2
             ;";
-            break;
             $database->query($query);
             $database->bind(':tour_guidesId', $tour_guidesId);
+            $database->bind(':Service_Date1', $Service_Date1);
+            $database->bind(':Service_Date2', $Service_Date2);
             return $r = $database->resultset();
+            break;
         default:
             // code...
             break;

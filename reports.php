@@ -20,7 +20,10 @@ require_once "functions.php";
                 <div class="links">
                     <ul>
                         <li>
-                            <a href="voucher_guide.php">Vouchers for guides</a>
+                            <a href="reports_bookings.php">Booking Report</a>
+                        </li>
+                        <li>
+                            <a href="guide_assignment_per_guide.php">Guide Assignment Per Guide</a>
                         </li>
                     </ul>
                 </div>
