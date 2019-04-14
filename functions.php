@@ -2812,10 +2812,26 @@ function generate_voucher ($job, $var1, $var2) {
             $Service_Date1 = $_REQUEST['Service_Date1'];
             $Service_Date2 = $_REQUEST['Service_Date2'];
             if ($Service_Date2 == NULL) {
-                $Service_Date2 =
+                $Service_Date2 = $Service_Date1;
             }
+            $query = "SELECT
+                services_booking.Service_Date,
+                bookings.Reference,
+                bookings.Name AS bookingsName,
+                services.Service
+                FROM services_booking
+                LEFT OUTER JOIN bookings
+                ON services_booking.BookingsId = bookings.Id
+                LEFT OUTER JOIN services
+                ON services_booking.ServiceId = services.Id
+                WHERE services_booking.Tour_GuideId = :tour_guidesId
+                AND services_booking.StatusId = '1'
+                AND services_booking.Visible = '1'
+            ;";
             break;
-
+            $database->query($query);
+            $database->bind(':tour_guidesId', $tour_guidesId);
+            return $r = $database->resultset();
         default:
             // code...
             break;
