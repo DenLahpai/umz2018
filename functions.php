@@ -2818,12 +2818,15 @@ function generate_voucher ($job, $var1, $var2) {
                 services_booking.Service_Date,
                 bookings.Reference,
                 bookings.Name AS bookingsName,
-                services.Service
+                services.Service,
+                service_statuses.Code
                 FROM services_booking
                 LEFT OUTER JOIN bookings
                 ON services_booking.BookingsId = bookings.Id
                 LEFT OUTER JOIN services
                 ON services_booking.ServiceId = services.Id
+                LEFT OUTER JOIN service_statuses
+                ON services_booking.StatusId = service_statuses.Id
                 WHERE services_booking.Tour_GuideId = :tour_guidesId
                 AND services_booking.StatusId = '1'
                 AND services_booking.Visible = '1'
