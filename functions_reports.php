@@ -103,6 +103,29 @@ function reports_bookings ($job, $var1, $var2) {
         ;";
         $database->query($query);
         $database->bind(':Guide_RequestId', $Guide_RequestId);
+        $database->bind(':Arrival_Date1', $Arrival_Date1);
+        $database->bind(':Arrival_Date2', $Arrival_Date2);
+    }
+
+    //$c = 00110;
+    elseif ($AgentId == NULL && $StatusId == NULL && $Guide_RequestId != NULL && $Tour_GuideId != NULL && $Arrival_Date1 == NULL) {
+        $query .= " WHERE Guide_RequestId = :Guide_RequestId
+            AND Tour_GuideId = :Tour_GuideId
+        ;";
+        $database->query($query);
+        $database->bind(':Guide_RequestId', $Guide_RequestId);
+        $database->bind(':Tour_GuideId', $Tour_GuideId);
+    }
+    //$c = 01001;
+    elseif ($AgentId == NULL && $StatusId != NULL && $Gudie_RequestId == NULL && $Tour_GuideId == NULL && $Arrival_Date1 != NULL) {
+        $query = " WHERE bookings.StatusId = :StatusId
+            AND Arrival_Date >= :Arrival_Date1
+            AND Arrvial_Date <= :Arrival_Date2
+        ;";
+        $database->query($query);
+        $database->bind(':StatusId', $StatusId);
+        $database->bind(':Arrival_Date1', $Arrival_Date1);
+        $database->bind(':Arrival_Date2', $Arrival_Date2);
     }
 }
 
