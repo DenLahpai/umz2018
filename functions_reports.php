@@ -173,6 +173,15 @@ function reports_bookings ($job, $var1, $var2) {
         $database->bind(':AgentId', $AgentId);
         $database->bind(':Guide_RequestId', $Guide_RequestId);
     }
+    //$c = 11000;
+    elseif ($AgentId != NULL && $StatusId != NULL && $Guide_RequestId == NULL && $Tour_GuideId == NULL && $Arrival_Date1 == NULL) {
+        $query .= " WHERE bookings.AgentId = :AgentId
+            AND bookings.StatusId = :StatusId
+        ;";
+        $database->query($query);
+        $database->bind(':AgentId', $AgentId);
+        $database->bind(':StatusId', $StatusId);
+    }
 }
 
 ?>
