@@ -306,6 +306,10 @@ function reports_bookings ($job, $var1, $var2) {
         $database->bind(':StatusId', $StatusId);
         $database->bind(':Tour_GuideId', $Tour_GuideId);
     }
+
+    elseif ($AgentId != NULL && $StatusId != NULL && $Guide_RequestId != NULL && $Tour_GuideId == NULL && $Arrival_Date1 == NULL) {
+        // code...
+    }
 }
 
 ?>
