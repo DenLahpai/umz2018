@@ -351,7 +351,7 @@ function reports_bookings ($job, $var1, $var2) {
         $database->bind(':Arrival_Date2', $Arrival_Date2);
     }
 
-    elseif ($AgentId != NULL && $StatusId != NULL && $Guide_RequestId == NULL && $Tour_GuideId != $Arrival_Date != NULL) {
+    elseif ($AgentId != NULL && $StatusId != NULL && $Guide_RequestId == NULL && $Tour_GuideId != $Arrival_Date1 != NULL) {
         // $c = 11011;
         $query .= " WHERE bookings.AgentId = :AgentId
             AND bookings.StatusId = :StatusId
@@ -366,6 +366,25 @@ function reports_bookings ($job, $var1, $var2) {
         $database->bind(':Arrival_Date1', $Arrival_Date1);
         $database->bind(':Arrival_Date2', $Arrival_Date2);
     }
-}
 
+    elseif ($AgentId != NULL && $StatusId != NULL && $Guide_RequestId != NULL && $Tour_GuideId == NULL && $Arrival_Date1 != NULL) {
+        // $c = 11101;
+        $query .= " WHERE bookings.AgentId = :AgentId
+            AND bookings.StatusId = :StatusId
+            AND bookings.Guide_RequestId = :Guide_RequestId
+            AND bookings.Arrival_Date >= :Arrival_Date1
+            AND bookings.Arrival_Date <= :Arrival_Date2
+        ;";
+        $database->query($query);
+        $database->bind(':AgentId', $AgentId);
+        $database->bind(':StatusId', $StatusId);
+        $database->bind(':Guide_RequestId', $Guide_RequestId);
+        $database->bind(':Arrival_Date1', $Arrival_Date1);
+        $database->bind(':Arrival_Date2', $Arrival_Date2);
+    }
+
+    elseif ($AgentId != NULL && $StatusId != NULL && $Guide_RequestId != NULL && $Tour_GuideId != NULL && $Arrival_Date1 == NULL) {
+        //$c = 11110;
+    }
+}
 ?>
