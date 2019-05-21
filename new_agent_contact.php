@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <select name="AgentId" id="AgentId">
                                 <option value="">Select</option>
                                 <?php
-                                $rows_agents =  table_agents('select', NULL);
+                                $rows_agents =  table_agents('select_all', NULL, NULL);
                                 foreach ($rows_agents as $row_agents) {
                                     echo "<option value=\"$row_agents->Id\">".$row_agents->Name."</option>";
                                 }
